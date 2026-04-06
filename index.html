@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BORN 2003 | Digital Manuscript</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+    body {
+      background-color: #ffffff;
+      cursor: crosshair;
+      overflow: hidden;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      background: url("https://grainy-gradients.vercel.app/noise.svg");
+      opacity: 0.03;
+      z-index: 9999;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Tree wind sway — pivot from trunk base so branches move most */
+    .sketch-parallax {
+      transform-origin: 50% 95%;
+    }
+    /* Gentle macro sway on the whole tree */
+    @keyframes treeSway {
+      0%   { transform: rotate(0deg)   skewX(0deg); }
+      25%  { transform: rotate(0.4deg) skewX(0.3deg); }
+      50%  { transform: rotate(-0.2deg) skewX(-0.2deg); }
+      75%  { transform: rotate(0.3deg) skewX(0.15deg); }
+      100% { transform: rotate(0deg)   skewX(0deg); }
+    }
+    .sketch-parallax {
+      animation: treeSway 6s ease-in-out infinite;
+    }
+    .leaf {
+      position: absolute;
+      background-color: #000000;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.8;
+    }
+    .leaf.ambient { width: 6px; height: 6px; }
+    .leaf.click-leaf {
+      width: 8px; height: 5px;
+      border-radius: 40% 60% 60% 40%;
+      transform-origin: 30% 50%;
+    }
+    @keyframes fall {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translate(var(--sway), 100vh) rotate(var(--rotation)); opacity: 0; }
+    }
+    @keyframes clickFall {
+      0% { transform: translate(0,0) rotate(0deg) scale(1); opacity: 0.9; }
+      20% { transform: translate(var(--drift1), var(--drop1)) rotate(var(--spin1)) scale(0.95); }
+      50% { transform: translate(var(--drift2), var(--drop2)) rotate(var(--spin2)) scale(0.85); opacity: 0.7; }
+      80% { transform: translate(var(--drift3), var(--drop3)) rotate(var(--spin3)) scale(0.7); opacity: 0.4; }
+      100% { transform: translate(var(--drift4), var(--drop4)) rotate(var(--spin4)) scale(0.5); opacity: 0; }
+    }
+    #tree-img {
+      filter: url(#windDisplace);
+      will-change: filter;
+      backface-visibility: hidden;
+    }
+    /* Falling leaf characters — each gets a unique @keyframes injected by JS */
+    .leaf-char {
+      display: inline-block;
+      opacity: 0;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      contain: layout style;
+    }
+    .leaf-char.space { width: 0.3em; }
+    /* Wind sway after landing — pure CSS, no heavy SVG filter */
+    #hero-text-block {
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    #hero-text-block.swaying {
+      animation: textSway 7s ease-in-out infinite;
+      transform-origin: 0% 100%;
+    }
+    @keyframes textSway {
+      0%   { transform: translate3d(0,0,0) rotate(0deg) skewX(0deg); }
+      20%  { transform: translate3d(1px,-1px,0) rotate(0.3deg) skewX(0.2deg); }
+      40%  { transform: translate3d(-1px,0,0) rotate(-0.15deg) skewX(-0.15deg); }
+      60%  { transform: translate3d(1px,-1px,0) rotate(0.25deg) skewX(0.1deg); }
+      80%  { transform: translate3d(0,1px,0) rotate(-0.1deg) skewX(-0.05deg); }
+      100% { transform: translate3d(0,0,0) rotate(0deg) skewX(0deg); }
+    }
+    /* Lamplighter timeline */
+    .tl-node.lit .tl-lamp {
+      background-color: #000 !important;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3), 0 0 4px rgba(0,0,0,0.5);
+      transform: scale(1.3);
+    }
+    .tl-node.lit .tl-label {
+      opacity: 1 !important;
+      font-weight: 700;
+    }
+    #lamplighter {
+      transition: left 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #lamp-figure {
+      display: inline-block;
+    }
+    /* Walking bob */
+    #lamplighter .wizard-body {
+      animation: wizWalk 0.35s ease-in-out infinite alternate;
+    }
+    #lamplighter.idle .wizard-body {
+      animation: wizIdle 2s ease-in-out infinite;
+    }
+    @keyframes wizWalk {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-3px) rotate(2deg); }
+    }
+    @keyframes wizIdle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      30% { transform: translateY(-1.5px) rotate(2deg); }
+      60% { transform: translateY(0.5px) rotate(-1.5deg); }
+    }
+    /* Wand poke animation */
+    .wizard-wand {
+      transform-origin: 20% 90%;
+      transition: transform 0.2s ease;
+    }
+    #lamplighter.poking .wizard-wand {
+      animation: wandPoke 0.5s ease-in-out;
+    }
+    @keyframes wandPoke {
+      0%   { transform: rotate(0deg); }
+      30%  { transform: rotate(-40deg) translateY(-4px); }
+      50%  { transform: rotate(-45deg) translateY(-6px); }
+      70%  { transform: rotate(-20deg) translateY(-2px); }
+      100% { transform: rotate(0deg); }
+    }
+    /* Sparkle on poke */
+    .poke-sparkle {
+      position: absolute;
+      width: 8px; height: 8px;
+      top: -18px; left: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+    #lamplighter.poking .poke-sparkle {
+      animation: sparkle 0.6s ease-out 0.2s forwards;
+    }
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0.3); }
+      40% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(0.5) translateY(-8px); }
+    }
+    /* Spell casting — wand swirls dramatically */
+    #lamplighter.casting .wizard-wand {
+      animation: wandCast 1.2s ease-in-out;
+    }
+    @keyframes wandCast {
+      0%   { transform: rotate(0deg); }
+      15%  { transform: rotate(-50deg) translateY(-6px); }
+      30%  { transform: rotate(-30deg) translateY(-3px) scale(1.1); }
+      50%  { transform: rotate(-60deg) translateY(-8px) scale(1.15); }
+      70%  { transform: rotate(-20deg) translateY(-2px); }
+      85%  { transform: rotate(-45deg) translateY(-5px); }
+      100% { transform: rotate(0deg); }
+    }
+    .bg-surface-container-low { background-color: #ffffff !important; }
+    .bg-surface-container { background-color: #ffffff !important; }
+</style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bright": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-container": "#1b1c1c",
+            "on-primary": "#e2e2e2",
+            "surface-container": "#ffffff",
+            "primary": "#000000",
+            "outline-variant": "#000000",
+            "surface": "#ffffff",
+            "background": "#ffffff",
+            "outline": "#000000"
+          },
+          borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px" },
+          fontFamily: {
+            "headline": ["Noto Serif"],
+            "body": ["Space Grotesk"],
+            "label": ["Space Grotesk"]
+          }
+        },
+      },
+    }
+</script>
+</head>
+<body class="font-body text-primary selection:bg-primary selection:text-white h-screen flex flex-col">
+
+<!-- SVG Wind Displacement Filter -->
+<svg style="position:absolute;width:0;height:0" xmlns="http://www.w3.org/2000/svg">
+  <filter id="windDisplace" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence id="windNoise" type="fractalNoise" baseFrequency="0.012 0.008" numOctaves="3" seed="2" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl">
+  <a href="index.html" class="text-xl font-notoSerif font-bold text-black">Tang Yujing</a>
+  <div class="hidden md:flex gap-12">
+    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="works.html">Portfolio</a>
+    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="experience.html">Experience</a>
+    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="about.html">About</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="material-symbols-outlined text-black">history_edu</span>
+  </div>
+</nav>
+
+<main class="relative flex-grow w-full flex flex-col md:flex-row items-center px-8 md:px-20 pt-32 pb-20 overflow-hidden">
+  <!-- Left Content -->
+  <div class="w-full md:w-1/2 flex flex-col z-10">
+    <div class="mb-12">
+      <div id="hero-text-block">
+        <h1 id="hero-title" class="font-headline text-6xl md:text-7xl lg:text-8xl tracking-tighter leading-tight mb-4" data-text="Hi, I'm Jay"></h1>
+        <p id="hero-sub" class="font-body text-xl md:text-2xl font-light tracking-tight opacity-80" data-text="Let's Flip Through It."></p>
+      </div>
+    </div>
+    <!-- Timeline with Lamplighter -->
+    <div class="relative w-full max-w-md py-12" id="timeline">
+      <!-- Track line -->
+      <div class="absolute top-1/2 left-0 w-full h-[1px] bg-primary/15 -translate-y-1/2"></div>
+      <!-- Nodes -->
+      <div class="relative flex justify-between items-center w-full">
+        <a href="works.html" class="tl-node group flex flex-col items-center gap-4">
+          <div class="tl-lamp w-3 h-3 bg-primary/20 z-10 transition-all duration-500"></div>
+          <span class="tl-label font-label text-xs uppercase tracking-widest opacity-30 transition-all duration-500">Portfolio</span>
+        </a>
+        <a href="experience.html" class="tl-node group flex flex-col items-center gap-4">
+          <div class="tl-lamp w-3 h-3 bg-primary/20 z-10 transition-all duration-500"></div>
+          <span class="tl-label font-label text-xs uppercase tracking-widest opacity-30 transition-all duration-500">Experience</span>
+        </a>
+        <a href="about.html" class="tl-node group flex flex-col items-center gap-4">
+          <div class="tl-lamp w-3 h-3 bg-primary/20 z-10 transition-all duration-500"></div>
+          <span class="tl-label font-label text-xs uppercase tracking-widest opacity-30 transition-all duration-500">About Me</span>
+        </a>
+      </div>
+      <!-- Walking Wizard Lamplighter (below timeline) -->
+      <div id="lamplighter" class="absolute z-20 pointer-events-none" style="top: calc(50% + 6px); left: 0;">
+        <div id="lamp-bubble" class="absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-[10px] font-body px-3 py-1.5 rounded-full opacity-0 transition-opacity duration-300" style="min-width: max-content; bottom: calc(100% + 18px);">
+          <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-black rotate-45"></div>
+        </div>
+        <!-- Sparkle on poke -->
+        <svg class="poke-sparkle" viewBox="0 0 12 12" style="top: -12px;"><path d="M6 0 L7 4.5 L12 6 L7 7.5 L6 12 L5 7.5 L0 6 L5 4.5 Z" fill="#000" opacity="0.6"/></svg>
+        <div id="lamp-figure">
+          <svg class="wizard-body" width="44" height="56" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pointy hat -->
+            <path d="M16 1 L20 13 L11 13 Z" fill="#1a1a1a"/>
+            <!-- Star on hat tip -->
+            <circle cx="16" cy="1.5" r="1.2" fill="#1a1a1a" opacity="0.4"/>
+            <!-- Hat brim -->
+            <ellipse cx="15.5" cy="13" rx="7" ry="2" fill="#1a1a1a"/>
+            <!-- Head -->
+            <circle cx="15.5" cy="17" r="4" fill="#e8d5b7"/>
+            <!-- Eye -->
+            <circle cx="17.5" cy="16.5" r="0.7" fill="#1a1a1a"/>
+            <!-- Eyebrow -->
+            <path d="M16.5 15.2 Q17.8 14.5 19 15.3" stroke="#1a1a1a" stroke-width="0.5" fill="none"/>
+            <!-- Nose -->
+            <path d="M19 17.2 Q20.2 16.5 19.5 18" stroke="#c4a882" stroke-width="0.7" fill="none"/>
+            <!-- Beard (long, flowing) -->
+            <path d="M12 19 Q11 26 14 28 Q15.5 29 17 26 Q18 23 18 19" fill="#d4d4d4" opacity="0.7"/>
+            <path d="M12.5 20 Q12 24 13.5 27" stroke="#bbb" stroke-width="0.3" fill="none"/>
+            <!-- Body / Robe -->
+            <path d="M11 21 L9 38 L22 38 L20 21 Z" fill="#2a2a2a"/>
+            <!-- Robe fold lines -->
+            <line x1="15" y1="22" x2="14" y2="37" stroke="#3a3a3a" stroke-width="0.4"/>
+            <line x1="17" y1="22" x2="18" y2="37" stroke="#3a3a3a" stroke-width="0.3"/>
+            <!-- Belt / sash -->
+            <rect x="10.5" y="27" width="9.5" height="1.8" rx="0.5" fill="#4a3a2a"/>
+            <circle cx="15.5" cy="27.9" r="0.8" fill="#6a5a3a"/>
+            <!-- Feet -->
+            <path d="M10 37 Q9 39 11.5 39 L13 38" fill="#1a1a1a"/>
+            <path d="M19 37 Q18 39 20.5 39 L22 38" fill="#1a1a1a"/>
+            <!-- Left arm (resting) -->
+            <path d="M11 23 Q8 26 9 28" stroke="#2a2a2a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            <!-- Right arm holding wand (raised) -->
+            <path d="M20 22 Q23 20 25 16" stroke="#2a2a2a" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Hand -->
+            <circle cx="25" cy="16" r="1.6" fill="#e8d5b7"/>
+            <!-- Wand -->
+            <g class="wizard-wand">
+              <line x1="25" y1="15.5" x2="32" y2="4" stroke="#5a3a1a" stroke-width="1.6" stroke-linecap="round"/>
+              <!-- Wand tip glow -->
+              <circle cx="32" cy="3.5" r="2" fill="none" stroke="#333" stroke-width="0.5" opacity="0.4"/>
+              <circle cx="32" cy="3.5" r="0.9" fill="#1a1a1a" opacity="0.6"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content: Sketch Tree -->
+  <div class="w-full md:w-1/2 h-full flex justify-center items-center mt-20 md:mt-0 relative overflow-visible" id="tree-container">
+    <div class="sketch-parallax relative w-full h-full max-w-2xl flex justify-center">
+      <img id="tree-img" alt="Minimalist black ink sketch of a gnarled winter tree" class="w-full h-auto object-contain grayscale contrast-150 mix-blend-multiply relative z-10" src="Image/精致的黑白树木插图.png"/>
+      <div class="absolute inset-0 pointer-events-none" id="leaves-overlay"></div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-4 px-8 flex flex-col md:flex-row justify-between items-center gap-4 bg-[#ffffff] border-t border-primary/5 z-50">
+  <div class="font-mono text-xs uppercase tracking-widest text-black">
+    &copy; 2024 DIGITAL MANUSCRIPT
+  </div>
+  <div class="flex gap-12">
+    <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="#">Twitter</a>
+    <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="#">GitHub</a>
+    <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="#">Email</a>
+  </div>
+</footer>
+
+<script>
+    // === Lamplighter walking animation ===
+    (() => {
+      const nodes = document.querySelectorAll('.tl-node');
+      const lighter = document.getElementById('lamplighter');
+      const bubble = document.getElementById('lamp-bubble');
+      const figure = document.getElementById('lamp-figure');
+      const timeline = document.getElementById('timeline');
+      const topNav = document.querySelector('nav');
+      let current = 0;
+      let direction = 1;
+      let isCasting = false;
+      let walkTimer = null;
+
+      const lines = {
+        0: ["来看看我的作品集？","真的不点一下吗？","里面有好东西噢 👀","确定不看？会后悔的！","最后机会啦…点一下嘛～"],
+        1: ["看看我的经历吧~","很有意思噢！","点一下又不会怎样🤷","我在这等着你点呢…","再不点我就走了哦！"],
+        2: ["了解一下我？","就点一下，不亏的～","你已经看到这了还不点？","我都举着魔杖等你了😤","好吧…我再等等你…"]
+      };
+
+      function getNodeCenter(i) {
+        const r = nodes[i].getBoundingClientRect();
+        const t = timeline.getBoundingClientRect();
+        return r.left + r.width / 2 - t.left - 22;
+      }
+      function flipFigure(dir) { figure.style.transform = dir < 0 ? 'scaleX(-1)' : 'scaleX(1)'; }
+      function showBubble(text) {
+        bubble.style.opacity = '0';
+        setTimeout(() => { bubble.textContent = text; bubble.style.opacity = '1'; }, 200);
+      }
+      function hideBubble() { bubble.style.opacity = '0'; }
+
+      function lightUp(idx, cb) {
+        nodes.forEach(n => n.classList.remove('lit'));
+        lighter.classList.add('poking');
+        setTimeout(() => {
+          lighter.classList.remove('poking');
+          nodes[idx].classList.add('lit');
+          lighter.classList.add('idle');
+          const nodeLines = lines[idx];
+          let round = 0;
+          function nextLine() {
+            if (isCasting) return; // stop talking if user clicked
+            showBubble(nodeLines[round]); round++;
+            if (round < nodeLines.length) setTimeout(nextLine, 3000);
+            else setTimeout(() => { hideBubble(); if (cb && !isCasting) cb(); }, 3000);
+          }
+          nextLine();
+        }, 500);
+      }
+
+      function walk() {
+        if (isCasting) return;
+        const targetX = getNodeCenter(current);
+        lighter.classList.remove('idle');
+        hideBubble();
+        lighter.style.left = `${targetX}px`;
+        flipFigure(direction);
+        walkTimer = setTimeout(() => {
+          lightUp(current, () => {
+            if (current === nodes.length - 1) direction = -1;
+            else if (current === 0) direction = 1;
+            current += direction;
+            walk();
+          });
+        }, 1200);
+      }
+
+      // Start
+      setTimeout(() => {
+        flipFigure(1);
+        lighter.style.left = `${getNodeCenter(0)}px`;
+        setTimeout(() => {
+          lightUp(0, () => { current = 1; direction = 1; walk(); });
+        }, 300);
+      }, 800);
+
+      // Resize handler
+      window.addEventListener('resize', () => {
+        lighter.style.transition = 'none';
+        lighter.style.left = `${getNodeCenter(Math.max(0, current - direction))}px`;
+        requestAnimationFrame(() => { lighter.style.transition = ''; });
+      });
+
+      // === Spell-cast on timeline node click ===
+      function castAndNavigate(href, nodeIdx) {
+        if (isCasting) return;
+        isCasting = true;
+        clearTimeout(walkTimer);
+        hideBubble();
+
+        // Walk to the clicked node if not already there
+        const targetX = getNodeCenter(nodeIdx);
+        const curLeft = parseFloat(lighter.style.left) || 0;
+        const needsWalk = Math.abs(targetX - curLeft) > 10;
+        flipFigure(targetX > curLeft ? 1 : -1);
+        if (needsWalk) {
+          lighter.classList.remove('idle');
+          lighter.style.left = `${targetX}px`;
+        }
+
+        setTimeout(() => {
+          lighter.classList.add('idle');
+          lighter.classList.add('casting');
+          nodes.forEach(n => n.classList.remove('lit'));
+          nodes[nodeIdx].classList.add('lit');
+          showBubble("阿布拉卡达布拉…✨");
+          setTimeout(() => showBubble("嗖～传送启动！"), 600);
+          setTimeout(() => {
+            lighter.classList.remove('casting');
+            window.location.href = href;
+          }, 1400);
+        }, needsWalk ? 1200 : 200);
+      }
+
+      // Intercept timeline node clicks
+      nodes.forEach((node, idx) => {
+        node.addEventListener('click', function(e) {
+          e.preventDefault();
+          const href = node.getAttribute('href');
+          castAndNavigate(href, idx);
+        });
+      });
+
+      // Intercept topbar nav clicks too
+      topNav.querySelectorAll('a[href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === 'index.html') return;
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          // Map topbar link to timeline node index
+          let nodeIdx = 0;
+          if (href === 'works.html') nodeIdx = 0;
+          else if (href === 'experience.html') nodeIdx = 1;
+          else if (href === 'about.html') nodeIdx = 2;
+          castAndNavigate(href, nodeIdx);
+        });
+      });
+    })();
+
+    // === Leaf-fall: pre-baked keyframes, zero calc() in animation ===
+    // Inject one shared stylesheet for all generated keyframes
+    const leafSheet = document.createElement('style');
+    document.head.appendChild(leafSheet);
+    let leafId = 0;
+
+    function leafFallText(el) {
+      const text = el.dataset.text;
+      el.innerHTML = '';
+      const chars = [...text];
+      // Shuffle for random arrival order
+      const order = chars.map((_, i) => i);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      const delayMap = new Map();
+      order.forEach((ci, rank) => delayMap.set(ci, rank));
+
+      let css = '';
+      chars.forEach((char, i) => {
+        const span = document.createElement('span');
+        if (char === ' ') {
+          span.className = 'leaf-char space';
+          span.innerHTML = '&nbsp;';
+        } else {
+          span.className = 'leaf-char';
+          span.textContent = char;
+        }
+
+        // Pre-calculate all waypoints (pure numbers, no calc in CSS)
+        const sx = -120 - Math.random() * 180;
+        const sy = -180 - Math.random() * 120;
+        const sr = -25 + Math.random() * 50;
+        const mx = sx * 0.5 + 15;
+        const my = sy * 0.3;
+        const mr = sr * 0.4;
+        const nx = sx * 0.1 - 8;
+        const ny = sy * 0.05;
+        const nr = sr * -0.1;
+
+        const name = `lf${leafId++}`;
+        const dur = 1.4 + Math.random() * 0.6;
+        const delay = 0.2 + delayMap.get(i) * 0.1;
+
+        // Bake keyframes with literal values — GPU can optimize these
+        css += `@keyframes ${name}{`
+          + `0%{opacity:0;transform:translate3d(${sx}px,${sy}px,0)rotate(${sr}deg)scale(.7)}`
+          + `15%{opacity:.8;transform:translate3d(${sx*.75+7}px,${sy*.65}px,0)rotate(${sr*.7}deg)scale(.78)}`
+          + `30%{opacity:.95;transform:translate3d(${mx}px,${my}px,0)rotate(${mr}deg)scale(.85)}`
+          + `60%{opacity:1;transform:translate3d(${nx}px,${ny}px,0)rotate(${nr}deg)scale(.95)}`
+          + `80%{opacity:1;transform:translate3d(3px,-2px,0)rotate(.5deg)scale(1.01)}`
+          + `100%{opacity:1;transform:translate3d(0,0,0)rotate(0deg)scale(1)}`
+          + `}\n`;
+
+        span.style.animation = `${name} ${dur}s cubic-bezier(.37,0,.63,1) ${delay}s forwards`;
+        el.appendChild(span);
+      });
+
+      // Batch-inject all keyframes at once (single reflow)
+      leafSheet.textContent += css;
+      return chars.length;
+    }
+
+    // Wait for fonts before starting animation to prevent reflow mid-flight
+    document.fonts.ready.then(() => {
+      const n1 = leafFallText(document.getElementById('hero-title'));
+      const n2 = leafFallText(document.getElementById('hero-sub'));
+      const maxWait = 0.2 + (n1 + n2) * 0.1 + 2.2;
+
+      setTimeout(() => {
+        document.getElementById('hero-text-block').classList.add('swaying');
+      }, maxWait * 1000);
+    });
+
+
+    // === Tree interaction system ===
+    const treeContainer = document.getElementById('tree-container');
+    const treeImg = document.getElementById('tree-img');
+    const treeParallax = treeContainer.querySelector('.sketch-parallax');
+    const overlay = document.getElementById('leaves-overlay');
+    const windNoise = document.getElementById('windNoise');
+
+    let windTime = 0;
+    // --- 1. Ambient leaves (background) ---
+    function createAmbientLeaf() {
+      if (!overlay) return;
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf ambient';
+      leaf.style.left = `${Math.random() * 80 + 10}%`;
+      leaf.style.top = `${Math.random() * 40 + 10}%`;
+      leaf.style.setProperty('--sway', `${(Math.random() - 0.5) * 200}px`);
+      leaf.style.setProperty('--rotation', `${Math.random() * 720 - 360}deg`);
+      const dur = Math.random() * 4 + 3;
+      leaf.style.animation = `fall ${dur}s linear forwards`;
+      overlay.appendChild(leaf);
+      setTimeout(() => leaf.remove(), dur * 1000);
+    }
+    function scheduleAmbient() {
+      setTimeout(() => { createAmbientLeaf(); scheduleAmbient(); }, Math.random() * 1500 + 500);
+    }
+    scheduleAmbient();
+
+    // --- 2. Click leaves ---
+    function createClickLeaves(cx, cy) {
+      const count = 3 + Math.floor(Math.random() * 3); // 3-5 leaves
+      const rect = treeContainer.getBoundingClientRect();
+      for (let i = 0; i < count; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf click-leaf';
+        // Start near click point with spread
+        const offX = (Math.random() - 0.5) * 40;
+        const offY = (Math.random() - 0.5) * 20;
+        leaf.style.left = `${cx - rect.left + offX}px`;
+        leaf.style.top = `${cy - rect.top + offY}px`;
+        leaf.style.position = 'absolute';
+        // Random falling path — each waypoint drifts and drops
+        const driftDir = (Math.random() - 0.5) * 2;
+        leaf.style.setProperty('--drift1', `${driftDir * 20}px`);
+        leaf.style.setProperty('--drop1', '40px');
+        leaf.style.setProperty('--spin1', `${Math.random() * 90 - 45}deg`);
+        leaf.style.setProperty('--drift2', `${driftDir * 50 + (Math.random()-0.5)*30}px`);
+        leaf.style.setProperty('--drop2', '120px');
+        leaf.style.setProperty('--spin2', `${Math.random() * 180 - 90}deg`);
+        leaf.style.setProperty('--drift3', `${driftDir * 40 + (Math.random()-0.5)*50}px`);
+        leaf.style.setProperty('--drop3', '220px');
+        leaf.style.setProperty('--spin3', `${Math.random() * 270 - 135}deg`);
+        leaf.style.setProperty('--drift4', `${driftDir * 30 + (Math.random()-0.5)*60}px`);
+        leaf.style.setProperty('--drop4', '350px');
+        leaf.style.setProperty('--spin4', `${Math.random() * 360}deg`);
+        const dur = 1.8 + Math.random() * 1.2;
+        leaf.style.animation = `clickFall ${dur}s cubic-bezier(0.25, 0, 0.6, 1) forwards`;
+        leaf.style.animationDelay = `${i * 0.08}s`;
+        overlay.appendChild(leaf);
+        setTimeout(() => leaf.remove(), (dur + count * 0.08) * 1000);
+      }
+    }
+    treeContainer.addEventListener('click', (e) => {
+      createClickLeaves(e.clientX, e.clientY);
+    });
+
+    // --- 3. Natural wind animation loop ---
+    function animate() {
+      windTime += 0.0015;
+      const gust = Math.sin(windTime * 2.3) * 0.5 + Math.sin(windTime * 5.7) * 0.3;
+      const bfx = 0.012 + Math.sin(windTime) * 0.004 + gust * 0.002;
+      const bfy = 0.008 + Math.cos(windTime * 0.7) * 0.003;
+      windNoise.setAttribute('baseFrequency', `${bfx.toFixed(5)} ${bfy.toFixed(5)}`);
+      requestAnimationFrame(animate);
+    }
+    animate();
+</script>
+</body></html>

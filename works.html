@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>BORN 2003 — Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#f4f3f2",
+            "on-surface-variant": "#474747",
+            "on-primary": "#e2e2e2",
+            "surface-container-highest": "#e3e2e1",
+            "surface": "#faf9f8",
+            "on-background": "#1a1c1c",
+            "surface-bright": "#faf9f8",
+            "primary-fixed": "#5e5e5e",
+            "outline-variant": "#c6c6c6",
+            "outline": "#777777",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#1a1c1c",
+            "primary": "#000000",
+            "primary-container": "#3b3b3b",
+            "surface-container": "#eeeeed",
+            "background": "#faf9f8",
+          },
+          fontFamily: {
+            "headline": ["Noto Serif"],
+            "body": ["Space Grotesk"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+        },
+      },
+    }
+</script>
+<style>
+    body { background-color: #faf9f8; position: relative; overflow-x: hidden; }
+    body::after {
+      content: "";
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0.03; z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+    .perspective-container { perspective: 2000px; scroll-behavior: smooth; }
+    .gallery-track {
+      display: flex; gap: 0;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+    }
+    .paper-fold {
+      transform-style: preserve-3d; flex-shrink: 0;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, box-shadow 0.6s ease;
+      transform-origin: left center;
+    }
+    .paper-fold:nth-child(odd) { transform: rotateY(6deg); }
+    .paper-fold:nth-child(even) { transform: rotateY(-6deg); }
+    .paper-fold:hover {
+      transform: rotateY(0deg) scale(1.03) translateZ(30px) !important;
+      z-index: 50;
+      box-shadow: 20px 40px 60px rgba(26, 28, 28, 0.08);
+    }
+    /* Folding away animation */
+    .paper-fold.folding-out {
+      transform: perspective(800px) rotateY(-70deg) scale(0.85) !important;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .paper-fold.folding-in {
+      transform: perspective(800px) rotateY(70deg) scale(0.85) !important;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .ink-blot { filter: url(#inkFilter); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    /* Gallery arrow buttons */
+    .gallery-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 60;
+      width: 56px; height: 56px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
+      border: 1px solid rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .gallery-arrow:hover {
+      background: rgba(0,0,0,0.85); color: white;
+    }
+    .gallery-arrow:disabled {
+      opacity: 0; pointer-events: none;
+    }
+    .gallery-arrow.left { left: 24px; }
+    .gallery-arrow.right { right: 24px; }
+    /* Topbar Wizard */
+    #nav-wizard {
+      position: absolute; z-index: 60;
+      transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    #nav-wizard .wizard-body { animation: wizWalk 0.35s ease-in-out infinite alternate; }
+    #nav-wizard.idle .wizard-body { animation: wizIdle 2s ease-in-out infinite; }
+    @keyframes wizWalk {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-2px) rotate(2deg); }
+    }
+    @keyframes wizIdle {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      30% { transform: translateY(-1px) rotate(2deg); }
+      60% { transform: translateY(0.5px) rotate(-1.5deg); }
+    }
+    .wizard-wand { transform-origin: 20% 90%; }
+    #nav-wizard.poking .wizard-wand { animation: wandPoke 0.5s ease-in-out; }
+    @keyframes wandPoke {
+      0%   { transform: rotate(0deg); }
+      30%  { transform: rotate(-40deg) translateY(-3px); }
+      50%  { transform: rotate(-45deg) translateY(-5px); }
+      70%  { transform: rotate(-20deg) translateY(-2px); }
+      100% { transform: rotate(0deg); }
+    }
+    /* Spell casting — wand swirls dramatically */
+    #nav-wizard.casting .wizard-wand {
+      animation: wandCast 1.2s ease-in-out;
+    }
+    @keyframes wandCast {
+      0%   { transform: rotate(0deg); }
+      15%  { transform: rotate(-50deg) translateY(-6px); }
+      30%  { transform: rotate(-30deg) translateY(-3px) scale(1.1); }
+      50%  { transform: rotate(-60deg) translateY(-8px) scale(1.15); }
+      70%  { transform: rotate(-20deg) translateY(-2px); }
+      85%  { transform: rotate(-45deg) translateY(-5px); }
+      100% { transform: rotate(0deg); }
+    }
+    /* Wand point gesture — tilt body to hint direction */
+    #nav-wizard.point-right { transform: translateY(-50%) rotate(5deg); }
+    #nav-wizard.point-left  { transform: translateY(-50%) rotate(-5deg); }
+    /* Bubble BELOW wizard on sub-pages */
+    #wiz-bubble {
+      position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%);
+      white-space: nowrap; background: #000; color: #fff; font-size: 10px;
+      font-family: 'Space Grotesk', sans-serif; padding: 4px 10px; border-radius: 9999px;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    #wiz-bubble::after {
+      content: ''; position: absolute; top: -3px; left: 50%;
+      transform: translateX(-50%) rotate(45deg); width: 6px; height: 6px; background: #000;
+    }
+    /* Page dots */
+    .page-dots { display: flex; gap: 8px; justify-content: center; margin-top: 24px; }
+    .page-dot {
+      width: 24px; height: 2px; background: rgba(0,0,0,0.15);
+      transition: all 0.4s ease; cursor: pointer;
+    }
+    .page-dot.active { background: rgba(0,0,0,0.8); width: 40px; }
+</style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary selection:text-on-primary min-h-screen flex flex-col">
+
+<!-- Ink Filter SVG -->
+<svg style="display:none">
+  <filter id="inkFilter">
+    <feTurbulence baseFrequency="0.02" numOctaves="3" result="noise" type="fractalNoise"></feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3"></feDisplacementMap>
+  </filter>
+</svg>
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl">
+  <a href="index.html" class="text-xl font-headline font-bold text-black">Tang Yujing</a>
+  <div class="hidden md:flex gap-12">
+    <a class="text-black border-b border-black/20 pb-1 font-body" href="works.html">Portfolio</a>
+    <a class="text-black/60 font-body hover:text-black transition-colors duration-300" href="experience.html">Experience</a>
+    <a class="text-black/60 font-body hover:text-black transition-colors duration-300" href="about.html">About</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="material-symbols-outlined text-black">history_edu</span>
+  </div>
+  <!-- Topbar Wizard -->
+  <div id="nav-wizard" class="idle" style="top: 50%; transform: translateY(-50%); left: 0;">
+    <div id="wiz-bubble"></div>
+    <div id="wiz-figure">
+      <svg class="wizard-body" width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 1 L20 13 L11 13 Z" fill="#1a1a1a"/>
+        <circle cx="16" cy="1.5" r="1.2" fill="#1a1a1a" opacity="0.4"/>
+        <ellipse cx="15.5" cy="13" rx="7" ry="2" fill="#1a1a1a"/>
+        <circle cx="15.5" cy="17" r="4" fill="#e8d5b7"/>
+        <circle cx="17.5" cy="16.5" r="0.7" fill="#1a1a1a"/>
+        <path d="M16.5 15.2 Q17.8 14.5 19 15.3" stroke="#1a1a1a" stroke-width="0.5" fill="none"/>
+        <path d="M19 17.2 Q20.2 16.5 19.5 18" stroke="#c4a882" stroke-width="0.7" fill="none"/>
+        <path d="M12 19 Q11 26 14 28 Q15.5 29 17 26 Q18 23 18 19" fill="#d4d4d4" opacity="0.7"/>
+        <path d="M11 21 L9 38 L22 38 L20 21 Z" fill="#2a2a2a"/>
+        <line x1="15" y1="22" x2="14" y2="37" stroke="#3a3a3a" stroke-width="0.4"/>
+        <rect x="10.5" y="27" width="9.5" height="1.8" rx="0.5" fill="#4a3a2a"/>
+        <path d="M10 37 Q9 39 11.5 39 L13 38" fill="#1a1a1a"/>
+        <path d="M19 37 Q18 39 20.5 39 L22 38" fill="#1a1a1a"/>
+        <path d="M11 23 Q8 26 9 28" stroke="#2a2a2a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M20 22 Q23 20 25 16" stroke="#2a2a2a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="25" cy="16" r="1.6" fill="#e8d5b7"/>
+        <g class="wizard-wand">
+          <line x1="25" y1="15.5" x2="32" y2="4" stroke="#5a3a1a" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="32" cy="3.5" r="2" fill="none" stroke="#333" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="32" cy="3.5" r="0.9" fill="#1a1a1a" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</nav>
+
+<main class="flex-grow flex flex-col justify-center pb-24 max-w-full mx-auto pt-[120px] overflow-hidden">
+  <!-- Header -->
+  <div class="flex justify-between items-end mb-16 max-w-screen-2xl mx-auto w-full px-8">
+    <h1 class="text-9xl font-headline font-bold italic tracking-tighter ink-blot">Portfolio</h1>
+    <div class="flex border border-outline/30 p-1">
+      <button class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold bg-primary text-on-primary btn-active transition-all duration-300" id="article-btn">ARTICLE</button>
+      <button class="px-4 py-2 text-[10px] uppercase tracking-widest text-outline hover:text-primary transition-all duration-300 btn-inactive" id="music-btn">MUSIC</button>
+    </div>
+  </div>
+
+  <!-- Accordion Fold Gallery -->
+  <div class="relative" id="gallery-wrapper">
+    <!-- Left Arrow -->
+    <button class="gallery-arrow left" id="arrow-left" disabled>
+      <span class="material-symbols-outlined text-2xl">chevron_left</span>
+    </button>
+    <!-- Right Arrow -->
+    <button class="gallery-arrow right" id="arrow-right">
+      <span class="material-symbols-outlined text-2xl">chevron_right</span>
+    </button>
+    <section class="perspective-container h-[600px] pb-12 px-12 overflow-hidden" id="scroll-strip">
+    <div class="gallery-track items-stretch h-full" id="gallery-track">
+      <!-- Panel 1 -->
+      <div class="paper-fold relative w-[320px] bg-white p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.02)]">
+        <div class="space-y-4">
+          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 01 // 2024</span>
+          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">The Anatomy of a Design System</h2>
+          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
+            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho" />
+          </div>
+        </div>
+        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 1.2k</span>
+          <span>JAN 12</span>
+        </div>
+      </div>
+      <!-- Panel 2 -->
+      <div class="paper-fold relative w-[320px] bg-[#fcfbfb] p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.03)]">
+        <div class="space-y-4">
+          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 04 // 2023</span>
+          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">Minimalism as a Constraint</h2>
+          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
+            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o" />
+          </div>
+        </div>
+        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 890</span>
+          <span>DEC 04</span>
+        </div>
+      </div>
+      <!-- Panel 3 -->
+      <div class="paper-fold relative w-[320px] bg-white p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.02)]">
+        <div class="space-y-4">
+          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 08 // 2023</span>
+          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">The Death of the Pixel</h2>
+          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
+            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPpWQJWgpbReqyM2PlxUNGDSKm7GbeqF5HddX9DOYnex9p74p_-_w5HoAKURoQDf0udBMRJ4xCP0SDCVDyr_QB9BwtUMd6oCBNK-D27X1MsMuY0GWq4lcoJLfTkg-XWrI05my-lOV0MUQOHYH1dk7ZWsAFoUcPdNMwGZ3ATNNGtNi6bavypi56Y7EqtqpPn52QaznLfenjah_t2M8kGD4ImkwZFSV4VmTSJonNJ8M095rybbK9jCAnHAJ5-kvmulJgV7sUc8NOuOE" />
+          </div>
+        </div>
+        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 2.4k</span>
+          <span>OCT 28</span>
+        </div>
+      </div>
+      <!-- Panel 4 -->
+      <div class="paper-fold relative w-[320px] bg-[#fcfbfb] p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.03)]">
+        <div class="space-y-4">
+          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 12 // 2023</span>
+          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">Digital Craftsmanship</h2>
+          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
+            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY" />
+          </div>
+        </div>
+        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 560</span>
+          <span>AUG 15</span>
+        </div>
+      </div>
+      <!-- Panel 5 -->
+      <div class="paper-fold relative w-[320px] bg-white p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.02)]">
+        <div class="space-y-4">
+          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 15 // 2023</span>
+          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">Kinetic Typography</h2>
+          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
+            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqXQiMRdpyvaF4doAvrSsjtiDKRTLCmHxAPcMbmMD6p9V-PlfcvO6K9S5SaGDnbWlJk-5HjjEH635lqWIqGTgjfIcs5DSI-0_gc4Kp0oX0Qi2UeCs5Jt3bgCtkFqvPciVj-hm4AKSEzUEoNLZkuoJOt1nqF25WQS_Q-xebdkRxBvluYMIekwxxAQVJausQRcCLVoEW6DZN8lGj9pMfWFzQ3ha89soS2I7bZ0gVY5hSVEnTxmBqDMuHPkQyPTJQ4ULU61FThtoYg" />
+          </div>
+        </div>
+        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 3.1k</span>
+          <span>JUL 02</span>
+        </div>
+      </div>
+    </div>
+    </section>
+    <!-- Page Dots -->
+    <div class="page-dots" id="page-dots"></div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 mt-20 bg-transparent">
+  <div class="font-mono text-[10px] uppercase tracking-widest text-[#000000]">
+    &copy; 2024 BORN 2003. Built with precision and ink.
+  </div>
+  <div class="flex gap-8 mt-6 md:mt-0">
+    <a class="font-mono text-[10px] uppercase tracking-widest text-[#000000] opacity-60 hover:opacity-100 transition-opacity" href="#">Instagram</a>
+    <a class="font-mono text-[10px] uppercase tracking-widest text-[#000000] underline decoration-1" href="#">LinkedIn</a>
+    <a class="font-mono text-[10px] uppercase tracking-widest text-[#000000] opacity-60 hover:opacity-100 transition-opacity" href="#">Email</a>
+  </div>
+</footer>
+
+
+<script>
+    const track = document.getElementById('gallery-track');
+    const cards = document.querySelectorAll('.paper-fold');
+    const arrowLeft = document.getElementById('arrow-left');
+    const arrowRight = document.getElementById('arrow-right');
+    const dotsContainer = document.getElementById('page-dots');
+    const strip = document.getElementById('scroll-strip');
+    const CARDS_PER_PAGE = 4;
+    const CARD_WIDTH = 320; // px per card
+    let currentPage = 0;
+    let isAnimating = false;
+    const totalPages = Math.ceil(cards.length / CARDS_PER_PAGE);
+
+    // Build page dots
+    for (let i = 0; i < totalPages; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'page-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goToPage(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    function goToPage(page) {
+      if (isAnimating || page === currentPage || page < 0 || page >= totalPages) return;
+      isAnimating = true;
+      const direction = page > currentPage ? 'right' : 'left';
+      const oldPage = currentPage;
+      currentPage = page;
+
+      // Step 1: Fold current cards shut (staggered)
+      const oldStart = oldPage * CARDS_PER_PAGE;
+      const oldEnd = Math.min(oldStart + CARDS_PER_PAGE, cards.length);
+      for (let i = oldStart; i < oldEnd; i++) {
+        const delay = direction === 'right'
+          ? (i - oldStart) * 0.06
+          : (oldEnd - 1 - i) * 0.06;
+        cards[i].style.transitionDelay = `${delay}s`;
+        cards[i].classList.add(direction === 'right' ? 'folding-out' : 'folding-in');
+      }
+
+      // Step 2: After fold, slide track and unfold new cards
+      setTimeout(() => {
+        // Slide track
+        const offset = currentPage * CARDS_PER_PAGE * CARD_WIDTH;
+        track.style.transform = `translateX(-${offset}px)`;
+
+        // Clear old folds
+        for (let i = oldStart; i < oldEnd; i++) {
+          cards[i].style.transitionDelay = '0s';
+          cards[i].classList.remove('folding-out', 'folding-in');
+        }
+
+        // Pre-fold new cards, then unfold with stagger
+        const newStart = currentPage * CARDS_PER_PAGE;
+        const newEnd = Math.min(newStart + CARDS_PER_PAGE, cards.length);
+        for (let i = newStart; i < newEnd; i++) {
+          cards[i].style.transitionDelay = '0s';
+          cards[i].classList.add(direction === 'right' ? 'folding-in' : 'folding-out');
+        }
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            for (let i = newStart; i < newEnd; i++) {
+              const delay = direction === 'right'
+                ? (i - newStart) * 0.08
+                : (newEnd - 1 - i) * 0.08;
+              cards[i].style.transitionDelay = `${delay}s`;
+              cards[i].classList.remove('folding-out', 'folding-in');
+            }
+          });
+        });
+
+        setTimeout(() => { isAnimating = false; }, 600);
+      }, 350);
+
+      // Update UI
+      arrowLeft.disabled = currentPage === 0;
+      arrowRight.disabled = currentPage === totalPages - 1;
+      document.querySelectorAll('.page-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentPage);
+      });
+    }
+
+    arrowRight.addEventListener('click', () => goToPage(currentPage + 1));
+    arrowLeft.addEventListener('click', () => goToPage(currentPage - 1));
+
+    // Initialize
+    arrowLeft.disabled = true;
+    arrowRight.disabled = totalPages <= 1;
+
+    // Category toggle
+    const articleBtn = document.getElementById('article-btn');
+    const musicBtn = document.getElementById('music-btn');
+    function switchCategory(target) {
+      const isMusic = target === 'music';
+      if (isMusic) {
+        musicBtn.classList.add('bg-primary', 'text-on-primary', 'font-bold');
+        articleBtn.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
+      } else {
+        articleBtn.classList.add('bg-primary', 'text-on-primary', 'font-bold');
+        musicBtn.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
+      }
+      currentPage = 0;
+      track.style.transform = 'translateX(0)';
+      cards.forEach(c => { c.classList.remove('folding-out', 'folding-in'); c.style.transitionDelay = '0s'; });
+      arrowLeft.disabled = true;
+      arrowRight.disabled = totalPages <= 1;
+    }
+    musicBtn.addEventListener('click', () => switchCategory('music'));
+    articleBtn.addEventListener('click', () => switchCategory('article'));
+
+    // === Topbar Wizard ===
+    (() => {
+      const wizard = document.getElementById('nav-wizard');
+      const bubble = document.getElementById('wiz-bubble');
+      const fig = document.getElementById('wiz-figure');
+      const nav = wizard.parentElement;
+      let chatTimer = null;
+      let isCasting = false;
+
+      function getLinkCenter(selector) {
+        const el = nav.querySelector(selector);
+        if (!el) return 200;
+        const r = el.getBoundingClientRect();
+        const nr = nav.getBoundingClientRect();
+        return r.left + r.width / 2 - nr.left - 14;
+      }
+      function say(text) {
+        bubble.style.opacity = '0';
+        setTimeout(() => { bubble.textContent = text; bubble.style.opacity = '1'; }, 200);
+      }
+      function hideBubble() { bubble.style.opacity = '0'; }
+      function moveTo(x) { wizard.classList.remove('idle'); wizard.style.left = x + 'px'; }
+      function idle() { wizard.classList.add('idle'); }
+      function poke() { wizard.classList.add('poking'); setTimeout(() => wizard.classList.remove('poking'), 500); }
+      function face(dir) { fig.style.transform = dir < 0 ? 'scaleX(-1)' : 'scaleX(1)'; }
+      function pointDir(dir) {
+        wizard.classList.remove('point-right','point-left');
+        if (dir > 0) wizard.classList.add('point-right');
+        else if (dir < 0) wizard.classList.add('point-left');
+      }
+      function clearPoint() { wizard.classList.remove('point-right','point-left'); }
+
+      // Conversation lines — mixed intro + linear promo (only forward)
+      const chatLines = [
+        { text: "欢迎来到作品集！", action: 'idle' },
+        { text: "← → 箭头翻页，悬停看细节噢~", action: 'idle' },
+        { text: "每张卡片都是精心制作的～", action: 'idle' },
+        { text: "对了，我的经历也很精彩的…👉", action: 'point', target: 'a[href="experience.html"]' },
+        { text: "试试把鼠标放在卡片上看看？", action: 'idle' },
+        { text: "这些作品花了不少心思呢", action: 'idle' },
+        { text: "喂喂，经历也看看呗？确定不看？", action: 'point', target: 'a[href="experience.html"]' },
+        { text: "偷窥狂…光看作品不看人的？", action: 'idle' },
+        { text: "好了好了，去看看我的经历吧～", action: 'point', target: 'a[href="experience.html"]' },
+        { text: "好吧好吧，你慢慢看…", action: 'idle' },
+      ];
+
+      let lineIdx = 0;
+      function nextChat() {
+        if (isCasting || lineIdx >= chatLines.length) return;
+        const line = chatLines[lineIdx];
+        lineIdx++;
+
+        if (line.action === 'point' && line.target) {
+          // Walk to target, point with wand
+          const pos = getLinkCenter(line.target);
+          const curLeft = parseFloat(wizard.style.left) || 0;
+          face(pos > curLeft ? 1 : -1);
+          moveTo(pos);
+          setTimeout(() => {
+            idle();
+            poke();
+            pointDir(pos > curLeft ? 1 : -1);
+            say(line.text);
+            setTimeout(() => {
+              clearPoint();
+              // Walk back to current page link
+              const homePos = getLinkCenter('a[href="works.html"]');
+              face(homePos < pos ? -1 : 1);
+              moveTo(homePos);
+              setTimeout(() => { idle(); face(1); }, 1000);
+            }, 2500);
+          }, 1000);
+          chatTimer = setTimeout(nextChat, 6500);
+        } else {
+          say(line.text);
+          chatTimer = setTimeout(nextChat, 4000);
+        }
+      }
+
+      // Init position
+      setTimeout(() => {
+        const pos = getLinkCenter('a[href="works.html"]');
+        wizard.style.transition = 'none';
+        wizard.style.left = pos + 'px';
+        face(1); idle();
+        requestAnimationFrame(() => { wizard.style.transition = ''; });
+        chatTimer = setTimeout(nextChat, 500);
+      }, 300);
+
+      // === Click intercept: spell-cast then navigate ===
+      const navLinks = nav.querySelectorAll('a[href]');
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === 'works.html') return; // current page
+        link.addEventListener('click', function(e) {
+          if (isCasting) { e.preventDefault(); return; }
+          e.preventDefault();
+          isCasting = true;
+          clearTimeout(chatTimer);
+          hideBubble();
+
+          const targetPos = getLinkCenter(`a[href="${href}"]`);
+          const curLeft = parseFloat(wizard.style.left) || 0;
+          face(targetPos > curLeft ? 1 : -1);
+          moveTo(targetPos);
+
+          setTimeout(() => {
+            idle();
+            wizard.classList.add('casting');
+            say("阿布拉卡达布拉…✨");
+            setTimeout(() => say("嗖～传送启动！"), 600);
+            setTimeout(() => {
+              wizard.classList.remove('casting');
+              window.location.href = href;
+            }, 1400);
+          }, 1000);
+        });
+      });
+    })();
+</script>
+</body></html>

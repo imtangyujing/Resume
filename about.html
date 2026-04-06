@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#e9e8e7",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f4f3f2",
+            "primary": "#000000",
+            "background": "#faf9f8",
+            "secondary": "#5e5e5e",
+            "outline": "#777777",
+            "outline-variant": "#c6c6c6",
+            "on-surface": "#1a1c1c",
+            "on-surface-variant": "#474747",
+            "on-primary": "#e2e2e2",
+            "on-primary-fixed": "#ffffff",
+            "primary-fixed": "#5e5e5e",
+            "surface": "#faf9f8",
+          },
+          fontFamily: {
+            "notoSerif": ["Noto Serif"],
+            "spaceGrotesk": ["Space Grotesk"],
+            "headline": ["Noto Serif"],
+            "body": ["Space Grotesk"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+        },
+      },
+    }
+</script>
+<style>
+    body {
+      position: relative;
+      background-color: #faf9f8;
+    }
+    body::after {
+      content: "";
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03; z-index: 9999;
+    }
+    .sketch-parallax { transform: translateY(calc(var(--scroll-y, 0) * 0.1px)); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+    @keyframes sway {
+      0% { transform: rotate(-2deg); }
+      50% { transform: rotate(1deg); }
+      100% { transform: rotate(-2deg); }
+    }
+    .animate-sway { animation: sway 6s ease-in-out infinite; transform-origin: top center; }
+    .font-variation-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    /* Topbar Wizard */
+    #nav-wizard {
+      position: absolute; z-index: 60;
+      transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    #nav-wizard .wizard-body { animation: wizWalk 0.35s ease-in-out infinite alternate; }
+    #nav-wizard.idle .wizard-body { animation: wizIdle 2s ease-in-out infinite; }
+    @keyframes wizWalk {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-2px) rotate(2deg); }
+    }
+    @keyframes wizIdle {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      30% { transform: translateY(-1px) rotate(2deg); }
+      60% { transform: translateY(0.5px) rotate(-1.5deg); }
+    }
+    .wizard-wand { transform-origin: 20% 90%; }
+    #nav-wizard.poking .wizard-wand { animation: wandPoke 0.5s ease-in-out; }
+    @keyframes wandPoke {
+      0% { transform: rotate(0deg); }
+      30% { transform: rotate(-40deg) translateY(-3px); }
+      50% { transform: rotate(-45deg) translateY(-5px); }
+      70% { transform: rotate(-20deg) translateY(-2px); }
+      100% { transform: rotate(0deg); }
+    }
+    #nav-wizard.casting .wizard-wand { animation: wandCast 1.2s ease-in-out; }
+    @keyframes wandCast {
+      0%   { transform: rotate(0deg); }
+      15%  { transform: rotate(-50deg) translateY(-6px); }
+      30%  { transform: rotate(-30deg) translateY(-3px) scale(1.1); }
+      50%  { transform: rotate(-60deg) translateY(-8px) scale(1.15); }
+      70%  { transform: rotate(-20deg) translateY(-2px); }
+      85%  { transform: rotate(-45deg) translateY(-5px); }
+      100% { transform: rotate(0deg); }
+    }
+    #nav-wizard.point-right { transform: translateY(-50%) rotate(5deg); }
+    #nav-wizard.point-left  { transform: translateY(-50%) rotate(-5deg); }
+    #wiz-bubble {
+      position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%);
+      white-space: nowrap; background: #000; color: #fff; font-size: 10px;
+      font-family: 'Space Grotesk', sans-serif; padding: 4px 10px; border-radius: 9999px;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    #wiz-bubble::after {
+      content: ''; position: absolute; top: -3px; left: 50%;
+      transform: translateX(-50%) rotate(45deg); width: 6px; height: 6px; background: #000;
+    }
+</style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl">
+  <a href="index.html" class="text-xl font-notoSerif font-bold text-black">Tang Yujing</a>
+  <div class="hidden md:flex gap-12">
+    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="works.html">Portfolio</a>
+    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="experience.html">Experience</a>
+    <a class="text-black border-b border-black/20 pb-1 font-spaceGrotesk" href="about.html">About</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="material-symbols-outlined text-black">history_edu</span>
+  </div>
+  <!-- Topbar Wizard -->
+  <div id="nav-wizard" class="idle" style="top: 50%; transform: translateY(-50%); left: 0;">
+    <div id="wiz-bubble"></div>
+    <div id="wiz-figure">
+      <svg class="wizard-body" width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 1 L20 13 L11 13 Z" fill="#1a1a1a"/>
+        <circle cx="16" cy="1.5" r="1.2" fill="#1a1a1a" opacity="0.4"/>
+        <ellipse cx="15.5" cy="13" rx="7" ry="2" fill="#1a1a1a"/>
+        <circle cx="15.5" cy="17" r="4" fill="#e8d5b7"/>
+        <circle cx="17.5" cy="16.5" r="0.7" fill="#1a1a1a"/>
+        <path d="M16.5 15.2 Q17.8 14.5 19 15.3" stroke="#1a1a1a" stroke-width="0.5" fill="none"/>
+        <path d="M19 17.2 Q20.2 16.5 19.5 18" stroke="#c4a882" stroke-width="0.7" fill="none"/>
+        <path d="M12 19 Q11 26 14 28 Q15.5 29 17 26 Q18 23 18 19" fill="#d4d4d4" opacity="0.7"/>
+        <path d="M11 21 L9 38 L22 38 L20 21 Z" fill="#2a2a2a"/>
+        <line x1="15" y1="22" x2="14" y2="37" stroke="#3a3a3a" stroke-width="0.4"/>
+        <rect x="10.5" y="27" width="9.5" height="1.8" rx="0.5" fill="#4a3a2a"/>
+        <path d="M10 37 Q9 39 11.5 39 L13 38" fill="#1a1a1a"/>
+        <path d="M19 37 Q18 39 20.5 39 L22 38" fill="#1a1a1a"/>
+        <path d="M11 23 Q8 26 9 28" stroke="#2a2a2a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M20 22 Q23 20 25 16" stroke="#2a2a2a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="25" cy="16" r="1.6" fill="#e8d5b7"/>
+        <g class="wizard-wand">
+          <line x1="25" y1="15.5" x2="32" y2="4" stroke="#5a3a1a" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="32" cy="3.5" r="2" fill="none" stroke="#333" stroke-width="0.5" opacity="0.4"/>
+          <circle cx="32" cy="3.5" r="0.9" fill="#1a1a1a" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="min-h-screen pt-40 px-12 md:px-24 lg:px-32 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center pb-32">
+  <!-- Left: Portrait -->
+  <div class="md:col-span-5 relative group">
+    <div class="aspect-[3/4] bg-surface-container-low overflow-hidden sketch-parallax relative p-4 bg-white shadow-xl rotate-[-2deg] hover:rotate-0 transition-transform duration-500 animate-sway">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-neutral-800 drop-shadow-md">
+        <span class="material-symbols-outlined !text-3xl font-variation-fill">push_pin</span>
+      </div>
+      <img alt="Artistic portrait" class="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply" src="Image/青年男士的正式肖像.png" />
+    </div>
+  </div>
+
+  <!-- Right: Content -->
+  <div class="md:col-span-7 flex flex-col gap-12">
+    <section class="bg-surface-container-lowest p-8 lg:p-12 relative shadow-sm">
+      <div class="absolute top-0 right-0 p-4 font-spaceGrotesk text-[10px] text-black/10 select-none">DOC_REF_0942</div>
+      <div class="font-spaceGrotesk text-sm leading-relaxed text-on-surface-variant flex flex-col gap-8">
+        <div class="flex flex-col gap-2">
+          <h1 class="font-notoSerif text-4xl font-bold text-black">ZHAO YIMING (赵一鸣)</h1>
+          <p class="font-notoSerif italic text-lg text-neutral-600">Central Academy of Fine Arts (中央美术学院)</p>
+          <p class="font-spaceGrotesk uppercase tracking-widest text-xs text-neutral-400">Visual Communication Design (视觉传达设计)</p>
+        </div>
+        <div class="w-12 h-[1px] bg-black/10"></div>
+        <p>
+          <span class="text-primary font-bold">/// PREAMBLE:</span> I operate at the intersection of structural logic and expressive spontaneity. My work is a continuous exploration of "The Weighted Void"—how negative space can hold more significance than the objects it surrounds.
+        </p>
+        <div class="border-l border-outline-variant/30 pl-6 flex flex-col gap-4 italic text-lg font-notoSerif">
+          <p>"Code is a manuscript that never ends; design is the punctuation that makes it readable."</p>
+        </div>
+        <div class="mt-4 flex flex-col gap-3 font-mono border-t border-black/5 pt-8">
+          <div class="flex items-center gap-4 text-xs group">
+            <span class="text-black/20 w-32">Email</span>
+            <a class="text-primary hover:underline underline-offset-4 decoration-primary/30 transition-all" href="mailto:tangyujing2023@163.com">tangyujing2023@163.com</a>
+          </div>
+          <div class="flex items-center gap-4 text-xs group">
+            <span class="text-black/20 w-32">Wechat</span>
+            <span class="text-primary">imntangyujing</span>
+          </div>
+          <div class="flex items-center gap-4 text-xs group">
+            <span class="text-black/20 w-32">Phone</span>
+            <span class="text-primary">+86 18996656707</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+
+<!-- Footer -->
+<footer class="w-full px-8 py-12 mt-20 flex flex-col md:flex-row justify-between items-center bg-transparent border-t border-black/5">
+  <div class="font-mono text-[10px] uppercase tracking-widest text-black/60 leading-relaxed">
+    &copy; 2024 BORN 2003. Built with precision and ink.
+  </div>
+  <div class="flex gap-8 mt-4 md:mt-0">
+    <a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity underline decoration-1" href="works.html">Portfolio</a>
+    <a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity opacity-60" href="#">Archive</a>
+    <a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity opacity-60" href="#">Legal</a>
+  </div>
+</footer>
+
+<script>
+// === Topbar Wizard ===
+(() => {
+  const wizard = document.getElementById('nav-wizard');
+  const bubble = document.getElementById('wiz-bubble');
+  const fig = document.getElementById('wiz-figure');
+  const nav = wizard.parentElement;
+  let chatTimer = null, isCasting = false;
+
+  function getLinkCenter(selector) {
+    const el = nav.querySelector(selector);
+    if (!el) return 200;
+    const r = el.getBoundingClientRect();
+    const nr = nav.getBoundingClientRect();
+    return r.left + r.width / 2 - nr.left - 14;
+  }
+  function say(text) { bubble.style.opacity='0'; setTimeout(()=>{bubble.textContent=text;bubble.style.opacity='1';},200); }
+  function hideBubble() { bubble.style.opacity='0'; }
+  function moveTo(x) { wizard.classList.remove('idle'); wizard.style.left=x+'px'; }
+  function idle() { wizard.classList.add('idle'); }
+  function poke() { wizard.classList.add('poking'); setTimeout(()=>wizard.classList.remove('poking'),500); }
+  function face(dir) { fig.style.transform=dir<0?'scaleX(-1)':'scaleX(1)'; }
+  function pointDir(d) { wizard.classList.remove('point-right','point-left'); if(d>0)wizard.classList.add('point-right'); else if(d<0)wizard.classList.add('point-left'); }
+  function clearPoint() { wizard.classList.remove('point-right','point-left'); }
+
+  // Linear promo: only forward → Home (last stop, loop back to tree)
+  const chatLines = [
+    { text: "欢迎来了解我！", action: 'idle' },
+    { text: "这就是本人啦，请多指教~", action: 'idle' },
+    { text: "联系方式都在下面噢", action: 'idle' },
+    { text: "央美出品，品质保证哈哈", action: 'idle' },
+    { text: "可以加我微信聊聊～", action: 'idle' },
+    { text: "你是不是盯着我看很久了…", action: 'idle' },
+    { text: "要不要回去看看那棵树？👈", action: 'point', target: 'a[href="index.html"]' },
+    { text: "首页有惊喜等着你噢～", action: 'point', target: 'a[href="index.html"]' },
+    { text: "走吧走吧，回家看看🏠", action: 'point', target: 'a[href="index.html"]' },
+    { text: "好吧…那我陪你在这待着", action: 'idle' },
+  ];
+
+  let lineIdx = 0;
+  function nextChat() {
+    if (isCasting || lineIdx >= chatLines.length) return;
+    const line = chatLines[lineIdx]; lineIdx++;
+    if (line.action === 'point' && line.target) {
+      const pos = getLinkCenter(line.target);
+      const curLeft = parseFloat(wizard.style.left)||0;
+      face(pos>curLeft?1:-1); moveTo(pos);
+      setTimeout(()=>{
+        idle(); poke(); pointDir(pos>curLeft?1:-1); say(line.text);
+        setTimeout(()=>{
+          clearPoint();
+          const hp = getLinkCenter('a[href="about.html"]');
+          face(hp<pos?-1:1); moveTo(hp);
+          setTimeout(()=>{idle();face(1);},1000);
+        },2500);
+      },1000);
+      chatTimer = setTimeout(nextChat, 6500);
+    } else {
+      say(line.text);
+      chatTimer = setTimeout(nextChat, 4000);
+    }
+  }
+
+  setTimeout(()=>{
+    const pos = getLinkCenter('a[href="about.html"]');
+    wizard.style.transition='none'; wizard.style.left=pos+'px'; face(1); idle();
+    requestAnimationFrame(()=>{wizard.style.transition='';});
+    chatTimer = setTimeout(nextChat, 500);
+  },300);
+
+  // Click intercept
+  nav.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === 'about.html') return;
+    link.addEventListener('click', function(e) {
+      if (isCasting){e.preventDefault();return;}
+      e.preventDefault(); isCasting=true; clearTimeout(chatTimer); hideBubble();
+      const tp = getLinkCenter(`a[href="${href}"]`);
+      const cl = parseFloat(wizard.style.left)||0;
+      face(tp>cl?1:-1); moveTo(tp);
+      setTimeout(()=>{
+        idle(); wizard.classList.add('casting');
+        say("阿布拉卡达布拉…✨");
+        setTimeout(()=>say("嗖～传送启动！"),600);
+        setTimeout(()=>{wizard.classList.remove('casting');window.location.href=href;},1400);
+      },1000);
+    });
+  });
+})();
+</script>
+</body></html>
