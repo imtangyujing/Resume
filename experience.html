@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html class="light" lang="en"><head>
+<html class="light" lang="zh-CN"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Experience | Tang Yujing</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -15,16 +16,16 @@
           "surface-container-lowest": "#ffffff",
           "surface-container-low": "#f4f3f2",
           "primary": "#000000",
-          "background": "#f4efe6",
-          "secondary": "#6f665b",
-          "outline": "#8f877c",
-          "outline-variant": "#d8d0c4",
-          "on-surface": "#1f1b16",
-          "on-surface-variant": "#5a5147",
-          "on-primary": "#f8f3eb",
-          "surface": "#f4efe6",
-          "surface-dim": "#d7c8b3",
-          "surface-variant": "#ebe2d2"
+          "background": "#faf9f8",
+          "secondary": "#5e5e5e",
+          "outline": "#777777",
+          "outline-variant": "#c6c6c6",
+          "on-surface": "#1a1c1c",
+          "on-surface-variant": "#474747",
+          "on-primary": "#e2e2e2",
+          "surface": "#faf9f8",
+          "surface-dim": "#eeeeed",
+          "surface-variant": "#f4f3f2"
         },
         fontFamily: {
           "notoSerif": ["Noto Serif"],
@@ -47,21 +48,7 @@
   }
   body {
     min-height: 100vh;
-    background:
-      radial-gradient(circle at top left, rgba(255,255,255,0.8), transparent 26%),
-      radial-gradient(circle at top right, rgba(255,255,255,0.65), transparent 22%),
-      linear-gradient(180deg, #f8f4ec 0%, #eee4d2 100%);
-  }
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(115deg, rgba(120, 90, 48, 0.03) 0%, rgba(120, 90, 48, 0) 28%, rgba(120, 90, 48, 0.04) 54%, rgba(120, 90, 48, 0) 76%, rgba(120, 90, 48, 0.03) 100%),
-      linear-gradient(65deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 34%, rgba(255,255,255,0.26) 64%, rgba(255,255,255,0) 100%);
-    opacity: 0.9;
-    z-index: 0;
+    background-color: #faf9f8;
   }
   body::after {
     content: "";
@@ -69,42 +56,11 @@
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
-  }
-  .chapter-indicator {
-    position: relative;
-    padding-left: 1rem;
-    color: rgba(31, 27, 22, 0.28);
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    font-size: 0.78rem;
-    transition: color 0.35s ease, transform 0.35s ease, opacity 0.35s ease;
-  }
-  .chapter-indicator::before {
-    content: "";
-    position: absolute;
-    left: -0.5rem;
-    top: 50%;
-    width: 9px;
-    height: 9px;
-    border-radius: 9999px;
-    background: rgba(31, 27, 22, 0);
-    transform: translateY(-50%) scale(0.5);
-    transition: transform 0.35s ease, background-color 0.35s ease;
-  }
-  .chapter-indicator.active {
-    color: #1f1b16;
-    transform: translateX(10px);
-    opacity: 1;
-    font-weight: 700;
-  }
-  .chapter-indicator.active::before {
-    background: #1f1b16;
-    transform: translateY(-50%) scale(1);
   }
   .book-stage {
     position: relative;
@@ -114,33 +70,33 @@
   }
   .book-shadow {
     position: absolute;
-    left: 5%;
-    right: 5%;
-    bottom: -22px;
-    height: 36px;
+    left: 8%;
+    right: 8%;
+    bottom: -18px;
+    height: 28px;
     border-radius: 9999px;
-    background: radial-gradient(ellipse at center, rgba(76, 51, 22, 0.22), rgba(76, 51, 22, 0) 72%);
-    filter: blur(12px);
+    background: radial-gradient(ellipse at center, rgba(26, 28, 28, 0.14), rgba(26, 28, 28, 0) 72%);
+    filter: blur(14px);
     z-index: 0;
   }
   .book-shell {
     position: relative;
     overflow: hidden;
     padding: 28px 32px 34px;
-    border: 1px solid rgba(92, 63, 33, 0.18);
+    border: 1px solid rgba(0,0,0,0.08);
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.3)),
-      linear-gradient(135deg, #8d6132 0%, #6e4924 16%, #8a6032 42%, #5f3c1d 100%);
+      linear-gradient(180deg, rgba(255,255,255,0.95), rgba(244,243,242,0.98)),
+      linear-gradient(135deg, #f8f7f5 0%, #efeeeb 100%);
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.28),
-      inset 0 -1px 0 rgba(0,0,0,0.12),
-      0 30px 60px rgba(63, 42, 19, 0.2);
+      inset 0 1px 0 rgba(255,255,255,0.75),
+      inset 0 -1px 0 rgba(0,0,0,0.04),
+      0 30px 60px rgba(26, 28, 28, 0.08);
   }
   .book-shell::before {
     content: "";
     position: absolute;
     inset: 12px;
-    border: 1px solid rgba(248, 236, 217, 0.15);
+    border: 1px solid rgba(0,0,0,0.04);
     pointer-events: none;
   }
   .book-window {
@@ -184,12 +140,12 @@
     min-height: 620px;
     padding: 2.4rem 2.5rem 2rem;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.56), rgba(255,255,255,0.22)),
-      linear-gradient(180deg, #f8f1e4 0%, #efdfc7 100%);
-    border: 1px solid rgba(88, 62, 35, 0.14);
+      linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,249,248,0.96)),
+      linear-gradient(180deg, #ffffff 0%, #f8f7f4 100%);
+    border: 1px solid rgba(0,0,0,0.06);
     box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.22),
-      inset 0 24px 48px rgba(255,255,255,0.16);
+      inset 0 0 0 1px rgba(255,255,255,0.5),
+      inset 0 24px 48px rgba(255,255,255,0.18);
     overflow: hidden;
   }
   .book-page::before {
@@ -197,10 +153,10 @@
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(125, 86, 42, 0.06), transparent 18%, transparent 82%, rgba(125, 86, 42, 0.07)),
-      repeating-linear-gradient(180deg, rgba(116, 84, 49, 0.04) 0 1px, transparent 1px 36px);
+      linear-gradient(180deg, rgba(0,0,0,0.03), transparent 18%, transparent 82%, rgba(0,0,0,0.04)),
+      repeating-linear-gradient(180deg, rgba(0,0,0,0.025) 0 1px, transparent 1px 36px);
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.45;
   }
   .book-page.left-page {
     border-right: none;
@@ -218,7 +174,7 @@
     height: 100%;
   }
   .page-kicker {
-    color: rgba(31, 27, 22, 0.56);
+    color: rgba(26, 28, 28, 0.5);
     font-size: 0.82rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -229,31 +185,31 @@
     font-size: clamp(2rem, 2.2vw, 3.25rem);
     line-height: 1.07;
     font-style: italic;
-    color: #17120d;
+    color: #111111;
   }
   .page-body {
     margin-top: 1.8rem;
     font-size: 1.02rem;
     line-height: 1.85;
-    color: #463e35;
+    color: #474747;
     max-width: 30rem;
   }
   .detail-block {
     margin-top: 2rem;
     padding-top: 1.2rem;
-    border-top: 1px solid rgba(70, 55, 37, 0.12);
+    border-top: 1px solid rgba(0,0,0,0.08);
   }
   .detail-label {
     font-size: 0.72rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: rgba(31, 27, 22, 0.42);
+    color: rgba(26, 28, 28, 0.42);
   }
   .detail-list {
     margin-top: 0.9rem;
     display: grid;
     gap: 0.8rem;
-    color: #322a22;
+    color: #1a1c1c;
     line-height: 1.7;
   }
   .tag-row {
@@ -266,9 +222,9 @@
   .page-tag {
     padding: 0.42rem 0.72rem;
     border-radius: 9999px;
-    border: 1px solid rgba(78, 57, 33, 0.14);
-    background: rgba(255,255,255,0.32);
-    color: rgba(31, 27, 22, 0.72);
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.8);
+    color: rgba(26, 28, 28, 0.72);
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -276,34 +232,34 @@
   .page-number {
     margin-top: 1.2rem;
     font-size: 0.78rem;
-    color: rgba(31, 27, 22, 0.4);
+    color: rgba(26, 28, 28, 0.4);
     letter-spacing: 0.24em;
     text-transform: uppercase;
   }
   .book-spine {
     position: relative;
     background:
-      linear-gradient(180deg, rgba(73, 46, 19, 0.9), rgba(126, 86, 48, 0.9)),
-      linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0));
-    border-top: 1px solid rgba(255,255,255,0.1);
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+      linear-gradient(180deg, rgba(232, 231, 228, 0.95), rgba(216, 214, 210, 0.96)),
+      linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0));
+    border-top: 1px solid rgba(255,255,255,0.25);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
     box-shadow:
-      inset 1px 0 0 rgba(255,255,255,0.1),
-      inset -1px 0 0 rgba(0,0,0,0.15);
+      inset 1px 0 0 rgba(255,255,255,0.35),
+      inset -1px 0 0 rgba(0,0,0,0.08);
   }
   .book-spine::before {
     content: "";
     position: absolute;
     inset: 12px 4px;
-    border-left: 1px solid rgba(255,255,255,0.08);
-    border-right: 1px solid rgba(0,0,0,0.15);
+    border-left: 1px solid rgba(255,255,255,0.2);
+    border-right: 1px solid rgba(0,0,0,0.08);
   }
   .book-page.page-focus {
     box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.24),
-      inset 0 24px 48px rgba(255,255,255,0.16),
-      0 0 0 1px rgba(93, 67, 37, 0.14),
-      0 18px 40px rgba(67, 46, 24, 0.14);
+      inset 0 0 0 1px rgba(255,255,255,0.4),
+      inset 0 24px 48px rgba(255,255,255,0.14),
+      0 0 0 1px rgba(0,0,0,0.08),
+      0 18px 40px rgba(26, 28, 28, 0.08);
   }
   .book-controls {
     position: relative;
@@ -312,33 +268,42 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
   }
   .book-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: 56px;
     height: 56px;
     border-radius: 9999px;
-    border: 1px solid rgba(75, 50, 24, 0.16);
-    background: rgba(255,255,255,0.42);
-    color: #221a13;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.72);
+    color: #111111;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    z-index: 3;
   }
   .book-arrow:hover {
-    transform: translateY(-2px);
-    background: rgba(73, 46, 19, 0.88);
-    color: #f8f3eb;
+    transform: translateY(-50%) scale(1.03);
+    background: rgba(0,0,0,0.88);
+    color: #ffffff;
   }
   .book-arrow:disabled {
     opacity: 0.25;
     cursor: default;
-    transform: none;
-    background: rgba(255,255,255,0.28);
-    color: #221a13;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.55);
+    color: #111111;
+  }
+  .book-arrow.left {
+    left: -28px;
+  }
+  .book-arrow.right {
+    right: -28px;
   }
   .book-dots {
     display: flex;
@@ -355,31 +320,7 @@
   }
   .book-dot.active {
     width: 48px;
-    background: rgba(31, 27, 22, 0.84);
-  }
-  .mobile-chapters {
-    margin-bottom: 1.5rem;
-    display: none;
-    gap: 0.65rem;
-    overflow-x: auto;
-    padding-bottom: 0.35rem;
-  }
-  .mobile-chapter-pill {
-    white-space: nowrap;
-    padding: 0.65rem 0.9rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(75, 50, 24, 0.12);
-    background: rgba(255,255,255,0.4);
-    color: rgba(31, 27, 22, 0.58);
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
-  .mobile-chapter-pill.active {
-    color: #1f1b16;
-    background: rgba(255,255,255,0.7);
-    border-color: rgba(75, 50, 24, 0.2);
+    background: rgba(26, 28, 28, 0.84);
   }
   #nav-wizard {
     position: absolute;
@@ -465,9 +406,6 @@
     }
   }
   @media (max-width: 1023px) {
-    .mobile-chapters {
-      display: flex;
-    }
     .book-stage {
       width: min(860px, calc(100vw - 2rem));
     }
@@ -484,15 +422,24 @@
     .book-page {
       min-height: 0;
       border-radius: 18px;
-      border: 1px solid rgba(88, 62, 35, 0.14);
+      border: 1px solid rgba(0,0,0,0.06);
     }
     .book-page.right-page {
       display: none;
+    }
+    .book-arrow.left {
+      left: 10px;
+    }
+    .book-arrow.right {
+      right: 10px;
     }
   }
   @media (max-width: 767px) {
     .book-stage {
       width: calc(100vw - 1.25rem);
+    }
+    .book-shell {
+      padding: 14px;
     }
     .book-page {
       padding: 1.6rem 1.2rem 1.4rem;
@@ -504,11 +451,20 @@
       font-size: 0.96rem;
       line-height: 1.75;
     }
+    .book-arrow {
+      width: 48px;
+      height: 48px;
+    }
+    .book-arrow.left {
+      left: 8px;
+    }
+    .book-arrow.right {
+      right: 8px;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .book-track,
     .book-spread,
-    .chapter-indicator,
     .book-arrow {
       transition: none !important;
       animation: none !important;
@@ -518,7 +474,7 @@
 </head>
 <body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary overflow-x-hidden">
 
-<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-6 bg-[#f6f0e7]/78 backdrop-blur-xl border-b border-black/5">
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl border-b border-black/5">
   <a href="index.html" class="text-xl font-notoSerif font-bold text-black">Tang Yujing</a>
   <div class="hidden md:flex gap-12">
     <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="works.html">Portfolio</a>
@@ -558,42 +514,23 @@
   </div>
 </nav>
 
-<aside class="fixed left-8 top-1/2 -translate-y-1/2 z-30 hidden lg:flex flex-col items-start gap-12">
-  <div class="h-[360px] w-px bg-[#b9ab96]/40 absolute left-0 top-1/2 -translate-y-1/2 -z-10"></div>
-  <button class="chapter-indicator active" data-page="0">AI Strategy</button>
-  <button class="chapter-indicator" data-page="1">Chengdu Editor</button>
-  <button class="chapter-indicator" data-page="2">Banking Systems</button>
-  <button class="chapter-indicator" data-page="3">Writing Lab</button>
-</aside>
-
-<main class="relative z-10 min-h-screen pt-28 md:pt-32 pb-12">
+<main class="relative z-10 min-h-screen pt-24 md:pt-28 pb-12">
   <header class="px-6 md:px-16 lg:px-24">
     <div class="max-w-6xl mx-auto">
-      <p class="font-spaceGrotesk text-xs md:text-sm uppercase tracking-[0.35em] text-[#6f665b]">Field Notes / Chaptered Experience Archive</p>
-      <div class="mt-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <h1 class="text-5xl md:text-7xl lg:text-8xl font-notoSerif italic leading-none text-[#17120d]">Experience</h1>
-          <p class="mt-4 max-w-2xl text-[#5b5146] leading-7">
-            像翻开一本旧牛皮纸册一样阅读经历。每一页放一段阶段性叙事，默认摊开双页，左右翻动查看不同章节。
-          </p>
         </div>
-        <div class="text-left md:text-right">
+        <div class="text-left md:text-right md:pt-3 lg:pt-4">
           <div class="font-spaceGrotesk text-xs uppercase tracking-[0.28em] text-[#7e7367]">Open Spread</div>
-          <div id="spread-label" class="mt-2 font-notoSerif text-2xl italic text-[#2a2118]">Chapter I / II</div>
+          <div id="spread-label" class="mt-2 font-notoSerif text-2xl italic text-[#2a2118]">Chapter 01 / 02</div>
         </div>
       </div>
     </div>
   </header>
 
-  <section class="mt-10 px-3 md:px-10 lg:px-20">
+  <section class="mt-6 md:mt-7 px-3 md:px-10 lg:px-20">
     <div class="max-w-6xl mx-auto">
-      <div class="mobile-chapters" id="mobile-chapters">
-        <button class="mobile-chapter-pill active" data-page="0">AI Strategy</button>
-        <button class="mobile-chapter-pill" data-page="1">Chengdu Editor</button>
-        <button class="mobile-chapter-pill" data-page="2">Banking Systems</button>
-        <button class="mobile-chapter-pill" data-page="3">Writing Lab</button>
-      </div>
-
       <div class="book-stage">
         <div class="book-shadow"></div>
         <div class="book-shell">
@@ -602,22 +539,22 @@
               <section class="book-spread" data-spread="0">
                 <article class="book-page left-page page-focus" data-page-index="0">
                   <div class="page-inner">
-                    <div class="page-kicker">2024.Q2 --branch head/strategy</div>
-                    <h2 class="page-title">Principal AI Strategist // Neural Frame</h2>
+                    <div class="page-kicker">2023.07 - 2023.08 / Guotai Junan</div>
+                    <h2 class="page-title">企业客户部实习 // 国泰君安</h2>
                     <p class="page-body">
-                      Architecting high-level generative workflows for enterprise design systems. Bridging the gap between linguistic intent and visual output through structured prompt engineering.
+                      在企业客户部协助新能源汽车行业研究，为项目推进准备基础材料。重点整理政策、行业新闻与公司动态，并结合 Wind 汇总头部企业关键财务数据。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">Key Projects</div>
+                      <div class="detail-label">工作内容</div>
                       <div class="detail-list">
-                        <div>Neural-DS: auto-generating component variants through structured prompts and system constraints.</div>
-                        <div>Context-Engine: translating vague creative goals into repeatable, design-aware production protocols.</div>
+                        <div>协助领导调研新能源汽车行业，系统梳理近期政策、行业新闻和市场资讯，沉淀项目基础研究材料。</div>
+                        <div>使用 Wind 收集龙头公司的 ROA、R&amp;D、Liability 等财务指标，支持后续企业分析与项目判断。</div>
                       </div>
                     </div>
                     <div class="tag-row">
-                      <span class="page-tag">Prompt Engineering</span>
-                      <span class="page-tag">Workflow Design</span>
-                      <span class="page-tag">System Thinking</span>
+                      <span class="page-tag">行业研究</span>
+                      <span class="page-tag">Wind</span>
+                      <span class="page-tag">财务分析</span>
                     </div>
                     <div class="page-number">Page 01</div>
                   </div>
@@ -627,22 +564,22 @@
 
                 <article class="book-page right-page" data-page-index="1">
                   <div class="page-inner">
-                    <div class="page-kicker">2023.Q4 --branch master/editorial</div>
-                    <h2 class="page-title">Senior Design Architect // Studio Nvola</h2>
+                    <div class="page-kicker">2025.02 - 2025.05 / Koala Kankan</div>
+                    <h2 class="page-title">财经编辑 // 考拉看看</h2>
                     <p class="page-body">
-                      Spearheaded the redesign of the Chengdu Canvas editor, reducing friction in complex vector operations and making the experience feel tactile, legible, and precise.
+                      作为项目组骨干参与经济学书籍写作，从前期访谈、资料整理到大纲搭建与深度稿件撰写都深度参与，围绕复杂议题完成数万字内容生产。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">Impact Notes</div>
+                      <div class="detail-label">项目产出</div>
                       <div class="detail-list">
-                        <div>Introduced a gesture-first editing model for dense creative tooling and accelerated repeated actions.</div>
-                        <div>Reframed advanced functions into a calmer editorial interface with clearer spatial hierarchy.</div>
+                        <div>与客户深入访谈，提炼信息重点，构建书稿章节大纲，并使用思维导图搭建资料库。</div>
+                        <div>执笔完成华为鸿蒙、SWIFT 等板块深度稿件，兼顾事实准确性、结构完整度与可读性。</div>
                       </div>
                     </div>
                     <div class="tag-row">
-                      <span class="page-tag">Interaction Design</span>
-                      <span class="page-tag">Editor Systems</span>
-                      <span class="page-tag">Spatial UX</span>
+                      <span class="page-tag">深度写作</span>
+                      <span class="page-tag">访谈整理</span>
+                      <span class="page-tag">资料搭建</span>
                     </div>
                     <div class="page-number">Page 02</div>
                   </div>
@@ -652,22 +589,22 @@
               <section class="book-spread" data-spread="1">
                 <article class="book-page left-page" data-page-index="2">
                   <div class="page-inner">
-                    <div class="page-kicker">2022.Q1 --tag v1.0.0-legacy</div>
-                    <h2 class="page-title">Interface Designer // Meridian Finance</h2>
+                    <div class="page-kicker">2025.05 - Present / Self Media</div>
+                    <h2 class="page-title">科技编辑 // 自媒体</h2>
                     <p class="page-body">
-                      Defined the atomic design system for a core banking application, balancing data density, accessibility, and speed for high-frequency financial workflows.
+                      持续运营公众号与微博，围绕经济史、科技评论和选题洞察展开内容创作，把深度长文与短内容分发结合起来，逐步形成自己的写作与选题体系。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">Achievements</div>
+                      <div class="detail-label">内容方向</div>
                       <div class="detail-list">
-                        <div>Launched a reusable internal UI library with more than 200 composable interface patterns.</div>
-                        <div>Improved critical trader dashboards with clearer information priority and better keyboard navigation.</div>
+                        <div>公众号侧重深度长文，已围绕日本经济泡沫、人形机器人等主题输出兼具历史纵深和现实判断的内容。</div>
+                        <div>微博账户“唐榆景”用于记录个人洞察、沉淀素材，并测试大众向科技短文的传播潜力与选题反馈。</div>
                       </div>
                     </div>
                     <div class="tag-row">
-                      <span class="page-tag">FinTech Systems</span>
-                      <span class="page-tag">Accessibility</span>
-                      <span class="page-tag">Data Density</span>
+                      <span class="page-tag">长文写作</span>
+                      <span class="page-tag">选题策划</span>
+                      <span class="page-tag">内容增长</span>
                     </div>
                     <div class="page-number">Page 03</div>
                   </div>
@@ -677,22 +614,22 @@
 
                 <article class="book-page right-page" data-page-index="3">
                   <div class="page-inner">
-                    <div class="page-kicker">2021.Q3 --appendix / field notes</div>
-                    <h2 class="page-title">Independent Writing Lab // Longform Practice</h2>
+                    <div class="page-kicker">2018.12 - 2021.07 / Hosting & Research</div>
+                    <h2 class="page-title">主持人与调研实践 // 播音主持</h2>
                     <p class="page-body">
-                      Built a self-directed publishing rhythm focused on research, narrative clarity, and audience retention, turning scattered observations into sustained editorial output.
+                      在主持训练和真实活动场景中积累表达与控场能力，同时参与基层调研项目，把现场沟通、采访组织和内容整理连接起来，形成较强的叙事表达基础。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">Practice Threads</div>
+                      <div class="detail-label">实践重点</div>
                       <div class="detail-list">
-                        <div>Structured longform topics into modular archives, balancing readable prose with strong factual scaffolding.</div>
-                        <div>Used short-form writing as a discovery funnel to test hooks, sharpen framing, and expand deeper essays.</div>
+                        <div>在重庆市广播电视台主持人指导下获第二十届全国电视主持新星活动青年组二等奖，并主持多场政府与企业活动。</div>
+                        <div>协调团队在南山放牛村开展一周实地调研，深度访谈多方角色，最终完成一篇万字研究报告。</div>
                       </div>
                     </div>
                     <div class="tag-row">
-                      <span class="page-tag">Narrative Design</span>
-                      <span class="page-tag">Research</span>
-                      <span class="page-tag">Editorial Systems</span>
+                      <span class="page-tag">主持表达</span>
+                      <span class="page-tag">深度访谈</span>
+                      <span class="page-tag">田野调研</span>
                     </div>
                     <div class="page-number">Page 04</div>
                   </div>
@@ -701,16 +638,15 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="book-controls">
-        <button class="book-arrow" id="arrow-left" aria-label="Previous spread">
+        <button class="book-arrow left" id="arrow-left" aria-label="Previous spread">
           <span class="material-symbols-outlined">chevron_left</span>
         </button>
-        <div class="book-dots" id="book-dots"></div>
-        <button class="book-arrow" id="arrow-right" aria-label="Next spread">
+        <button class="book-arrow right" id="arrow-right" aria-label="Next spread">
           <span class="material-symbols-outlined">chevron_right</span>
         </button>
+      </div>
+      <div class="book-controls">
+        <div class="book-dots" id="book-dots"></div>
       </div>
     </div>
   </section>
@@ -719,8 +655,6 @@
 <script>
   const track = document.getElementById('book-track');
   const spreads = Array.from(document.querySelectorAll('.book-spread'));
-  const chapterButtons = Array.from(document.querySelectorAll('.chapter-indicator'));
-  const mobileChapterButtons = Array.from(document.querySelectorAll('.mobile-chapter-pill'));
   const pageCards = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
   const arrowLeft = document.getElementById('arrow-left');
   const arrowRight = document.getElementById('arrow-right');
@@ -757,12 +691,6 @@
   }
 
   function updateChapterState() {
-    chapterButtons.forEach((button, index) => {
-      button.classList.toggle('active', index === focusedPage);
-    });
-    mobileChapterButtons.forEach((button, index) => {
-      button.classList.toggle('active', index === focusedPage);
-    });
     pageCards.forEach((page, index) => {
       page.classList.toggle('page-focus', index === focusedPage);
     });
@@ -818,20 +746,6 @@
   updateSpreadLabel();
   arrowLeft.addEventListener('click', () => goToSpread(currentSpread - 1, Math.max(0, currentSpread * 2 - 1)));
   arrowRight.addEventListener('click', () => goToSpread(currentSpread + 1, Math.min(pageCards.length - 1, currentSpread * 2 + 2)));
-
-  chapterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const page = Number(button.dataset.page);
-      goToSpread(Math.floor(page / 2), page);
-    });
-  });
-
-  mobileChapterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const page = Number(button.dataset.page);
-      goToSpread(Math.floor(page / 2), page);
-    });
-  });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') goToSpread(currentSpread + 1, Math.min(pageCards.length - 1, currentSpread * 2 + 2));
