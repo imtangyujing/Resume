@@ -4,5 +4,5 @@ set -euo pipefail
 
 PORT="${1:-8000}"
 
-echo "Serving Resume at http://localhost:${PORT}"
-python3 -m http.server "${PORT}"
+echo "Serving Resume app at http://localhost:${PORT}"
+PORT="${PORT}" node server.js

@@ -64,6 +64,18 @@
       z-index: 50;
       box-shadow: 20px 40px 60px rgba(26, 28, 28, 0.08);
     }
+    .paper-fold-link {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      color: inherit;
+      text-decoration: none;
+    }
+    .paper-fold-link:focus-visible {
+      outline: 2px solid rgba(0,0,0,0.75);
+      outline-offset: 6px;
+    }
     /* Folding away animation */
     .paper-fold.folding-out {
       transform: perspective(800px) rotateY(-70deg) scale(0.85) !important;
@@ -79,22 +91,38 @@
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     /* Gallery arrow buttons */
     .gallery-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%); z-index: 60;
-      width: 56px; height: 56px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 60;
+      width: 62px;
+      height: 62px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(8px);
       border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 9999px;
+      color: #111111;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+      box-shadow: 0 10px 24px rgba(26, 28, 28, 0.05);
     }
     .gallery-arrow:hover {
-      background: rgba(0,0,0,0.85); color: white;
+      transform: translateY(-50%) scale(1.03);
+      background: rgba(0,0,0,0.88);
+      color: white;
     }
     .gallery-arrow:disabled {
-      opacity: 0; pointer-events: none;
+      opacity: 0.22;
+      pointer-events: none;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.55);
+      color: #111111;
     }
-    .gallery-arrow.left { left: 24px; }
-    .gallery-arrow.right { right: 24px; }
+    .gallery-arrow.left { left: 18px; }
+    .gallery-arrow.right { right: 18px; }
     /* Topbar Wizard */
     #nav-wizard {
       position: absolute; z-index: 60;
@@ -155,6 +183,12 @@
       transition: all 0.4s ease; cursor: pointer;
     }
     .page-dot.active { background: rgba(0,0,0,0.8); width: 40px; }
+    .status-note {
+      font-size: 12px;
+      color: rgba(0,0,0,0.45);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 </style>
 </head>
 <body class="font-body text-on-surface selection:bg-primary selection:text-on-primary min-h-screen flex flex-col">
@@ -176,7 +210,9 @@
     <a class="text-black/60 font-body hover:text-black transition-colors duration-300" href="about.html">About</a>
   </div>
   <div class="flex items-center gap-4">
-    <span class="material-symbols-outlined text-black">history_edu</span>
+    <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="inline-flex items-center justify-center text-black/75 hover:text-black transition-colors duration-300">
+      <span class="material-symbols-outlined text-black">download</span>
+    </a>
   </div>
   <!-- Topbar Wizard -->
   <div id="nav-wizard" class="idle" style="top: 50%; transform: translateY(-50%); left: 0;">
@@ -211,100 +247,38 @@
 
 <main class="flex-grow flex flex-col justify-center pb-24 max-w-full mx-auto pt-[120px] overflow-hidden">
   <!-- Header -->
-  <div class="flex justify-between items-end mb-16 max-w-screen-2xl mx-auto w-full px-8">
-    <h1 class="text-9xl font-headline font-bold italic tracking-tighter ink-blot">Portfolio</h1>
-    <div class="flex border border-outline/30 p-1">
-      <button class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold bg-primary text-on-primary btn-active transition-all duration-300" id="article-btn">ARTICLE</button>
-      <button class="px-4 py-2 text-[10px] uppercase tracking-widest text-outline hover:text-primary transition-all duration-300 btn-inactive" id="music-btn">MUSIC</button>
+  <header class="px-8 md:px-12 lg:px-16">
+    <div class="max-w-screen-2xl mx-auto">
+      <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div class="max-w-4xl">
+          <h1 class="text-6xl md:text-7xl lg:text-8xl font-headline italic leading-none tracking-tight text-[#17120d]">Portfolio</h1>
+        </div>
+        <div class="text-left md:text-right md:pt-3 lg:pt-4">
+          <div class="font-spaceGrotesk text-xs uppercase tracking-[0.28em] text-[#7e7367]">Selected Chapter</div>
+          <div class="mt-2 font-notoSerif text-2xl italic text-[#2a2118]">01</div>
+        </div>
+      </div>
     </div>
-  </div>
+  </header>
 
   <!-- Accordion Fold Gallery -->
-  <div class="relative" id="gallery-wrapper">
+  <div class="relative mt-6 md:mt-7" id="gallery-wrapper">
     <!-- Left Arrow -->
+    <section class="perspective-container relative h-[600px] pb-12 px-12 overflow-hidden" id="scroll-strip">
     <button class="gallery-arrow left" id="arrow-left" disabled>
-      <span class="material-symbols-outlined text-2xl">chevron_left</span>
+      <span class="material-symbols-outlined text-[30px]">chevron_left</span>
     </button>
     <!-- Right Arrow -->
     <button class="gallery-arrow right" id="arrow-right">
-      <span class="material-symbols-outlined text-2xl">chevron_right</span>
+      <span class="material-symbols-outlined text-[30px]">chevron_right</span>
     </button>
-    <section class="perspective-container h-[600px] pb-12 px-12 overflow-hidden" id="scroll-strip">
-    <div class="gallery-track items-stretch h-full" id="gallery-track">
-      <!-- Panel 1 -->
-      <div class="paper-fold relative w-[320px] bg-white p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.02)]">
-        <div class="space-y-4">
-          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 01 // 2024</span>
-          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">The Anatomy of a Design System</h2>
-          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
-            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho" />
-          </div>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 1.2k</span>
-          <span>JAN 12</span>
-        </div>
-      </div>
-      <!-- Panel 2 -->
-      <div class="paper-fold relative w-[320px] bg-[#fcfbfb] p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.03)]">
-        <div class="space-y-4">
-          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 04 // 2023</span>
-          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">Minimalism as a Constraint</h2>
-          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
-            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o" />
-          </div>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 890</span>
-          <span>DEC 04</span>
-        </div>
-      </div>
-      <!-- Panel 3 -->
-      <div class="paper-fold relative w-[320px] bg-white p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.02)]">
-        <div class="space-y-4">
-          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 08 // 2023</span>
-          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">The Death of the Pixel</h2>
-          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
-            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPpWQJWgpbReqyM2PlxUNGDSKm7GbeqF5HddX9DOYnex9p74p_-_w5HoAKURoQDf0udBMRJ4xCP0SDCVDyr_QB9BwtUMd6oCBNK-D27X1MsMuY0GWq4lcoJLfTkg-XWrI05my-lOV0MUQOHYH1dk7ZWsAFoUcPdNMwGZ3ATNNGtNi6bavypi56Y7EqtqpPn52QaznLfenjah_t2M8kGD4ImkwZFSV4VmTSJonNJ8M095rybbK9jCAnHAJ5-kvmulJgV7sUc8NOuOE" />
-          </div>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 2.4k</span>
-          <span>OCT 28</span>
-        </div>
-      </div>
-      <!-- Panel 4 -->
-      <div class="paper-fold relative w-[320px] bg-[#fcfbfb] p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.03)]">
-        <div class="space-y-4">
-          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 12 // 2023</span>
-          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">Digital Craftsmanship</h2>
-          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
-            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY" />
-          </div>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 560</span>
-          <span>AUG 15</span>
-        </div>
-      </div>
-      <!-- Panel 5 -->
-      <div class="paper-fold relative w-[320px] bg-white p-12 flex flex-col justify-between border-l border-y border-outline-variant/20 shadow-[-10px_0_20px_rgba(0,0,0,0.02)]">
-        <div class="space-y-4">
-          <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Issue 15 // 2023</span>
-          <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">Kinetic Typography</h2>
-          <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
-            <img alt="Cover" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqXQiMRdpyvaF4doAvrSsjtiDKRTLCmHxAPcMbmMD6p9V-PlfcvO6K9S5SaGDnbWlJk-5HjjEH635lqWIqGTgjfIcs5DSI-0_gc4Kp0oX0Qi2UeCs5Jt3bgCtkFqvPciVj-hm4AKSEzUEoNLZkuoJOt1nqF25WQS_Q-xebdkRxBvluYMIekwxxAQVJausQRcCLVoEW6DZN8lGj9pMfWFzQ3ha89soS2I7bZ0gVY5hSVEnTxmBqDMuHPkQyPTJQ4ULU61FThtoYg" />
-          </div>
-        </div>
-        <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> 3.1k</span>
-          <span>JUL 02</span>
-        </div>
-      </div>
-    </div>
+    <div class="gallery-track items-stretch h-full" id="gallery-track"></div>
     </section>
     <!-- Page Dots -->
     <div class="page-dots" id="page-dots"></div>
+    <div class="flex justify-center mt-4">
+      <div class="status-note" id="portfolio-status">Loading live portfolio feed...</div>
+    </div>
   </div>
 </main>
 
@@ -323,27 +297,91 @@
 
 <script>
     const track = document.getElementById('gallery-track');
-    const cards = document.querySelectorAll('.paper-fold');
     const arrowLeft = document.getElementById('arrow-left');
     const arrowRight = document.getElementById('arrow-right');
     const dotsContainer = document.getElementById('page-dots');
-    const strip = document.getElementById('scroll-strip');
+    const statusNote = document.getElementById('portfolio-status');
     const CARDS_PER_PAGE = 4;
     const CARD_WIDTH = 320; // px per card
+    const CARD_GAP = 0;
     let currentPage = 0;
     let isAnimating = false;
-    const totalPages = Math.ceil(cards.length / CARDS_PER_PAGE);
+    let activeCategory = 'article';
+    let portfolioCards = [
+      {
+        id: 'fallback-1',
+        category: 'article',
+        kicker: 'Issue 01 // 2024',
+        title: 'The Anatomy of a Design System',
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho',
+        linkUrl: '#',
+        primaryMetric: { icon: 'favorite', value: '1.2k' },
+        secondaryMetric: 'JAN 12'
+      },
+      {
+        id: 'fallback-2',
+        category: 'article',
+        kicker: 'Issue 04 // 2023',
+        title: 'Minimalism as a Constraint',
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o',
+        linkUrl: '#',
+        primaryMetric: { icon: 'favorite', value: '890' },
+        secondaryMetric: 'DEC 04'
+      },
+      {
+        id: 'fallback-3',
+        category: 'article',
+        kicker: 'Issue 08 // 2023',
+        title: 'The Death of the Pixel',
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPpWQJWgpbReqyM2PlxUNGDSKm7GbeqF5HddX9DOYnex9p74p_-_w5HoAKURoQDf0udBMRJ4xCP0SDCVDyr_QB9BwtUMd6oCBNK-D27X1MsMuY0GWq4lcoJLfTkg-XWrI05my-lOV0MUQOHYH1dk7ZWsAFoUcPdNMwGZ3ATNNGtNi6bavypi56Y7EqtqpPn52QaznLfenjah_t2M8kGD4ImkwZFSV4VmTSJonNJ8M095rybbK9jCAnHAJ5-kvmulJgV7sUc8NOuOE',
+        linkUrl: '#',
+        primaryMetric: { icon: 'favorite', value: '2.4k' },
+        secondaryMetric: 'OCT 28'
+      },
+      {
+        id: 'fallback-4',
+        category: 'article',
+        kicker: 'Issue 12 // 2023',
+        title: 'Digital Craftsmanship',
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY',
+        linkUrl: '#',
+        primaryMetric: { icon: 'favorite', value: '560' },
+        secondaryMetric: 'AUG 15'
+      },
+      {
+        id: 'fallback-5',
+        category: 'article',
+        kicker: 'Issue 15 // 2023',
+        title: 'Kinetic Typography',
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqXQiMRdpyvaF4doAvrSsjtiDKRTLCmHxAPcMbmMD6p9V-PlfcvO6K9S5SaGDnbWlJk-5HjjEH635lqWIqGTgjfIcs5DSI-0_gc4Kp0oX0Qi2UeCs5Jt3bgCtkFqvPciVj-hm4AKSEzUEoNLZkuoJOt1nqF25WQS_Q-xebdkRxBvluYMIekwxxAQVJausQRcCLVoEW6DZN8lGj9pMfWFzQ3ha89soS2I7bZ0gVY5hSVEnTxmBqDMuHPkQyPTJQ4ULU61FThtoYg',
+        linkUrl: '#',
+        primaryMetric: { icon: 'favorite', value: '3.1k' },
+        secondaryMetric: 'JUL 02'
+      },
+    ];
+    let totalPages = 1;
 
-    // Build page dots
-    for (let i = 0; i < totalPages; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'page-dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => goToPage(i));
-      dotsContainer.appendChild(dot);
+    function getVisibleCards() {
+      return portfolioCards.filter((card) => card.category === activeCategory);
+    }
+
+    function getCardNodes() {
+      return Array.from(document.querySelectorAll('.paper-fold'));
+    }
+
+    function rebuildDots() {
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'page-dot' + (i === currentPage ? ' active' : '');
+        dot.addEventListener('click', () => goToPage(i));
+        dotsContainer.appendChild(dot);
+      }
     }
 
     function goToPage(page) {
       if (isAnimating || page === currentPage || page < 0 || page >= totalPages) return;
+      const cards = getCardNodes();
       isAnimating = true;
       const direction = page > currentPage ? 'right' : 'left';
       const oldPage = currentPage;
@@ -363,7 +401,7 @@
       // Step 2: After fold, slide track and unfold new cards
       setTimeout(() => {
         // Slide track
-        const offset = currentPage * CARDS_PER_PAGE * CARD_WIDTH;
+        const offset = currentPage * CARDS_PER_PAGE * (CARD_WIDTH + CARD_GAP);
         track.style.transform = `translateX(-${offset}px)`;
 
         // Clear old folds
@@ -406,30 +444,105 @@
     arrowRight.addEventListener('click', () => goToPage(currentPage + 1));
     arrowLeft.addEventListener('click', () => goToPage(currentPage - 1));
 
-    // Initialize
-    arrowLeft.disabled = true;
-    arrowRight.disabled = totalPages <= 1;
+    document.addEventListener('keydown', (event) => {
+      const target = event.target;
+      const tagName = target?.tagName?.toLowerCase?.() || '';
+      const isTypingTarget =
+        target?.isContentEditable ||
+        tagName === 'input' ||
+        tagName === 'textarea' ||
+        tagName === 'select';
 
-    // Category toggle
-    const articleBtn = document.getElementById('article-btn');
-    const musicBtn = document.getElementById('music-btn');
-    function switchCategory(target) {
-      const isMusic = target === 'music';
-      if (isMusic) {
-        musicBtn.classList.add('bg-primary', 'text-on-primary', 'font-bold');
-        articleBtn.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
-      } else {
-        articleBtn.classList.add('bg-primary', 'text-on-primary', 'font-bold');
-        musicBtn.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
+      if (isTypingTarget) return;
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goToPage(currentPage + 1);
       }
-      currentPage = 0;
-      track.style.transform = 'translateX(0)';
-      cards.forEach(c => { c.classList.remove('folding-out', 'folding-in'); c.style.transitionDelay = '0s'; });
-      arrowLeft.disabled = true;
-      arrowRight.disabled = totalPages <= 1;
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goToPage(currentPage - 1);
+      }
+    });
+
+    async function loadPortfolioCards() {
+      try {
+        const response = await fetch('/api/portfolio/cards');
+        if (!response.ok) {
+          throw new Error(`Request failed with ${response.status}`);
+        }
+        const payload = await response.json();
+        portfolioCards = (payload.cards || []).filter((card) => card.category === 'article');
+        statusNote.textContent = `Live feed refreshed ${formatStatusTime(payload.fetchedAt)}`;
+        renderCards();
+      } catch (error) {
+        console.error(error);
+        statusNote.textContent = 'Showing local portfolio cards. Start the Node server for live data.';
+        renderCards();
+      }
     }
-    musicBtn.addEventListener('click', () => switchCategory('music'));
-    articleBtn.addEventListener('click', () => switchCategory('article'));
+
+    function renderCards() {
+      const cards = getVisibleCards();
+      totalPages = Math.max(1, Math.ceil(cards.length / CARDS_PER_PAGE));
+      currentPage = Math.min(currentPage, totalPages - 1);
+      track.innerHTML = cards.map((card, index) => renderCard(card, index)).join('');
+      track.style.transform = `translateX(-${currentPage * CARDS_PER_PAGE * (CARD_WIDTH + CARD_GAP)}px)`;
+      rebuildDots();
+      arrowLeft.disabled = currentPage === 0;
+      arrowRight.disabled = totalPages <= 1 || currentPage === totalPages - 1;
+    }
+
+    function renderCard(card, index) {
+      const backgroundStyle = index % 2 === 0
+        ? 'background:#ffffff;box-shadow:-10px 0 20px rgba(0,0,0,0.02);'
+        : 'background:#fcfbfb;box-shadow:-10px 0 20px rgba(0,0,0,0.03);';
+      const primaryIcon = card.primaryMetric?.icon || 'favorite';
+      const primaryValue = card.primaryMetric?.value || 'N/A';
+      const secondaryValue = card.secondaryMetric || formatStatusTime(card.refreshedAt);
+      const href = card.linkUrl && card.linkUrl !== '#' ? card.linkUrl : 'javascript:void(0)';
+      const linkAttrs = card.linkUrl && card.linkUrl !== '#'
+        ? 'target="_blank" rel="noreferrer"'
+        : 'aria-disabled="true"';
+
+      return `
+      <article class="paper-fold relative p-12 flex flex-col justify-between border-l border-y border-outline-variant/20" style="width:${CARD_WIDTH}px;${backgroundStyle}">
+        <a class="paper-fold-link" href="${escapeHtml(href)}" ${linkAttrs}>
+          <div class="space-y-4">
+            <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">${escapeHtml(card.kicker)}</span>
+            <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">${escapeHtml(card.title)}</h2>
+            <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
+              <img alt="${escapeHtml(card.title)}" class="w-full h-full object-cover grayscale contrast-125" src="${escapeHtml(card.imageUrl)}" />
+            </div>
+          </div>
+          <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">${escapeHtml(primaryIcon)}</span> ${escapeHtml(primaryValue)}</span>
+            <span>${escapeHtml(secondaryValue)}</span>
+          </div>
+        </a>
+      </article>`;
+    }
+
+    function formatStatusTime(value) {
+      if (!value) return 'LIVE';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).toUpperCase();
+      return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }).toUpperCase();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    renderCards();
+    statusNote.textContent = 'Showing local portfolio cards.';
+    loadPortfolioCards();
 
     // === Topbar Wizard ===
     (() => {
@@ -524,6 +637,7 @@
       const navLinks = nav.querySelectorAll('a[href]');
       navLinks.forEach(link => {
         const href = link.getAttribute('href');
+        if (link.hasAttribute('download')) return;
         if (href === 'works.html') return; // current page
         link.addEventListener('click', function(e) {
           if (isCasting) { e.preventDefault(); return; }

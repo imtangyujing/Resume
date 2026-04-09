@@ -78,7 +78,9 @@ git pull origin main
 
 ## 如何预览
 
-这是一个纯静态项目，不需要安装依赖。
+首页、经历页和关于页仍然可以直接作为静态 HTML 预览。
+
+作品集页 `works.html` 现在带有一个轻量后端接口，所以如果想完整查看作品卡片跳转和动态指标，建议启动本地 Node 服务。
 
 直接用浏览器打开任意 HTML 文件即可，例如：
 
@@ -86,10 +88,11 @@ git pull origin main
 open /Users/jay/Documents/Dev/Resume/index.html
 ```
 
-如果想用本地服务方式预览，也可以在仓库根目录运行：
+如果想用完整服务方式预览，在仓库根目录运行：
 
 ```bash
-python3 -m http.server 8000
+npm install
+npm run dev
 ```
 
 或者使用仓库内置脚本：
@@ -108,6 +111,61 @@ bash scripts/serve.sh 9000
 
 ```text
 http://localhost:8000
+```
+
+### `works.html` 后端说明
+
+- 接口地址：`/api/portfolio/cards`
+- 数据配置文件：[data/portfolio-sources.json](/Users/lzw/Documents/Resume/data/portfolio-sources.json)
+- 服务入口：[server.js](/Users/lzw/Documents/Resume/server.js)
+
+当前卡片已经支持：
+
+- 点击整张卡片跳转到公众号、小红书或其他外部平台链接
+- 由后端统一返回卡片数据
+- 在卡片底部原有位置显示动态指标文案
+
+当前支持的数据源类型：
+
+- `manual`：手动维护指标与跳转链接
+- `json`：从外部 JSON 接口读取实时数据，适合后续接你自己的采集服务
+
+说明：
+
+- 微信公众号和小红书的公开实时数据接口限制较多
+- 目前仓库先把“页面展示 + 后端取数结构 + 可配置外链”搭好
+- 后续只需要补真实链接和具体数据源，不需要重写页面结构
+
+### 批量导入公众号文章
+
+如果你不想手动一篇篇把公众号链接粘进 JSON，现在可以直接走批量导入脚本：
+
+1. 把公众号链接逐行写进 [data/wechat-links.txt](/Users/lzw/Documents/Resume/data/wechat-links.txt)
+2. 在仓库根目录运行：
+
+```bash
+npm run import:wechat
+```
+
+脚本会自动：
+
+- 抓取文章标题
+- 尝试抓取封面图
+- 生成或更新对应的 `Portfolio` 卡片
+- 写回 [data/portfolio-sources.json](/Users/lzw/Documents/Resume/data/portfolio-sources.json)
+
+默认行为：
+
+- 新导入的文章会排在前面
+- 如果链接已经存在，会更新那张卡，而不是重复新增
+- 左下角指标默认会写成“阅读量”
+
+可选参数：
+
+```bash
+node scripts/import-wechat-links.js --dry-run
+node scripts/import-wechat-links.js --append
+node scripts/import-wechat-links.js --file data/wechat-links.txt
 ```
 
 ## 协作约定
@@ -173,8 +231,8 @@ git push -u origin feat/update-experience-page
 - 通过 CDN 引入 Tailwind CSS
 - 页面级内联 CSS 和 JavaScript
 - 本地图片资源 + 外部字体资源混合使用
-- 无打包、无构建、无测试流程
-- 可直接在任意终端通过 Python 内置静态服务器预览
+- 轻量 Node/Express 服务用于作品集页接口
+- 无前端打包流程
 
 ## 备注
 
