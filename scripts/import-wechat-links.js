@@ -6,6 +6,8 @@ const path = require("path");
 const ROOT_DIR = path.resolve(__dirname, "..");
 const PORTFOLIO_FILE = path.join(ROOT_DIR, "data", "portfolio-sources.json");
 const DEFAULT_INPUT_FILE = path.join(ROOT_DIR, "data", "wechat-links.txt");
+const LOCAL_COVER_DIR = path.join(ROOT_DIR, "data", "wechat-covers");
+const LOCAL_COVER_PUBLIC_DIR = "data/wechat-covers";
 
 const DEFAULT_COVERS = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho",
@@ -47,7 +49,7 @@ async function main() {
     const url = urls[index];
     const metadata = await fetchWechatMetadata(url);
     const existing = existingByUrl.get(normalizeUrl(url));
-    importedCards.push(buildCard({ url, metadata, existing, index }));
+    importedCards.push(await buildCard({ url, metadata, existing, index, options }));
   }
 
   const importedUrls = new Set(importedCards.map((card) => normalizeUrl(card["跳转链接"])));
@@ -73,6 +75,7 @@ function parseArgs(args) {
     file: DEFAULT_INPUT_FILE,
     prepend: true,
     dryRun: false,
+    localizeCovers: true,
   };
 
   for (let i = 0; i < args.length; i += 1) {
@@ -86,6 +89,8 @@ function parseArgs(args) {
       options.prepend = true;
     } else if (arg === "--dry-run") {
       options.dryRun = true;
+    } else if (arg === "--keep-remote-covers") {
+      options.localizeCovers = false;
     }
   }
 
@@ -112,23 +117,33 @@ async function fetchWechatMetadata(url) {
   };
 }
 
-function buildCard({ url, metadata, existing, index }) {
+async function buildCard({ url, metadata, existing, index, options }) {
   const fallbackImage = DEFAULT_COVERS[index % DEFAULT_COVERS.length];
   const title = metadata.title;
+  const cardId = existing?.["唯一标识"] || `wechat-${slugify(title)}`;
+  const inferredTag = inferArticleTag(title);
+  const coverImage = await resolveCoverImage({
+    cardId,
+    remoteUrl: metadata.imageUrl,
+    existingImage: existing?.["封面图"],
+    fallbackImage,
+    shouldLocalize: options.localizeCovers && !options.dryRun,
+  });
+
   return {
-    "唯一标识": existing?.["唯一标识"] || `wechat-${slugify(title)}`,
+    "唯一标识": cardId,
     "分类": "article",
     "平台": "WeChat",
     "上方小字": existing?.["上方小字"] || "WeChat // Article",
     "标题": title,
-    "封面图": metadata.imageUrl || existing?.["封面图"] || fallbackImage,
+    "封面图": coverImage,
     "跳转链接": url,
     "默认显示": {
       "底部左侧指标": {
         "图标": existing?.["默认显示"]?.["底部左侧指标"]?.["图标"] || "阅读量",
         "值": existing?.["默认显示"]?.["底部左侧指标"]?.["值"] || "NEW",
       },
-      "底部右侧文字": existing?.["默认显示"]?.["底部右侧文字"] || metadata.publishLabel || "WECHAT",
+      "底部右侧文字": pickTag(existing?.["默认显示"]?.["底部右侧文字"], inferredTag),
     },
     "实时数据配置": {
       "类型": "manual",
@@ -143,14 +158,50 @@ function buildCard({ url, metadata, existing, index }) {
             existing?.["默认显示"]?.["底部左侧指标"]?.["值"] ||
             "NEW",
         },
-        "底部右侧文字":
+        "底部右侧文字": pickTag(
           existing?.["实时数据配置"]?.["手动数据"]?.["底部右侧文字"] ||
-          existing?.["默认显示"]?.["底部右侧文字"] ||
-          metadata.publishLabel ||
-          "WECHAT",
+            existing?.["默认显示"]?.["底部右侧文字"],
+          inferredTag
+        ),
       },
     },
   };
+}
+
+async function resolveCoverImage({ cardId, remoteUrl, existingImage, fallbackImage, shouldLocalize }) {
+  if (shouldLocalize && remoteUrl) {
+    try {
+      return await downloadCoverToLocal(cardId, remoteUrl);
+    } catch (error) {
+      console.warn(`封面本地化失败，继续回退远程图：${cardId}`, error.message || error);
+    }
+  }
+
+  return remoteUrl || existingImage || fallbackImage;
+}
+
+async function downloadCoverToLocal(cardId, remoteUrl) {
+  await fs.mkdir(LOCAL_COVER_DIR, { recursive: true });
+
+  const response = await fetch(remoteUrl, {
+    headers: {
+      "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0 Safari/537.36",
+      referer: "https://mp.weixin.qq.com/",
+      accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`封面下载失败 ${response.status}`);
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  const extension = guessImageExtension(contentType, remoteUrl);
+  const filename = `${sanitizeFilename(cardId)}.${extension}`;
+  const filePath = path.join(LOCAL_COVER_DIR, filename);
+  const arrayBuffer = await response.arrayBuffer();
+  await fs.writeFile(filePath, Buffer.from(arrayBuffer));
+  return `${LOCAL_COVER_PUBLIC_DIR}/${filename}`;
 }
 
 function normalizeUrl(url) {
@@ -164,6 +215,39 @@ function slugify(value) {
     .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
     .replace(/^-+|-+$/g, "");
   return ascii || `article-${Date.now()}`;
+}
+
+function sanitizeFilename(value) {
+  return String(value || "wechat-cover")
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "wechat-cover";
+}
+
+function guessImageExtension(contentType, url) {
+  if (/png/i.test(contentType)) return "png";
+  if (/webp/i.test(contentType)) return "webp";
+  if (/gif/i.test(contentType)) return "gif";
+  if (/jpe?g/i.test(contentType)) return "jpg";
+  if (/\.png(\?|$)/i.test(url)) return "png";
+  if (/\.webp(\?|$)/i.test(url)) return "webp";
+  if (/\.gif(\?|$)/i.test(url)) return "gif";
+  return "jpg";
+}
+
+function inferArticleTag(title) {
+  const value = String(title || "");
+
+  if (/(专访|对话|访谈)/.test(value)) return "TALK";
+  if (/(曝光|宣布|离职|发布|上线|开源|融资|发布会)/.test(value)) return "INFO";
+  if (/(为什么|评论|观察|八卦|仍被困|别让)/.test(value)) return "COMMENTARY";
+  return "ARTICLE";
+}
+
+function pickTag(existingTag, fallbackTag) {
+  const normalized = String(existingTag || "").trim().toUpperCase();
+  const allowedTags = new Set(["TALK", "ARTICLE", "COMMENTARY", "INFO"]);
+  return allowedTags.has(normalized) ? normalized : fallbackTag;
 }
 
 function selectMeta(html, key) {

@@ -8,6 +8,7 @@ const DATA_FILE = path.join(ROOT_DIR, "data", "portfolio-sources.json");
 const INDEX_DATA_FILE = path.join(ROOT_DIR, "data", "index-content.json");
 const ABOUT_DATA_FILE = path.join(ROOT_DIR, "data", "about-content.json");
 const EXPERIENCE_DATA_FILE = path.join(ROOT_DIR, "data", "experience-content.json");
+const WIZARD_DATA_FILE = path.join(ROOT_DIR, "data", "wizard-content.json");
 const PORT = Number(process.env.PORT || 8000);
 const METRIC_ICON_ALIASES = {
   favorite: "favorite",
@@ -27,6 +28,11 @@ const METRIC_ICON_ALIASES = {
   浏览: "visibility",
   浏览量: "visibility",
   眼睛: "visibility",
+  campaign: "campaign",
+  speaker: "campaign",
+  megaphone: "campaign",
+  喇叭: "campaign",
+  小喇叭: "campaign",
   graphic_eq: "graphic_eq",
   music: "graphic_eq",
   音乐: "graphic_eq",
@@ -64,6 +70,10 @@ app.get("/api/experience/content", async (_req, res) => {
   await sendJsonFile(res, EXPERIENCE_DATA_FILE, "经历页内容");
 });
 
+app.get("/api/wizard/content", async (_req, res) => {
+  await sendJsonFile(res, WIZARD_DATA_FILE, "魔法小人台词");
+});
+
 app.listen(PORT, () => {
   console.log(`Resume app running at http://localhost:${PORT}`);
 });
@@ -87,10 +97,19 @@ async function sendJsonFile(res, filePath, rootKey) {
 async function resolveCard(card) {
   const normalized = normalizeCard(card);
   const live = await resolveLiveStats(normalized.dataSource);
-  const primaryMetric = live.primaryMetric || normalized.fallback.primaryMetric;
-  const secondaryMetric = live.secondaryMetric || normalized.fallback.secondaryMetric;
-  const kicker = live.kicker || normalized.kicker;
-  const title = live.title || normalized.title;
+  const usesManualFallback = !normalized.dataSource.type || normalized.dataSource.type === "manual";
+  const primaryMetric = usesManualFallback
+    ? normalized.fallback.primaryMetric
+    : (live.primaryMetric || normalized.fallback.primaryMetric);
+  const secondaryMetric = usesManualFallback
+    ? normalized.fallback.secondaryMetric
+    : (live.secondaryMetric || normalized.fallback.secondaryMetric);
+  const kicker = usesManualFallback
+    ? normalized.kicker
+    : (live.kicker || normalized.kicker);
+  const title = usesManualFallback
+    ? normalized.title
+    : (live.title || normalized.title);
 
   return {
     id: normalized.id,

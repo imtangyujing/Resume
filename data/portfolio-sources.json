@@ -4,7 +4,7 @@
       "最常改的是：标题、上方小字、封面图、跳转链接、底部左侧指标、底部右侧文字。",
       "如果你只是想先把卡片内容改成真实内容，优先改“卡片列表”里的字段就够了。",
       "“实时数据配置”目前默认是手动填写；以后如果你有自己的接口，再改成 json 即可。",
-      "底部左侧指标里的“图标”现在可以直接写：点赞 / 小心心，或者 阅读量 / 眼睛。后端会自动转换成页面图标。"
+      "底部左侧指标里的“图标”现在可以直接写：点赞 / 小心心，阅读量 / 眼睛，或者 喇叭 / 小喇叭。后端会自动转换成页面图标。"
     ],
     "字段提示": {
       "分类": "article 或 music。决定卡片显示在哪个切换分类里。",
@@ -13,166 +13,29 @@
       "标题": "卡片主标题。",
       "封面图": "可以填网络图片地址，也可以后面改成本地图片路径。",
       "跳转链接": "点击卡片后打开的链接。",
-      "底部左侧指标": "比如阅读量、点赞数、已发布、Demo 等。图标可写 favorite、visibility，也可直接写中文“点赞”“阅读量”。",
+      "底部左侧指标": "比如阅读量、点赞数、已发布、Demo 等。图标可写 favorite、visibility、campaign，也可直接写中文“点赞”“阅读量”“喇叭”。",
       "底部右侧文字": "比如日期、平台名、状态。",
       "实时数据配置": "manual 表示手动填写；json 表示从接口读取。"
     }
   },
   "卡片列表": [
     {
-      "唯一标识": "wechat-longform",
-      "分类": "article",
-      "平台": "WeChat",
-      "上方小字": "Wechat Archive // Longform",
-      "标题": "从火海中走向世界，日本政府做了什么？",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho",
-      "跳转链接": "https://mp.weixin.qq.com/s/tSweNrb5jHpaqRIEjTBLiA",
-      "默认显示": {
-        "底部左侧指标": {
-          "图标": "favorite",
-          "值": "2.1k"
-        },
-        "底部右侧文字": "APR 09"
-      },
-      "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "2.1k"
-          },
-          "底部右侧文字": "APR 09"
-        }
-      }
-    },
-    {
-      "唯一标识": "xiaohongshu-notes",
-      "分类": "article",
-      "平台": "Xiaohongshu",
-      "上方小字": "Xiaohongshu // Notes",
-      "标题": "别让人形机器人过早扛起“养家糊口”的重担",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o",
-      "跳转链接": "https://mp.weixin.qq.com/s/85sYV6RJPztpPRdsqWNRYA",
-      "默认显示": {
-        "底部左侧指标": {
-          "图标": "favorite",
-          "值": "1.4k"
-        },
-        "底部右侧文字": "APR 03"
-      },
-      "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "1.4k"
-          },
-          "底部右侧文字": "APR 03"
-        }
-      }
-    },
-    {
-      "唯一标识": "gpt4o-openai-departure",
-      "分类": "article",
-      "平台": "WeChat",
-      "上方小字": "AI Brief // Commentary",
-      "标题": "完球了，GPT-4o之母宣布离职OpenAI",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho",
-      "跳转链接": "https://mp.weixin.qq.com/s/QG99OoKOdFA3lpBhVcKUpA",
-      "默认显示": {
-        "底部左侧指标": {
-          "图标": "favorite",
-          "值": "NEW"
-        },
-        "底部右侧文字": "AI"
-      },
-      "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "NEW"
-          },
-          "底部右侧文字": "AI"
-        }
-      }
-    },
-    {
-      "唯一标识": "hassabis-biography-gossip",
-      "分类": "article",
-      "平台": "WeChat",
-      "上方小字": "DeepMind Notes // Profile",
-      "标题": "哈萨比斯传记里讲了好多八卦啊",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o",
-      "跳转链接": "https://mp.weixin.qq.com/s/7emNZcVCnTaSOrKcnAprfA",
-      "默认显示": {
-        "底部左侧指标": {
-          "图标": "favorite",
-          "值": "NEW"
-        },
-        "底部右侧文字": "BOOK"
-      },
-      "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "NEW"
-          },
-          "底部右侧文字": "BOOK"
-        }
-      }
-    },
-    {
-      "唯一标识": "gpt6-exposed",
-      "分类": "article",
-      "平台": "WeChat",
-      "上方小字": "Model Watch // Leak",
-      "标题": "GPT-6，曝光了",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuDPpWQJWgpbReqyM2PlxUNGDSKm7GbeqF5HddX9DOYnex9p74p_-_w5HoAKURoQDf0udBMRJ4xCP0SDCVDyr_QB9BwtUMd6oCBNK-D27X1MsMuY0GWq4lcoJLfTkg-XWrI05my-lOV0MUQOHYH1dk7ZWsAFoUcPdNMwGZ3ATNNGtNi6bavypi56Y7EqtqpPn52QaznLfenjah_t2M8kGD4ImkwZFSV4VmTSJonNJ8M095rybbK9jCAnHAJ5-kvmulJgV7sUc8NOuOE",
-      "跳转链接": "https://mp.weixin.qq.com/s/BLwrThpQYBKVOlJpb4gwvg",
-      "默认显示": {
-        "底部左侧指标": {
-          "图标": "favorite",
-          "值": "NEW"
-        },
-        "底部右侧文字": "MODEL"
-      },
-      "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "NEW"
-          },
-          "底部右侧文字": "MODEL"
-        }
-      }
-    },
-    {
       "唯一标识": "tao-ai-science",
       "分类": "article",
       "平台": "WeChat",
       "上方小字": "AI x Science // Interview",
       "标题": "量子位专访陶哲轩：我为什么现在创办一个AI x Science组织",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY",
+      "封面图": "data/portfolio-covers/陶哲轩.PNG",
       "跳转链接": "https://mp.weixin.qq.com/s/W2k_5baVXAIHCuSthir2yg",
       "默认显示": {
         "底部左侧指标": {
-          "图标": "favorite",
-          "值": "NEW"
+          "图标": "campaign",
+          "值": "TERRY IS GOAT"
         },
-        "底部右侧文字": "SCIENCE"
+        "底部右侧文字": "TALK"
       },
       "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "NEW"
-          },
-          "底部右侧文字": "SCIENCE"
-        }
+        "类型": "manual"
       }
     },
     {
@@ -181,24 +44,93 @@
       "平台": "WeChat",
       "上方小字": "Author Talk // DeepMind",
       "标题": "对话「哈萨比斯传」作者：“他不喜欢奥特曼”",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqXQiMRdpyvaF4doAvrSsjtiDKRTLCmHxAPcMbmMD6p9V-PlfcvO6K9S5SaGDnbWlJk-5HjjEH635lqWIqGTgjfIcs5DSI-0_gc4Kp0oX0Qi2UeCs5Jt3bgCtkFqvPciVj-hm4AKSEzUEoNLZkuoJOt1nqF25WQS_Q-xebdkRxBvluYMIekwxxAQVJausQRcCLVoEW6DZN8lGj9pMfWFzQ3ha89soS2I7bZ0gVY5hSVEnTxmBqDMuHPkQyPTJQ4ULU61FThtoYg",
+      "封面图": "data/portfolio-covers/中年男子的自信肖像.PNG",
       "跳转链接": "https://mp.weixin.qq.com/s/pGBMmIbU2u7g-1sDB1jWVw",
       "默认显示": {
         "底部左侧指标": {
-          "图标": "favorite",
-          "值": "NEW"
+          "图标": "campaign",
+          "值": "Thank u, Sebastian"
         },
         "底部右侧文字": "TALK"
       },
       "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "NEW"
-          },
-          "底部右侧文字": "TALK"
-        }
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "gpt4o-openai-departure",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "AI Brief // Commentary",
+      "标题": "完球了，GPT-4o之母宣布离职OpenAI",
+      "封面图": "data/portfolio-covers/Joanne.PNG",
+      "跳转链接": "https://mp.weixin.qq.com/s/QG99OoKOdFA3lpBhVcKUpA",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "visibility",
+          "值": "10W+"
+        },
+        "底部右侧文字": "INFO"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "gpt6-exposed",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "Model Watch // Leak",
+      "标题": "GPT-6，曝光了",
+      "封面图": "data/portfolio-covers/GPT-6.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/BLwrThpQYBKVOlJpb4gwvg",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "visibility",
+          "值": "10W+"
+        },
+        "底部右侧文字": "INFO"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "wechat-longform",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "Wechat Archive // Longform",
+      "标题": "从火海中走向世界，日本政府做了什么？",
+      "封面图": "data/portfolio-covers/藤本树.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/tSweNrb5jHpaqRIEjTBLiA",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "THIS MATTERS"
+        },
+        "底部右侧文字": "ARTICLE"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "hassabis-biography-gossip",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "DeepMind Notes // Profile",
+      "标题": "哈萨比斯传记里讲了好多八卦啊",
+      "封面图": "data/portfolio-covers/Hassabis.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/7emNZcVCnTaSOrKcnAprfA",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "EVIL BALD GUY!"
+        },
+        "底部右侧文字": "COMMENTARY"
+      },
+      "实时数据配置": {
+        "类型": "manual"
       }
     },
     {
@@ -207,24 +139,17 @@
       "平台": "WeChat",
       "上方小字": "Culture Note // Essay",
       "标题": "时隔30年，我们仍被困在那面镜子里",
-      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho",
+      "封面图": "data/portfolio-covers/攻壳机动队的崎玉素子.png",
       "跳转链接": "https://mp.weixin.qq.com/s/Vi-Ic-FHOIe5hULX3-d9AQ",
       "默认显示": {
         "底部左侧指标": {
-          "图标": "favorite",
-          "值": "NEW"
+          "图标": "campaign",
+          "值": "REBORN"
         },
-        "底部右侧文字": "ESSAY"
+        "底部右侧文字": "COMMENTARY"
       },
       "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "favorite",
-            "值": "NEW"
-          },
-          "底部右侧文字": "ESSAY"
-        }
+        "类型": "manual"
       }
     },
     {
@@ -243,14 +168,7 @@
         "底部右侧文字": "DRAFTS"
       },
       "实时数据配置": {
-        "类型": "manual",
-        "手动数据": {
-          "底部左侧指标": {
-            "图标": "graphic_eq",
-            "值": "12"
-          },
-          "底部右侧文字": "DRAFTS"
-        }
+        "类型": "manual"
       }
     }
   ]

@@ -810,6 +810,21 @@
     const nav = wizard.parentElement;
     let chatTimer = null;
     let isCasting = false;
+    const pendingTimers = new Set();
+
+    function schedule(fn, delay) {
+      const timer = window.setTimeout(() => {
+        pendingTimers.delete(timer);
+        fn();
+      }, delay);
+      pendingTimers.add(timer);
+      return timer;
+    }
+
+    function clearPendingTimers() {
+      pendingTimers.forEach((timer) => window.clearTimeout(timer));
+      pendingTimers.clear();
+    }
 
     function getLinkCenter(selector) {
       const el = nav.querySelector(selector);
@@ -821,7 +836,7 @@
 
     function say(text) {
       bubble.style.opacity = '0';
-      setTimeout(() => {
+      schedule(() => {
         bubble.textContent = text;
         bubble.style.opacity = '1';
       }, 200);
@@ -830,7 +845,7 @@
     function hideBubble() { bubble.style.opacity = '0'; }
     function moveTo(x) { wizard.classList.remove('idle'); wizard.style.left = x + 'px'; }
     function idle() { wizard.classList.add('idle'); }
-    function poke() { wizard.classList.add('poking'); setTimeout(() => wizard.classList.remove('poking'), 500); }
+    function poke() { wizard.classList.add('poking'); schedule(() => wizard.classList.remove('poking'), 500); }
     function face(dir) { fig.style.transform = dir < 0 ? 'scaleX(-1)' : 'scaleX(1)'; }
     function pointDir(dir) {
       wizard.classList.remove('point-right', 'point-left');
@@ -839,7 +854,7 @@
     }
     function clearPoint() { wizard.classList.remove('point-right', 'point-left'); }
 
-    const chatLines = [
+    const defaultChatLines = [
       { text: "这次是一本能左右翻的经历书。", action: 'idle' },
       { text: "一摊开就是两页，慢慢翻会更有感觉。", action: 'idle' },
       { text: "键盘左右键也能翻页，试试看。", action: 'idle' },
@@ -847,6 +862,9 @@
       { text: "想看作品的话，我也可以带你过去 👉", action: 'point', target: 'a[href=\"works.html\"]' },
       { text: "看完这本，再去 About 页收个尾吧。", action: 'point', target: 'a[href=\"about.html\"]' }
     ];
+    const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～翻页传送启动！"];
+    let chatLines = [...defaultChatLines];
+    let castLines = [...defaultCastLines];
 
     let lineIndex = 0;
     function nextChat() {
@@ -859,30 +877,30 @@
         const currentLeft = parseFloat(wizard.style.left) || 0;
         face(pos > currentLeft ? 1 : -1);
         moveTo(pos);
-        setTimeout(() => {
+        schedule(() => {
           idle();
           poke();
           pointDir(pos > currentLeft ? 1 : -1);
           say(line.text);
-          setTimeout(() => {
+          schedule(() => {
             clearPoint();
             const homePos = getLinkCenter('a[href="experience.html"]');
             face(homePos < pos ? -1 : 1);
             moveTo(homePos);
-            setTimeout(() => {
+            schedule(() => {
               idle();
               face(1);
             }, 1000);
           }, 2300);
         }, 1000);
-        chatTimer = setTimeout(nextChat, 6200);
+        chatTimer = schedule(nextChat, 6200);
       } else {
         say(line.text);
-        chatTimer = setTimeout(nextChat, 4200);
+        chatTimer = schedule(nextChat, 4200);
       }
     }
 
-    setTimeout(() => {
+    function startWizard() {
       const pos = getLinkCenter('a[href="experience.html"]');
       wizard.style.transition = 'none';
       wizard.style.left = pos + 'px';
@@ -891,7 +909,29 @@
       requestAnimationFrame(() => {
         wizard.style.transition = '';
       });
-      chatTimer = setTimeout(nextChat, 500);
+      chatTimer = schedule(nextChat, 500);
+    }
+
+    async function loadWizardContent() {
+      try {
+        const response = await fetch('/api/wizard/content');
+        if (!response.ok) return;
+        const payload = await response.json();
+        const wizardContent = payload.content || {};
+        const experienceContent = wizardContent.experience || {};
+        if (Array.isArray(experienceContent['自动对话']) && experienceContent['自动对话'].length) {
+          chatLines = experienceContent['自动对话'];
+        }
+        if (Array.isArray(experienceContent['施法文案']) && experienceContent['施法文案'].length >= 2) {
+          castLines = experienceContent['施法文案'];
+        }
+      } catch (error) {
+        console.error('Failed to hydrate experience wizard content:', error);
+      }
+    }
+
+    schedule(() => {
+      loadWizardContent().finally(startWizard);
     }, 300);
 
     nav.querySelectorAll('a[href]').forEach((link) => {
@@ -906,17 +946,18 @@
         event.preventDefault();
         isCasting = true;
         clearTimeout(chatTimer);
+        clearPendingTimers();
         hideBubble();
         const targetPos = getLinkCenter(`a[href="${href}"]`);
         const currentLeft = parseFloat(wizard.style.left) || 0;
         face(targetPos > currentLeft ? 1 : -1);
         moveTo(targetPos);
-        setTimeout(() => {
+        schedule(() => {
           idle();
           wizard.classList.add('casting');
-          say("阿布拉卡达布拉…✨");
-          setTimeout(() => say("嗖～翻页传送启动！"), 600);
-          setTimeout(() => {
+          say(castLines[0] || defaultCastLines[0]);
+          schedule(() => say(castLines[1] || defaultCastLines[1]), 600);
+          schedule(() => {
             wizard.classList.remove('casting');
             window.location.href = href;
           }, 1400);

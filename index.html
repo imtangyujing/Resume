@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
     body {
-      background-color: #ffffff;
-      cursor: crosshair;
+      background-color: #faf9f8;
+      cursor: default;
       overflow: hidden;
     }
     body::after {
@@ -174,8 +174,8 @@
       85%  { transform: rotate(-45deg) translateY(-5px); }
       100% { transform: rotate(0deg); }
     }
-    .bg-surface-container-low { background-color: #ffffff !important; }
-    .bg-surface-container { background-color: #ffffff !important; }
+    .bg-surface-container-low { background-color: #faf9f8 !important; }
+    .bg-surface-container { background-color: #faf9f8 !important; }
 </style>
 <script>
     tailwind.config = {
@@ -183,15 +183,15 @@
       theme: {
         extend: {
           colors: {
-            "surface-bright": "#ffffff",
-            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#faf9f8",
+            "surface-container-lowest": "#faf9f8",
             "on-secondary-container": "#1b1c1c",
             "on-primary": "#e2e2e2",
-            "surface-container": "#ffffff",
+            "surface-container": "#faf9f8",
             "primary": "#000000",
             "outline-variant": "#000000",
-            "surface": "#ffffff",
-            "background": "#ffffff",
+            "surface": "#faf9f8",
+            "background": "#faf9f8",
             "outline": "#000000"
           },
           borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px" },
@@ -322,19 +322,6 @@
     </div>
   </div>
 </main>
-
-<!-- Footer -->
-<footer class="w-full py-4 px-8 flex flex-col md:flex-row justify-between items-center gap-4 bg-[#ffffff] border-t border-primary/5 z-50">
-  <div class="font-mono text-xs uppercase tracking-widest text-black">
-    &copy; 2024 DIGITAL MANUSCRIPT
-  </div>
-  <div class="flex gap-12" id="index-footer-links">
-    <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="#">Twitter</a>
-    <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="#">GitHub</a>
-    <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="#">Email</a>
-  </div>
-</footer>
-
 <script>
     async function hydrateIndexContent() {
       try {
@@ -365,12 +352,6 @@
           if (label && item['名称']) label.textContent = item['名称'];
         });
 
-        const footerLinks = document.getElementById('index-footer-links');
-        if (footerLinks && Array.isArray(content['底部链接']) && content['底部链接'].length) {
-          footerLinks.innerHTML = content['底部链接'].map((item) => `
-            <a class="font-mono text-xs uppercase tracking-widest opacity-60 hover:opacity-100 underline transition-opacity" href="${escapeHtml(item['链接'] || '#')}">${escapeHtml(item['名称'] || '')}</a>
-          `).join('');
-        }
       } catch (error) {
         console.error('Failed to hydrate index content:', error);
       }
@@ -400,11 +381,14 @@
       let isCasting = false;
       let walkTimer = null;
 
-      const lines = {
+      const defaultLines = {
         0: ["来看看我的作品集？","真的不点一下吗？","里面有好东西噢 👀","确定不看？会后悔的！","最后机会啦…点一下嘛～"],
         1: ["看看我的经历吧~","很有意思噢！","点一下又不会怎样🤷","我在这等着你点呢…","再不点我就走了哦！"],
         2: ["了解一下我？","就点一下，不亏的～","你已经看到这了还不点？","我都举着魔杖等你了😤","好吧…我再等等你…"]
       };
+      const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～传送启动！"];
+      let lines = { ...defaultLines };
+      let castLines = [...defaultCastLines];
 
       function getNodeCenter(i) {
         const r = nodes[i].getBoundingClientRect();
@@ -454,13 +438,37 @@
         }, 1200);
       }
 
-      // Start
-      setTimeout(() => {
+      function startLamplighter() {
         flipFigure(1);
         lighter.style.left = `${getNodeCenter(0)}px`;
         setTimeout(() => {
           lightUp(0, () => { current = 1; direction = 1; walk(); });
         }, 300);
+      }
+
+      async function loadWizardContent() {
+        try {
+          const response = await fetch('/api/wizard/content');
+          if (!response.ok) return;
+          const payload = await response.json();
+          const wizardContent = payload.content || {};
+          const indexContent = wizardContent.index || {};
+          const nodeLines = indexContent['节点台词'] || {};
+          lines = {
+            0: Array.isArray(nodeLines['0']) && nodeLines['0'].length ? nodeLines['0'] : defaultLines[0],
+            1: Array.isArray(nodeLines['1']) && nodeLines['1'].length ? nodeLines['1'] : defaultLines[1],
+            2: Array.isArray(nodeLines['2']) && nodeLines['2'].length ? nodeLines['2'] : defaultLines[2],
+          };
+          if (Array.isArray(indexContent['施法文案']) && indexContent['施法文案'].length >= 2) {
+            castLines = indexContent['施法文案'];
+          }
+        } catch (error) {
+          console.error('Failed to hydrate index wizard content:', error);
+        }
+      }
+
+      setTimeout(() => {
+        loadWizardContent().finally(startLamplighter);
       }, 800);
 
       // Resize handler
@@ -492,8 +500,8 @@
           lighter.classList.add('casting');
           nodes.forEach(n => n.classList.remove('lit'));
           nodes[nodeIdx].classList.add('lit');
-          showBubble("阿布拉卡达布拉…✨");
-          setTimeout(() => showBubble("嗖～传送启动！"), 600);
+          showBubble(castLines[0] || defaultCastLines[0]);
+          setTimeout(() => showBubble(castLines[1] || defaultCastLines[1]), 600);
           setTimeout(() => {
             lighter.classList.remove('casting');
             window.location.href = href;

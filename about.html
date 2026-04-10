@@ -163,23 +163,25 @@
       <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-neutral-800 drop-shadow-md">
         <span class="material-symbols-outlined !text-3xl font-variation-fill">push_pin</span>
       </div>
-      <img id="about-portrait" alt="Artistic portrait" class="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply" src="Image/青年男士的正式肖像.png" />
+      <img id="about-portrait" alt="Artistic portrait" class="w-full h-full object-cover" src="Image/冷漠的少年插画.transparent.png" />
     </div>
   </div>
 
   <!-- Right: Content -->
   <div class="md:col-span-7 flex flex-col gap-12">
     <section class="bg-surface-container-lowest p-8 lg:p-12 relative shadow-sm">
-      <div class="font-spaceGrotesk text-sm leading-relaxed text-on-surface-variant flex flex-col gap-8">
-        <div class="flex flex-col gap-2">
+      <div class="font-spaceGrotesk text-sm leading-relaxed text-on-surface-variant flex flex-col gap-6">
+        <div class="flex flex-col gap-1">
           <h1 id="about-name" class="font-notoSerif text-4xl font-bold text-black">ZHAO YIMING (赵一鸣)</h1>
           <p id="about-school" class="font-notoSerif italic text-lg text-neutral-600">Central Academy of Fine Arts (中央美术学院)</p>
           <p id="about-major" class="font-spaceGrotesk uppercase tracking-widest text-xs text-neutral-400">Visual Communication Design (视觉传达设计)</p>
         </div>
-        <div class="w-12 h-[1px] bg-black/10"></div>
-        <p>
-          <span id="about-preamble-label" class="text-primary font-bold">/// PREAMBLE:</span> <span id="about-preamble-body">I operate at the intersection of structural logic and expressive spontaneity. My work is a continuous exploration of "The Weighted Void"—how negative space can hold more significance than the objects it surrounds.</span>
-        </p>
+        <div class="flex flex-col gap-3">
+          <div class="w-12 h-[1px] bg-black/10"></div>
+          <p>
+            <span id="about-preamble-label" class="text-primary font-bold">/// PREAMBLE:</span> <span id="about-preamble-body">I operate at the intersection of structural logic and expressive spontaneity. My work is a continuous exploration of "The Weighted Void"—how negative space can hold more significance than the objects it surrounds.</span>
+          </p>
+        </div>
         <div class="border-l border-outline-variant/30 pl-6 flex flex-col gap-4 italic text-lg font-notoSerif">
           <p id="about-quote">"Code is a manuscript that never ends; design is the punctuation that makes it readable."</p>
         </div>
@@ -201,19 +203,6 @@
     </section>
   </div>
 </main>
-
-
-<!-- Footer -->
-<footer class="w-full px-8 py-12 mt-20 flex flex-col md:flex-row justify-between items-center bg-transparent border-t border-black/5">
-  <div class="font-mono text-[10px] uppercase tracking-widest text-black/60 leading-relaxed">
-    &copy; 2024 BORN 2003. Built with precision and ink.
-  </div>
-  <div id="about-footer-links" class="flex gap-8 mt-4 md:mt-0">
-    <a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity underline decoration-1" href="works.html">Portfolio</a>
-    <a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity opacity-60" href="#">Archive</a>
-    <a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity opacity-60" href="#">Legal</a>
-  </div>
-</footer>
 
 <script>
 async function hydrateAboutContent() {
@@ -244,13 +233,6 @@ async function hydrateAboutContent() {
       }).join('');
     }
 
-    const footerLinks = document.getElementById('about-footer-links');
-    if (footerLinks && Array.isArray(content['底部链接']) && content['底部链接'].length) {
-      footerLinks.innerHTML = content['底部链接'].map((item, index) => {
-        const activeClass = index === 0 ? ' underline decoration-1' : ' opacity-60';
-        return `<a class="font-mono text-[10px] uppercase tracking-widest text-black/60 hover:text-black transition-opacity${activeClass}" href="${escapeHtml(item['链接'] || '#')}">${escapeHtml(item['名称'] || '')}</a>`;
-      }).join('');
-    }
   } catch (error) {
     console.error('Failed to hydrate about content:', error);
   }
@@ -274,6 +256,21 @@ hydrateAboutContent();
   const fig = document.getElementById('wiz-figure');
   const nav = wizard.parentElement;
   let chatTimer = null, isCasting = false;
+  const pendingTimers = new Set();
+
+  function schedule(fn, delay) {
+    const timer = window.setTimeout(() => {
+      pendingTimers.delete(timer);
+      fn();
+    }, delay);
+    pendingTimers.add(timer);
+    return timer;
+  }
+
+  function clearPendingTimers() {
+    pendingTimers.forEach((timer) => window.clearTimeout(timer));
+    pendingTimers.clear();
+  }
 
   function getLinkCenter(selector) {
     const el = nav.querySelector(selector);
@@ -282,17 +279,17 @@ hydrateAboutContent();
     const nr = nav.getBoundingClientRect();
     return r.left + r.width / 2 - nr.left - 14;
   }
-  function say(text) { bubble.style.opacity='0'; setTimeout(()=>{bubble.textContent=text;bubble.style.opacity='1';},200); }
+  function say(text) { bubble.style.opacity='0'; schedule(()=>{bubble.textContent=text;bubble.style.opacity='1';},200); }
   function hideBubble() { bubble.style.opacity='0'; }
   function moveTo(x) { wizard.classList.remove('idle'); wizard.style.left=x+'px'; }
   function idle() { wizard.classList.add('idle'); }
-  function poke() { wizard.classList.add('poking'); setTimeout(()=>wizard.classList.remove('poking'),500); }
+  function poke() { wizard.classList.add('poking'); schedule(()=>wizard.classList.remove('poking'),500); }
   function face(dir) { fig.style.transform=dir<0?'scaleX(-1)':'scaleX(1)'; }
   function pointDir(d) { wizard.classList.remove('point-right','point-left'); if(d>0)wizard.classList.add('point-right'); else if(d<0)wizard.classList.add('point-left'); }
   function clearPoint() { wizard.classList.remove('point-right','point-left'); }
 
-  // Linear promo: only forward → Home (last stop, loop back to tree)
-  const chatLines = [
+  // Linear promo: configurable from /api/wizard/content
+  const defaultChatLines = [
     { text: "欢迎来了解我！", action: 'idle' },
     { text: "这就是本人啦，请多指教~", action: 'idle' },
     { text: "联系方式都在下面噢", action: 'idle' },
@@ -304,6 +301,9 @@ hydrateAboutContent();
     { text: "走吧走吧，回家看看🏠", action: 'point', target: 'a[href="index.html"]' },
     { text: "好吧…那我陪你在这待着", action: 'idle' },
   ];
+  const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～传送启动！"];
+  let chatLines = [...defaultChatLines];
+  let castLines = [...defaultCastLines];
 
   let lineIdx = 0;
   function nextChat() {
@@ -313,27 +313,49 @@ hydrateAboutContent();
       const pos = getLinkCenter(line.target);
       const curLeft = parseFloat(wizard.style.left)||0;
       face(pos>curLeft?1:-1); moveTo(pos);
-      setTimeout(()=>{
+      schedule(()=>{
         idle(); poke(); pointDir(pos>curLeft?1:-1); say(line.text);
-        setTimeout(()=>{
+        schedule(()=>{
           clearPoint();
           const hp = getLinkCenter('a[href="about.html"]');
           face(hp<pos?-1:1); moveTo(hp);
-          setTimeout(()=>{idle();face(1);},1000);
+          schedule(()=>{idle();face(1);},1000);
         },2500);
       },1000);
-      chatTimer = setTimeout(nextChat, 6500);
+      chatTimer = schedule(nextChat, 6500);
     } else {
       say(line.text);
-      chatTimer = setTimeout(nextChat, 4000);
+      chatTimer = schedule(nextChat, 4000);
     }
   }
 
-  setTimeout(()=>{
+  function startWizard() {
     const pos = getLinkCenter('a[href="about.html"]');
     wizard.style.transition='none'; wizard.style.left=pos+'px'; face(1); idle();
     requestAnimationFrame(()=>{wizard.style.transition='';});
-    chatTimer = setTimeout(nextChat, 500);
+    chatTimer = schedule(nextChat, 500);
+  }
+
+  async function loadWizardContent() {
+    try {
+      const response = await fetch('/api/wizard/content');
+      if (!response.ok) return;
+      const payload = await response.json();
+      const wizardContent = payload.content || {};
+      const aboutContent = wizardContent.about || {};
+      if (Array.isArray(aboutContent['自动对话']) && aboutContent['自动对话'].length) {
+        chatLines = aboutContent['自动对话'];
+      }
+      if (Array.isArray(aboutContent['施法文案']) && aboutContent['施法文案'].length >= 2) {
+        castLines = aboutContent['施法文案'];
+      }
+    } catch (error) {
+      console.error('Failed to hydrate about wizard content:', error);
+    }
+  }
+
+  schedule(()=>{
+    loadWizardContent().finally(startWizard);
   },300);
 
   // Click intercept
@@ -343,15 +365,15 @@ hydrateAboutContent();
     if (href === 'about.html') return;
     link.addEventListener('click', function(e) {
       if (isCasting){e.preventDefault();return;}
-      e.preventDefault(); isCasting=true; clearTimeout(chatTimer); hideBubble();
+      e.preventDefault(); isCasting=true; clearTimeout(chatTimer); clearPendingTimers(); hideBubble();
       const tp = getLinkCenter(`a[href="${href}"]`);
       const cl = parseFloat(wizard.style.left)||0;
       face(tp>cl?1:-1); moveTo(tp);
-      setTimeout(()=>{
+      schedule(()=>{
         idle(); wizard.classList.add('casting');
-        say("阿布拉卡达布拉…✨");
-        setTimeout(()=>say("嗖～传送启动！"),600);
-        setTimeout(()=>{wizard.classList.remove('casting');window.location.href=href;},1400);
+        say(castLines[0] || defaultCastLines[0]);
+        schedule(()=>say(castLines[1] || defaultCastLines[1]),600);
+        schedule(()=>{wizard.classList.remove('casting');window.location.href=href;},1400);
       },1000);
     });
   });

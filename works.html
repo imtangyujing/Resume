@@ -65,9 +65,9 @@
       box-shadow: 20px 40px 60px rgba(26, 28, 28, 0.08);
     }
     .paper-fold-link {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      row-gap: 28px;
       height: 100%;
       color: inherit;
       text-decoration: none;
@@ -183,11 +183,53 @@
       transition: all 0.4s ease; cursor: pointer;
     }
     .page-dot.active { background: rgba(0,0,0,0.8); width: 40px; }
-    .status-note {
-      font-size: 12px;
-      color: rgba(0,0,0,0.45);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .portfolio-cover-frame {
+      width: 100%;
+      margin-top: auto;
+      margin-bottom: auto;
+      transform: translateY(-22px);
+      overflow: hidden;
+      background: transparent;
+    }
+    .portfolio-card-head {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 0;
+    }
+    .portfolio-card-title {
+      min-height: 80px;
+      max-height: calc(2 * 1.18em);
+      line-height: 1.18;
+      overflow: hidden;
+    }
+    .portfolio-title-text,
+    .portfolio-title-solid,
+    .portfolio-title-fade {
+      display: inline;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .portfolio-title-fade {
+      background: linear-gradient(90deg, rgba(23,18,13,0.96) 0%, rgba(23,18,13,0.14) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .portfolio-cover-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--cover-position, center center);
+      transform: scale(var(--cover-scale, 1.16));
+      transform-origin: center center;
+      filter: none;
+      mix-blend-mode: multiply;
+      transition: transform 0.45s ease;
+    }
+    .paper-fold:hover .portfolio-cover-image {
+      transform: scale(calc(var(--cover-scale, 1.16) + 0.04));
     }
 </style>
 </head>
@@ -245,7 +287,7 @@
   </div>
 </nav>
 
-<main class="flex-grow flex flex-col justify-center pb-24 max-w-full mx-auto pt-[120px] overflow-hidden">
+<main class="flex-grow flex flex-col justify-center pb-6 max-w-full mx-auto pt-[120px] overflow-hidden">
   <!-- Header -->
   <header class="px-8 md:px-12 lg:px-16">
     <div class="max-w-screen-2xl mx-auto">
@@ -255,7 +297,7 @@
         </div>
         <div class="text-left md:text-right md:pt-3 lg:pt-4">
           <div class="font-spaceGrotesk text-xs uppercase tracking-[0.28em] text-[#7e7367]">Selected Chapter</div>
-          <div class="mt-2 font-notoSerif text-2xl italic text-[#2a2118]">01</div>
+          <div class="mt-2 font-notoSerif text-2xl italic text-[#2a2118]">ARTICLES</div>
         </div>
       </div>
     </div>
@@ -264,7 +306,7 @@
   <!-- Accordion Fold Gallery -->
   <div class="relative mt-6 md:mt-7" id="gallery-wrapper">
     <!-- Left Arrow -->
-    <section class="perspective-container relative h-[600px] pb-12 px-12 overflow-hidden" id="scroll-strip">
+    <section class="perspective-container relative h-[600px] pb-4 px-12 overflow-hidden" id="scroll-strip">
     <button class="gallery-arrow left" id="arrow-left" disabled>
       <span class="material-symbols-outlined text-[30px]">chevron_left</span>
     </button>
@@ -276,23 +318,8 @@
     </section>
     <!-- Page Dots -->
     <div class="page-dots" id="page-dots"></div>
-    <div class="flex justify-center mt-4">
-      <div class="status-note" id="portfolio-status">Loading live portfolio feed...</div>
-    </div>
   </div>
 </main>
-
-<!-- Footer -->
-<footer class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 mt-20 bg-transparent">
-  <div class="font-mono text-[10px] uppercase tracking-widest text-[#000000]">
-    &copy; 2024 BORN 2003. Built with precision and ink.
-  </div>
-  <div class="flex gap-8 mt-6 md:mt-0">
-    <a class="font-mono text-[10px] uppercase tracking-widest text-[#000000] opacity-60 hover:opacity-100 transition-opacity" href="#">Instagram</a>
-    <a class="font-mono text-[10px] uppercase tracking-widest text-[#000000] underline decoration-1" href="#">LinkedIn</a>
-    <a class="font-mono text-[10px] uppercase tracking-widest text-[#000000] opacity-60 hover:opacity-100 transition-opacity" href="#">Email</a>
-  </div>
-</footer>
 
 
 <script>
@@ -300,7 +327,6 @@
     const arrowLeft = document.getElementById('arrow-left');
     const arrowRight = document.getElementById('arrow-right');
     const dotsContainer = document.getElementById('page-dots');
-    const statusNote = document.getElementById('portfolio-status');
     const CARDS_PER_PAGE = 4;
     const CARD_WIDTH = 320; // px per card
     const CARD_GAP = 0;
@@ -315,7 +341,7 @@
         title: 'The Anatomy of a Design System',
         imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho',
         linkUrl: '#',
-        primaryMetric: { icon: 'favorite', value: '1.2k' },
+        primaryMetric: { icon: 'campaign', value: '1.2k' },
         secondaryMetric: 'JAN 12'
       },
       {
@@ -325,7 +351,7 @@
         title: 'Minimalism as a Constraint',
         imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o',
         linkUrl: '#',
-        primaryMetric: { icon: 'favorite', value: '890' },
+        primaryMetric: { icon: 'campaign', value: '890' },
         secondaryMetric: 'DEC 04'
       },
       {
@@ -335,7 +361,7 @@
         title: 'The Death of the Pixel',
         imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPpWQJWgpbReqyM2PlxUNGDSKm7GbeqF5HddX9DOYnex9p74p_-_w5HoAKURoQDf0udBMRJ4xCP0SDCVDyr_QB9BwtUMd6oCBNK-D27X1MsMuY0GWq4lcoJLfTkg-XWrI05my-lOV0MUQOHYH1dk7ZWsAFoUcPdNMwGZ3ATNNGtNi6bavypi56Y7EqtqpPn52QaznLfenjah_t2M8kGD4ImkwZFSV4VmTSJonNJ8M095rybbK9jCAnHAJ5-kvmulJgV7sUc8NOuOE',
         linkUrl: '#',
-        primaryMetric: { icon: 'favorite', value: '2.4k' },
+        primaryMetric: { icon: 'campaign', value: '2.4k' },
         secondaryMetric: 'OCT 28'
       },
       {
@@ -345,7 +371,7 @@
         title: 'Digital Craftsmanship',
         imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY',
         linkUrl: '#',
-        primaryMetric: { icon: 'favorite', value: '560' },
+        primaryMetric: { icon: 'campaign', value: '560' },
         secondaryMetric: 'AUG 15'
       },
       {
@@ -355,7 +381,7 @@
         title: 'Kinetic Typography',
         imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqXQiMRdpyvaF4doAvrSsjtiDKRTLCmHxAPcMbmMD6p9V-PlfcvO6K9S5SaGDnbWlJk-5HjjEH635lqWIqGTgjfIcs5DSI-0_gc4Kp0oX0Qi2UeCs5Jt3bgCtkFqvPciVj-hm4AKSEzUEoNLZkuoJOt1nqF25WQS_Q-xebdkRxBvluYMIekwxxAQVJausQRcCLVoEW6DZN8lGj9pMfWFzQ3ha89soS2I7bZ0gVY5hSVEnTxmBqDMuHPkQyPTJQ4ULU61FThtoYg',
         linkUrl: '#',
-        primaryMetric: { icon: 'favorite', value: '3.1k' },
+        primaryMetric: { icon: 'campaign', value: '3.1k' },
         secondaryMetric: 'JUL 02'
       },
     ];
@@ -444,6 +470,13 @@
     arrowRight.addEventListener('click', () => goToPage(currentPage + 1));
     arrowLeft.addEventListener('click', () => goToPage(currentPage - 1));
 
+    window.addEventListener('resize', () => {
+      window.clearTimeout(window.__portfolioTitleClampTimer);
+      window.__portfolioTitleClampTimer = window.setTimeout(() => {
+        applyTitleClamp();
+      }, 80);
+    });
+
     document.addEventListener('keydown', (event) => {
       const target = event.target;
       const tagName = target?.tagName?.toLowerCase?.() || '';
@@ -474,11 +507,9 @@
         }
         const payload = await response.json();
         portfolioCards = (payload.cards || []).filter((card) => card.category === 'article');
-        statusNote.textContent = `Live feed refreshed ${formatStatusTime(payload.fetchedAt)}`;
         renderCards();
       } catch (error) {
         console.error(error);
-        statusNote.textContent = 'Showing local portfolio cards. Start the Node server for live data.';
         renderCards();
       }
     }
@@ -488,6 +519,7 @@
       totalPages = Math.max(1, Math.ceil(cards.length / CARDS_PER_PAGE));
       currentPage = Math.min(currentPage, totalPages - 1);
       track.innerHTML = cards.map((card, index) => renderCard(card, index)).join('');
+      applyTitleClamp();
       track.style.transform = `translateX(-${currentPage * CARDS_PER_PAGE * (CARD_WIDTH + CARD_GAP)}px)`;
       rebuildDots();
       arrowLeft.disabled = currentPage === 0;
@@ -501,6 +533,8 @@
       const primaryIcon = card.primaryMetric?.icon || 'favorite';
       const primaryValue = card.primaryMetric?.value || 'N/A';
       const secondaryValue = card.secondaryMetric || formatStatusTime(card.refreshedAt);
+      const coverPosition = card.coverPosition || 'center center';
+      const coverScale = Number(card.coverScale || 1.16);
       const href = card.linkUrl && card.linkUrl !== '#' ? card.linkUrl : 'javascript:void(0)';
       const linkAttrs = card.linkUrl && card.linkUrl !== '#'
         ? 'target="_blank" rel="noreferrer"'
@@ -509,11 +543,11 @@
       return `
       <article class="paper-fold relative p-12 flex flex-col justify-between border-l border-y border-outline-variant/20" style="width:${CARD_WIDTH}px;${backgroundStyle}">
         <a class="paper-fold-link" href="${escapeHtml(href)}" ${linkAttrs}>
-          <div class="space-y-4">
+          <div class="portfolio-card-head">
             <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">${escapeHtml(card.kicker)}</span>
-            <h2 class="font-headline text-2xl italic leading-tight text-on-surface line-clamp-2">${escapeHtml(card.title)}</h2>
-            <div class="aspect-[3/4] bg-neutral-200 overflow-hidden mt-4">
-              <img alt="${escapeHtml(card.title)}" class="w-full h-full object-cover grayscale contrast-125" src="${escapeHtml(card.imageUrl)}" />
+            <h2 class="portfolio-card-title font-headline text-2xl italic text-on-surface" data-full-title="${escapeHtml(card.title)}">${escapeHtml(card.title)}</h2>
+            <div class="portfolio-cover-frame aspect-[3/4]">
+              <img alt="${escapeHtml(card.title)}" class="portfolio-cover-image" src="${escapeHtml(card.imageUrl)}" style="--cover-position:${escapeHtml(coverPosition)};--cover-scale:${escapeHtml(coverScale)};" />
             </div>
           </div>
           <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-60">
@@ -531,6 +565,45 @@
       return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }).toUpperCase();
     }
 
+    function applyTitleClamp() {
+      document.querySelectorAll('.portfolio-card-title').forEach((titleEl) => {
+        const fullTitle = titleEl.dataset.fullTitle || titleEl.textContent || '';
+        titleEl.innerHTML = `<span class="portfolio-title-text">${escapeHtml(fullTitle)}</span>`;
+
+        if (titleEl.scrollHeight <= titleEl.clientHeight + 1) {
+          return;
+        }
+
+        let low = 0;
+        let high = fullTitle.length;
+        let best = '';
+
+        while (low <= high) {
+          const mid = Math.floor((low + high) / 2);
+          const candidate = fullTitle.slice(0, mid).trimEnd();
+          titleEl.innerHTML = buildTruncatedTitleMarkup(candidate);
+
+          if (titleEl.scrollHeight <= titleEl.clientHeight + 1) {
+            best = candidate;
+            low = mid + 1;
+          } else {
+            high = mid - 1;
+          }
+        }
+
+        titleEl.innerHTML = buildTruncatedTitleMarkup(best || fullTitle.slice(0, 1));
+      });
+    }
+
+    function buildTruncatedTitleMarkup(value) {
+      const text = String(value || '').trimEnd();
+      const fadeChars = Math.min(4, Math.max(1, text.length));
+      const solidText = text.slice(0, -fadeChars);
+      const fadeText = text.slice(-fadeChars);
+      const solidMarkup = solidText ? `<span class="portfolio-title-solid">${escapeHtml(solidText)}</span>` : '';
+      return `${solidMarkup}<span class="portfolio-title-fade">${escapeHtml(fadeText)}...</span>`;
+    }
+
     function escapeHtml(value) {
       return String(value)
         .replaceAll('&', '&amp;')
@@ -541,7 +614,6 @@
     }
 
     renderCards();
-    statusNote.textContent = 'Showing local portfolio cards.';
     loadPortfolioCards();
 
     // === Topbar Wizard ===
@@ -552,6 +624,21 @@
       const nav = wizard.parentElement;
       let chatTimer = null;
       let isCasting = false;
+      const pendingTimers = new Set();
+
+      function schedule(fn, delay) {
+        const timer = window.setTimeout(() => {
+          pendingTimers.delete(timer);
+          fn();
+        }, delay);
+        pendingTimers.add(timer);
+        return timer;
+      }
+
+      function clearPendingTimers() {
+        pendingTimers.forEach((timer) => window.clearTimeout(timer));
+        pendingTimers.clear();
+      }
 
       function getLinkCenter(selector) {
         const el = nav.querySelector(selector);
@@ -562,12 +649,12 @@
       }
       function say(text) {
         bubble.style.opacity = '0';
-        setTimeout(() => { bubble.textContent = text; bubble.style.opacity = '1'; }, 200);
+        schedule(() => { bubble.textContent = text; bubble.style.opacity = '1'; }, 200);
       }
       function hideBubble() { bubble.style.opacity = '0'; }
       function moveTo(x) { wizard.classList.remove('idle'); wizard.style.left = x + 'px'; }
       function idle() { wizard.classList.add('idle'); }
-      function poke() { wizard.classList.add('poking'); setTimeout(() => wizard.classList.remove('poking'), 500); }
+      function poke() { wizard.classList.add('poking'); schedule(() => wizard.classList.remove('poking'), 500); }
       function face(dir) { fig.style.transform = dir < 0 ? 'scaleX(-1)' : 'scaleX(1)'; }
       function pointDir(dir) {
         wizard.classList.remove('point-right','point-left');
@@ -576,8 +663,8 @@
       }
       function clearPoint() { wizard.classList.remove('point-right','point-left'); }
 
-      // Conversation lines — mixed intro + linear promo (only forward)
-      const chatLines = [
+      // Conversation lines — configurable from /api/wizard/content
+      const defaultChatLines = [
         { text: "欢迎来到作品集！", action: 'idle' },
         { text: "← → 箭头翻页，悬停看细节噢~", action: 'idle' },
         { text: "每张卡片都是精心制作的～", action: 'idle' },
@@ -589,6 +676,9 @@
         { text: "好了好了，去看看我的经历吧～", action: 'point', target: 'a[href="experience.html"]' },
         { text: "好吧好吧，你慢慢看…", action: 'idle' },
       ];
+      const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～传送启动！"];
+      let chatLines = [...defaultChatLines];
+      let castLines = [...defaultCastLines];
 
       let lineIdx = 0;
       function nextChat() {
@@ -602,35 +692,56 @@
           const curLeft = parseFloat(wizard.style.left) || 0;
           face(pos > curLeft ? 1 : -1);
           moveTo(pos);
-          setTimeout(() => {
+          schedule(() => {
             idle();
             poke();
             pointDir(pos > curLeft ? 1 : -1);
             say(line.text);
-            setTimeout(() => {
+            schedule(() => {
               clearPoint();
               // Walk back to current page link
               const homePos = getLinkCenter('a[href="works.html"]');
               face(homePos < pos ? -1 : 1);
               moveTo(homePos);
-              setTimeout(() => { idle(); face(1); }, 1000);
+              schedule(() => { idle(); face(1); }, 1000);
             }, 2500);
           }, 1000);
-          chatTimer = setTimeout(nextChat, 6500);
+          chatTimer = schedule(nextChat, 6500);
         } else {
           say(line.text);
-          chatTimer = setTimeout(nextChat, 4000);
+          chatTimer = schedule(nextChat, 4000);
         }
       }
 
-      // Init position
-      setTimeout(() => {
+      function startWizard() {
         const pos = getLinkCenter('a[href="works.html"]');
         wizard.style.transition = 'none';
         wizard.style.left = pos + 'px';
         face(1); idle();
         requestAnimationFrame(() => { wizard.style.transition = ''; });
-        chatTimer = setTimeout(nextChat, 500);
+        chatTimer = schedule(nextChat, 500);
+      }
+
+      async function loadWizardContent() {
+        try {
+          const response = await fetch('/api/wizard/content');
+          if (!response.ok) return;
+          const payload = await response.json();
+          const wizardContent = payload.content || {};
+          const worksContent = wizardContent.works || {};
+          if (Array.isArray(worksContent["自动对话"]) && worksContent["自动对话"].length) {
+            chatLines = worksContent["自动对话"];
+          }
+          if (Array.isArray(worksContent["施法文案"]) && worksContent["施法文案"].length >= 2) {
+            castLines = worksContent["施法文案"];
+          }
+        } catch (error) {
+          console.error('Failed to hydrate works wizard content:', error);
+        }
+      }
+
+      schedule(() => {
+        loadWizardContent().finally(startWizard);
       }, 300);
 
       // === Click intercept: spell-cast then navigate ===
@@ -644,6 +755,7 @@
           e.preventDefault();
           isCasting = true;
           clearTimeout(chatTimer);
+          clearPendingTimers();
           hideBubble();
 
           const targetPos = getLinkCenter(`a[href="${href}"]`);
@@ -651,12 +763,12 @@
           face(targetPos > curLeft ? 1 : -1);
           moveTo(targetPos);
 
-          setTimeout(() => {
+          schedule(() => {
             idle();
             wizard.classList.add('casting');
-            say("阿布拉卡达布拉…✨");
-            setTimeout(() => say("嗖～传送启动！"), 600);
-            setTimeout(() => {
+            say(castLines[0] || defaultCastLines[0]);
+            schedule(() => say(castLines[1] || defaultCastLines[1]), 600);
+            schedule(() => {
               wizard.classList.remove('casting');
               window.location.href = href;
             }, 1400);
