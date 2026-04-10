@@ -1,0 +1,7 @@
+# 每行一个公众号文章链接。
+# 运行 `npm run import:wechat` 后，脚本会自动抓取标题、封面和链接，
+# 并写入 data/portfolio-sources.json。
+#
+# 例子：
+# https://mp.weixin.qq.com/s/xxxxxxxxxxxxxxxxxxxxxx
+

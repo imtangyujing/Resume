@@ -474,7 +474,7 @@
 </head>
 <body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary overflow-x-hidden">
 
-<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl border-b border-black/5">
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl">
   <a href="index.html" class="text-xl font-notoSerif font-bold text-black">Tang Yujing</a>
   <div class="hidden md:flex gap-12">
     <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="works.html">Portfolio</a>
@@ -482,7 +482,9 @@
     <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="about.html">About</a>
   </div>
   <div class="flex items-center gap-4">
-    <span class="material-symbols-outlined text-black">history_edu</span>
+    <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="inline-flex items-center justify-center text-black/75 hover:text-black transition-colors duration-300">
+      <span class="material-symbols-outlined text-black">download</span>
+    </a>
   </div>
   <div id="nav-wizard" class="idle" style="top: 50%; transform: translateY(-50%); left: 0;">
     <div id="wiz-bubble"></div>
@@ -519,10 +521,10 @@
     <div class="max-w-6xl mx-auto">
       <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <h1 class="text-5xl md:text-7xl lg:text-8xl font-notoSerif italic leading-none text-[#17120d]">Experience</h1>
+          <h1 id="experience-page-title" class="text-5xl md:text-7xl lg:text-8xl font-notoSerif italic leading-none text-[#17120d]">Experience</h1>
         </div>
         <div class="text-left md:text-right md:pt-3 lg:pt-4">
-          <div class="font-spaceGrotesk text-xs uppercase tracking-[0.28em] text-[#7e7367]">Open Spread</div>
+          <div id="experience-side-label" class="font-spaceGrotesk text-xs uppercase tracking-[0.28em] text-[#7e7367]">Open Spread</div>
           <div id="spread-label" class="mt-2 font-notoSerif text-2xl italic text-[#2a2118]">Chapter 01 / 02</div>
         </div>
       </div>
@@ -539,19 +541,19 @@
               <section class="book-spread" data-spread="0">
                 <article class="book-page left-page page-focus" data-page-index="0">
                   <div class="page-inner">
-                    <div class="page-kicker">2023.07 - 2023.08 / Guotai Junan</div>
-                    <h2 class="page-title">企业客户部实习 // 国泰君安</h2>
-                    <p class="page-body">
+                    <div class="page-kicker" data-field="time">2023.07 - 2023.08 / Guotai Junan</div>
+                    <h2 class="page-title" data-field="title">企业客户部实习 // 国泰君安</h2>
+                    <p class="page-body" data-field="body">
                       在企业客户部协助新能源汽车行业研究，为项目推进准备基础材料。重点整理政策、行业新闻与公司动态，并结合 Wind 汇总头部企业关键财务数据。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">工作内容</div>
-                      <div class="detail-list">
+                      <div class="detail-label" data-field="detail-title">工作内容</div>
+                      <div class="detail-list" data-field="detail-list">
                         <div>协助领导调研新能源汽车行业，系统梳理近期政策、行业新闻和市场资讯，沉淀项目基础研究材料。</div>
                         <div>使用 Wind 收集龙头公司的 ROA、R&amp;D、Liability 等财务指标，支持后续企业分析与项目判断。</div>
                       </div>
                     </div>
-                    <div class="tag-row">
+                    <div class="tag-row" data-field="tags">
                       <span class="page-tag">行业研究</span>
                       <span class="page-tag">Wind</span>
                       <span class="page-tag">财务分析</span>
@@ -564,19 +566,19 @@
 
                 <article class="book-page right-page" data-page-index="1">
                   <div class="page-inner">
-                    <div class="page-kicker">2025.02 - 2025.05 / Koala Kankan</div>
-                    <h2 class="page-title">财经编辑 // 考拉看看</h2>
-                    <p class="page-body">
+                    <div class="page-kicker" data-field="time">2025.02 - 2025.05 / Koala Kankan</div>
+                    <h2 class="page-title" data-field="title">财经编辑 // 考拉看看</h2>
+                    <p class="page-body" data-field="body">
                       作为项目组骨干参与经济学书籍写作，从前期访谈、资料整理到大纲搭建与深度稿件撰写都深度参与，围绕复杂议题完成数万字内容生产。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">项目产出</div>
-                      <div class="detail-list">
+                      <div class="detail-label" data-field="detail-title">项目产出</div>
+                      <div class="detail-list" data-field="detail-list">
                         <div>与客户深入访谈，提炼信息重点，构建书稿章节大纲，并使用思维导图搭建资料库。</div>
                         <div>执笔完成华为鸿蒙、SWIFT 等板块深度稿件，兼顾事实准确性、结构完整度与可读性。</div>
                       </div>
                     </div>
-                    <div class="tag-row">
+                    <div class="tag-row" data-field="tags">
                       <span class="page-tag">深度写作</span>
                       <span class="page-tag">访谈整理</span>
                       <span class="page-tag">资料搭建</span>
@@ -589,19 +591,19 @@
               <section class="book-spread" data-spread="1">
                 <article class="book-page left-page" data-page-index="2">
                   <div class="page-inner">
-                    <div class="page-kicker">2025.05 - Present / Self Media</div>
-                    <h2 class="page-title">科技编辑 // 自媒体</h2>
-                    <p class="page-body">
+                    <div class="page-kicker" data-field="time">2025.05 - Present / Self Media</div>
+                    <h2 class="page-title" data-field="title">科技编辑 // 自媒体</h2>
+                    <p class="page-body" data-field="body">
                       持续运营公众号与微博，围绕经济史、科技评论和选题洞察展开内容创作，把深度长文与短内容分发结合起来，逐步形成自己的写作与选题体系。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">内容方向</div>
-                      <div class="detail-list">
+                      <div class="detail-label" data-field="detail-title">内容方向</div>
+                      <div class="detail-list" data-field="detail-list">
                         <div>公众号侧重深度长文，已围绕日本经济泡沫、人形机器人等主题输出兼具历史纵深和现实判断的内容。</div>
                         <div>微博账户“唐榆景”用于记录个人洞察、沉淀素材，并测试大众向科技短文的传播潜力与选题反馈。</div>
                       </div>
                     </div>
-                    <div class="tag-row">
+                    <div class="tag-row" data-field="tags">
                       <span class="page-tag">长文写作</span>
                       <span class="page-tag">选题策划</span>
                       <span class="page-tag">内容增长</span>
@@ -614,19 +616,19 @@
 
                 <article class="book-page right-page" data-page-index="3">
                   <div class="page-inner">
-                    <div class="page-kicker">2018.12 - 2021.07 / Hosting & Research</div>
-                    <h2 class="page-title">主持人与调研实践 // 播音主持</h2>
-                    <p class="page-body">
+                    <div class="page-kicker" data-field="time">2018.12 - 2021.07 / Hosting & Research</div>
+                    <h2 class="page-title" data-field="title">主持人与调研实践 // 播音主持</h2>
+                    <p class="page-body" data-field="body">
                       在主持训练和真实活动场景中积累表达与控场能力，同时参与基层调研项目，把现场沟通、采访组织和内容整理连接起来，形成较强的叙事表达基础。
                     </p>
                     <div class="detail-block">
-                      <div class="detail-label">实践重点</div>
-                      <div class="detail-list">
+                      <div class="detail-label" data-field="detail-title">实践重点</div>
+                      <div class="detail-list" data-field="detail-list">
                         <div>在重庆市广播电视台主持人指导下获第二十届全国电视主持新星活动青年组二等奖，并主持多场政府与企业活动。</div>
                         <div>协调团队在南山放牛村开展一周实地调研，深度访谈多方角色，最终完成一篇万字研究报告。</div>
                       </div>
                     </div>
-                    <div class="tag-row">
+                    <div class="tag-row" data-field="tags">
                       <span class="page-tag">主持表达</span>
                       <span class="page-tag">深度访谈</span>
                       <span class="page-tag">田野调研</span>
@@ -653,6 +655,55 @@
 </main>
 
 <script>
+  async function hydrateExperienceContent() {
+    try {
+      const response = await fetch('/api/experience/content');
+      if (!response.ok) return;
+      const payload = await response.json();
+      const content = payload.content || {};
+
+      if (content['页面标题']) document.getElementById('experience-page-title').textContent = content['页面标题'];
+      if (content['右侧标题']) document.getElementById('experience-side-label').textContent = content['右侧标题'];
+      if (content['右侧当前章节']) document.getElementById('spread-label').textContent = content['右侧当前章节'];
+
+      const sections = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
+      (content['章节列表'] || []).forEach((item, index) => {
+        const section = sections[index];
+        if (!section) return;
+        const timeNode = section.querySelector('[data-field="time"]');
+        const titleNode = section.querySelector('[data-field="title"]');
+        const bodyNode = section.querySelector('[data-field="body"]');
+        const detailTitleNode = section.querySelector('[data-field="detail-title"]');
+        const detailListNode = section.querySelector('[data-field="detail-list"]');
+        const tagsNode = section.querySelector('[data-field="tags"]');
+
+        if (timeNode && item['时间与单位']) timeNode.textContent = item['时间与单位'];
+        if (titleNode && item['标题']) titleNode.textContent = item['标题'];
+        if (bodyNode && item['正文']) bodyNode.textContent = item['正文'];
+        if (detailTitleNode && item['区块标题']) detailTitleNode.textContent = item['区块标题'];
+        if (detailListNode && Array.isArray(item['条目'])) {
+          detailListNode.innerHTML = item['条目'].map((line) => `<div>${escapeHtml(line)}</div>`).join('');
+        }
+        if (tagsNode && Array.isArray(item['标签'])) {
+          tagsNode.innerHTML = item['标签'].map((tag) => `<span class="page-tag">${escapeHtml(tag)}</span>`).join('');
+        }
+      });
+    } catch (error) {
+      console.error('Failed to hydrate experience content:', error);
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  hydrateExperienceContent();
+
   const track = document.getElementById('book-track');
   const spreads = Array.from(document.querySelectorAll('.book-spread'));
   const pageCards = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
@@ -759,6 +810,21 @@
     const nav = wizard.parentElement;
     let chatTimer = null;
     let isCasting = false;
+    const pendingTimers = new Set();
+
+    function schedule(fn, delay) {
+      const timer = window.setTimeout(() => {
+        pendingTimers.delete(timer);
+        fn();
+      }, delay);
+      pendingTimers.add(timer);
+      return timer;
+    }
+
+    function clearPendingTimers() {
+      pendingTimers.forEach((timer) => window.clearTimeout(timer));
+      pendingTimers.clear();
+    }
 
     function getLinkCenter(selector) {
       const el = nav.querySelector(selector);
@@ -770,7 +836,7 @@
 
     function say(text) {
       bubble.style.opacity = '0';
-      setTimeout(() => {
+      schedule(() => {
         bubble.textContent = text;
         bubble.style.opacity = '1';
       }, 200);
@@ -779,7 +845,7 @@
     function hideBubble() { bubble.style.opacity = '0'; }
     function moveTo(x) { wizard.classList.remove('idle'); wizard.style.left = x + 'px'; }
     function idle() { wizard.classList.add('idle'); }
-    function poke() { wizard.classList.add('poking'); setTimeout(() => wizard.classList.remove('poking'), 500); }
+    function poke() { wizard.classList.add('poking'); schedule(() => wizard.classList.remove('poking'), 500); }
     function face(dir) { fig.style.transform = dir < 0 ? 'scaleX(-1)' : 'scaleX(1)'; }
     function pointDir(dir) {
       wizard.classList.remove('point-right', 'point-left');
@@ -788,7 +854,7 @@
     }
     function clearPoint() { wizard.classList.remove('point-right', 'point-left'); }
 
-    const chatLines = [
+    const defaultChatLines = [
       { text: "这次是一本能左右翻的经历书。", action: 'idle' },
       { text: "一摊开就是两页，慢慢翻会更有感觉。", action: 'idle' },
       { text: "键盘左右键也能翻页，试试看。", action: 'idle' },
@@ -796,6 +862,9 @@
       { text: "想看作品的话，我也可以带你过去 👉", action: 'point', target: 'a[href=\"works.html\"]' },
       { text: "看完这本，再去 About 页收个尾吧。", action: 'point', target: 'a[href=\"about.html\"]' }
     ];
+    const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～翻页传送启动！"];
+    let chatLines = [...defaultChatLines];
+    let castLines = [...defaultCastLines];
 
     let lineIndex = 0;
     function nextChat() {
@@ -808,30 +877,30 @@
         const currentLeft = parseFloat(wizard.style.left) || 0;
         face(pos > currentLeft ? 1 : -1);
         moveTo(pos);
-        setTimeout(() => {
+        schedule(() => {
           idle();
           poke();
           pointDir(pos > currentLeft ? 1 : -1);
           say(line.text);
-          setTimeout(() => {
+          schedule(() => {
             clearPoint();
             const homePos = getLinkCenter('a[href="experience.html"]');
             face(homePos < pos ? -1 : 1);
             moveTo(homePos);
-            setTimeout(() => {
+            schedule(() => {
               idle();
               face(1);
             }, 1000);
           }, 2300);
         }, 1000);
-        chatTimer = setTimeout(nextChat, 6200);
+        chatTimer = schedule(nextChat, 6200);
       } else {
         say(line.text);
-        chatTimer = setTimeout(nextChat, 4200);
+        chatTimer = schedule(nextChat, 4200);
       }
     }
 
-    setTimeout(() => {
+    function startWizard() {
       const pos = getLinkCenter('a[href="experience.html"]');
       wizard.style.transition = 'none';
       wizard.style.left = pos + 'px';
@@ -840,11 +909,34 @@
       requestAnimationFrame(() => {
         wizard.style.transition = '';
       });
-      chatTimer = setTimeout(nextChat, 500);
+      chatTimer = schedule(nextChat, 500);
+    }
+
+    async function loadWizardContent() {
+      try {
+        const response = await fetch('/api/wizard/content');
+        if (!response.ok) return;
+        const payload = await response.json();
+        const wizardContent = payload.content || {};
+        const experienceContent = wizardContent.experience || {};
+        if (Array.isArray(experienceContent['自动对话']) && experienceContent['自动对话'].length) {
+          chatLines = experienceContent['自动对话'];
+        }
+        if (Array.isArray(experienceContent['施法文案']) && experienceContent['施法文案'].length >= 2) {
+          castLines = experienceContent['施法文案'];
+        }
+      } catch (error) {
+        console.error('Failed to hydrate experience wizard content:', error);
+      }
+    }
+
+    schedule(() => {
+      loadWizardContent().finally(startWizard);
     }, 300);
 
     nav.querySelectorAll('a[href]').forEach((link) => {
       const href = link.getAttribute('href');
+      if (link.hasAttribute('download')) return;
       if (href === 'experience.html') return;
       link.addEventListener('click', (event) => {
         if (isCasting) {
@@ -854,17 +946,18 @@
         event.preventDefault();
         isCasting = true;
         clearTimeout(chatTimer);
+        clearPendingTimers();
         hideBubble();
         const targetPos = getLinkCenter(`a[href="${href}"]`);
         const currentLeft = parseFloat(wizard.style.left) || 0;
         face(targetPos > currentLeft ? 1 : -1);
         moveTo(targetPos);
-        setTimeout(() => {
+        schedule(() => {
           idle();
           wizard.classList.add('casting');
-          say("阿布拉卡达布拉…✨");
-          setTimeout(() => say("嗖～翻页传送启动！"), 600);
-          setTimeout(() => {
+          say(castLines[0] || defaultCastLines[0]);
+          schedule(() => say(castLines[1] || defaultCastLines[1]), 600);
+          schedule(() => {
             wizard.classList.remove('casting');
             window.location.href = href;
           }, 1400);

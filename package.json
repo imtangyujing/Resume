@@ -1,0 +1,26 @@
+{
+  "name": "resume",
+  "version": "1.0.0",
+  "description": "一个基于纯静态 HTML 的个人简历 / 作品集项目，当前仓库主要用于承载一套高视觉风格的网页简历页面，以及对应的原始简历资料文件。",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "import:wechat": "node scripts/import-wechat-links.js",
+    "test": "echo \"No tests configured\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imtangyujing/Resume.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imtangyujing/Resume/issues"
+  },
+  "homepage": "https://github.com/imtangyujing/Resume#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

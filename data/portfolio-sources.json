@@ -1,0 +1,175 @@
+{
+  "说明": {
+    "怎么改": [
+      "最常改的是：标题、上方小字、封面图、跳转链接、底部左侧指标、底部右侧文字。",
+      "如果你只是想先把卡片内容改成真实内容，优先改“卡片列表”里的字段就够了。",
+      "“实时数据配置”目前默认是手动填写；以后如果你有自己的接口，再改成 json 即可。",
+      "底部左侧指标里的“图标”现在可以直接写：点赞 / 小心心，阅读量 / 眼睛，或者 喇叭 / 小喇叭。后端会自动转换成页面图标。"
+    ],
+    "字段提示": {
+      "分类": "article 或 music。决定卡片显示在哪个切换分类里。",
+      "平台": "只是给你自己识别用，比如 WeChat、Xiaohongshu、Music。",
+      "上方小字": "卡片顶部那一行小字。",
+      "标题": "卡片主标题。",
+      "封面图": "可以填网络图片地址，也可以后面改成本地图片路径。",
+      "跳转链接": "点击卡片后打开的链接。",
+      "底部左侧指标": "比如阅读量、点赞数、已发布、Demo 等。图标可写 favorite、visibility、campaign，也可直接写中文“点赞”“阅读量”“喇叭”。",
+      "底部右侧文字": "比如日期、平台名、状态。",
+      "实时数据配置": "manual 表示手动填写；json 表示从接口读取。"
+    }
+  },
+  "卡片列表": [
+    {
+      "唯一标识": "tao-ai-science",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "AI x Science // Interview",
+      "标题": "量子位专访陶哲轩：我为什么现在创办一个AI x Science组织",
+      "封面图": "data/portfolio-covers/陶哲轩.PNG",
+      "跳转链接": "https://mp.weixin.qq.com/s/W2k_5baVXAIHCuSthir2yg",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "TERRY IS GOAT"
+        },
+        "底部右侧文字": "TALK"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "hassabis-author-interview",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "Author Talk // DeepMind",
+      "标题": "对话「哈萨比斯传」作者：“他不喜欢奥特曼”",
+      "封面图": "data/portfolio-covers/中年男子的自信肖像.PNG",
+      "跳转链接": "https://mp.weixin.qq.com/s/pGBMmIbU2u7g-1sDB1jWVw",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "Thank u, Sebastian"
+        },
+        "底部右侧文字": "TALK"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "gpt4o-openai-departure",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "AI Brief // Commentary",
+      "标题": "完球了，GPT-4o之母宣布离职OpenAI",
+      "封面图": "data/portfolio-covers/Joanne.PNG",
+      "跳转链接": "https://mp.weixin.qq.com/s/QG99OoKOdFA3lpBhVcKUpA",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "visibility",
+          "值": "10W+"
+        },
+        "底部右侧文字": "INFO"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "gpt6-exposed",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "Model Watch // Leak",
+      "标题": "GPT-6，曝光了",
+      "封面图": "data/portfolio-covers/GPT-6.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/BLwrThpQYBKVOlJpb4gwvg",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "visibility",
+          "值": "10W+"
+        },
+        "底部右侧文字": "INFO"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "wechat-longform",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "Wechat Archive // Longform",
+      "标题": "从火海中走向世界，日本政府做了什么？",
+      "封面图": "data/portfolio-covers/藤本树.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/tSweNrb5jHpaqRIEjTBLiA",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "THIS MATTERS"
+        },
+        "底部右侧文字": "ARTICLE"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "hassabis-biography-gossip",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "DeepMind Notes // Profile",
+      "标题": "哈萨比斯传记里讲了好多八卦啊",
+      "封面图": "data/portfolio-covers/Hassabis.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/7emNZcVCnTaSOrKcnAprfA",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "EVIL BALD GUY!"
+        },
+        "底部右侧文字": "COMMENTARY"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "mirror-thirty-years",
+      "分类": "article",
+      "平台": "WeChat",
+      "上方小字": "Culture Note // Essay",
+      "标题": "时隔30年，我们仍被困在那面镜子里",
+      "封面图": "data/portfolio-covers/攻壳机动队的崎玉素子.png",
+      "跳转链接": "https://mp.weixin.qq.com/s/Vi-Ic-FHOIe5hULX3-d9AQ",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "campaign",
+          "值": "REBORN"
+        },
+        "底部右侧文字": "COMMENTARY"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    },
+    {
+      "唯一标识": "music-archive",
+      "分类": "music",
+      "平台": "Music",
+      "上方小字": "Studio One // Practice",
+      "标题": "音乐与声音练习",
+      "封面图": "https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY",
+      "跳转链接": "https://music.163.com/",
+      "默认显示": {
+        "底部左侧指标": {
+          "图标": "graphic_eq",
+          "值": "12"
+        },
+        "底部右侧文字": "DRAFTS"
+      },
+      "实时数据配置": {
+        "类型": "manual"
+      }
+    }
+  ]
+}
