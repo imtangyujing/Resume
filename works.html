@@ -679,15 +679,32 @@
       const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～传送启动！"];
       let chatLines = [...defaultChatLines];
       let castLines = [...defaultCastLines];
+      const sequenceLineDelay = 4000;
+      const sequenceReturnDelay = 2500;
 
       let lineIdx = 0;
+      function collectPointSequence(startIndex, target) {
+        const sequence = [];
+        let cursor = startIndex;
+
+        while (cursor < chatLines.length) {
+          const current = chatLines[cursor];
+          if (current.action !== 'point' || current.target !== target) break;
+          sequence.push(current);
+          cursor += 1;
+        }
+
+        return sequence;
+      }
+
       function nextChat() {
         if (isCasting || lineIdx >= chatLines.length) return;
         const line = chatLines[lineIdx];
         lineIdx++;
 
         if (line.action === 'point' && line.target) {
-          // Walk to target, point with wand
+          const sequence = collectPointSequence(lineIdx - 1, line.target);
+          lineIdx = lineIdx - 1 + sequence.length;
           const pos = getLinkCenter(line.target);
           const curLeft = parseFloat(wizard.style.left) || 0;
           face(pos > curLeft ? 1 : -1);
@@ -696,17 +713,20 @@
             idle();
             poke();
             pointDir(pos > curLeft ? 1 : -1);
-            say(line.text);
+            sequence.forEach((item, index) => {
+              schedule(() => {
+                say(item.text);
+              }, index * sequenceLineDelay);
+            });
             schedule(() => {
               clearPoint();
-              // Walk back to current page link
               const homePos = getLinkCenter('a[href="works.html"]');
               face(homePos < pos ? -1 : 1);
               moveTo(homePos);
               schedule(() => { idle(); face(1); }, 1000);
-            }, 2500);
+            }, Math.max(sequenceReturnDelay, ((sequence.length - 1) * sequenceLineDelay) + sequenceReturnDelay));
           }, 1000);
-          chatTimer = schedule(nextChat, 6500);
+          chatTimer = schedule(nextChat, 1000 + Math.max(sequenceReturnDelay, ((sequence.length - 1) * sequenceLineDelay) + sequenceReturnDelay) + 1800);
         } else {
           say(line.text);
           chatTimer = schedule(nextChat, 4000);
