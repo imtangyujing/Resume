@@ -64,7 +64,7 @@
   }
   .book-stage {
     position: relative;
-    width: min(1160px, calc(100vw - 6rem));
+    width: min(1240px, calc(100vw - 4rem));
     margin: 0 auto;
     z-index: 2;
   }
@@ -82,7 +82,7 @@
   .book-shell {
     position: relative;
     overflow: hidden;
-    padding: 28px 32px 34px;
+    padding: 18px 20px 22px;
     border: 1px solid rgba(0,0,0,0.08);
     background:
       linear-gradient(180deg, rgba(255,255,255,0.95), rgba(244,243,242,0.98)),
@@ -91,13 +91,6 @@
       inset 0 1px 0 rgba(255,255,255,0.75),
       inset 0 -1px 0 rgba(0,0,0,0.04),
       0 30px 60px rgba(26, 28, 28, 0.08);
-  }
-  .book-shell::before {
-    content: "";
-    position: absolute;
-    inset: 12px;
-    border: 1px solid rgba(0,0,0,0.04);
-    pointer-events: none;
   }
   .book-window {
     overflow: hidden;
@@ -114,7 +107,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr);
     gap: 0;
-    min-height: 620px;
+    height: 680px;
     transition: opacity 0.45s ease, transform 0.55s ease;
   }
   .book-spread.turn-forward {
@@ -137,7 +130,7 @@
   }
   .book-page {
     position: relative;
-    min-height: 620px;
+    height: 100%;
     padding: 2.4rem 2.5rem 2rem;
     background:
       linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,249,248,0.96)),
@@ -172,15 +165,24 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
   }
   .page-kicker {
-    color: rgba(26, 28, 28, 0.5);
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    display: none;
+  }
+  .page-top-tags {
+    min-height: calc(clamp(2rem, 2.2vw, 3.25rem) * 1.07);
+    display: flex;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .page-top-tags.with-corner-photo {
+    max-width: calc(100% - 8.5rem);
   }
   .page-title {
-    margin-top: 1.4rem;
+    margin-top: 0;
     font-family: "Noto Serif", serif;
     font-size: clamp(2rem, 2.2vw, 3.25rem);
     line-height: 1.07;
@@ -188,11 +190,77 @@
     color: #111111;
   }
   .page-body {
-    margin-top: 1.8rem;
-    font-size: 1.02rem;
-    line-height: 1.85;
+    margin-top: 1.3rem;
+    font-size: 0.98rem;
+    line-height: 1.72;
     color: #474747;
     max-width: 30rem;
+  }
+  .page-copy {
+    margin-top: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .page-copy.tight-top {
+    margin-top: 1.35rem;
+  }
+  .page-copy.with-pinned-card {
+    max-width: calc(100% - 12rem);
+  }
+  .page-copy-row + .page-copy-row {
+    margin-top: 0.7rem;
+  }
+  .page-body-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .page-body-line {
+    margin: 0;
+  }
+  .page-copy-line {
+    margin: 0;
+  }
+  .page-copy-line.strong {
+    font-weight: 700;
+    color: #1f1f1f;
+  }
+  .page-copy-line strong {
+    font-weight: 700;
+    color: #1f1f1f;
+  }
+  .page-copy-line em {
+    font-style: normal;
+    color: rgba(31, 31, 31, 0.48);
+  }
+  .page-copy-line a {
+    color: #c8142f;
+    text-decoration: none;
+    padding: 0 0.08em;
+    border-radius: 0.12em;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0) 0 28%, rgba(255,110,130,0.2) 28% 76%, rgba(255,255,255,0) 76% 100%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    animation: linkPulse 2.8s ease-in-out infinite;
+  }
+  .page-copy-line a:hover {
+    color: #ea1c3d;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0) 0 24%, rgba(255,92,116,0.28) 24% 80%, rgba(255,255,255,0) 80% 100%);
+  }
+  .page-copy-line.detail {
+    font-size: 0.95rem;
+    line-height: 1.68;
+    color: #1a1c1c;
+  }
+  .page-copy-divider {
+    margin-top: 1.1rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(0,0,0,0.08);
   }
   .detail-block {
     margin-top: 2rem;
@@ -214,10 +282,96 @@
   }
   .tag-row {
     margin-top: auto;
-    padding-top: 2.2rem;
+    padding-top: 1.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+  .page-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: auto;
+  }
+  .page-bottom {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.2rem;
+  }
+  .page-bottom:has(.memory-photo):not(:has(.page-footer)) {
+    justify-content: flex-start;
+  }
+  .page-footer.with-pinned-card {
+    padding-right: 12rem;
+  }
+  .memory-photo {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(180px, 42%);
+    padding: 0.6rem 0.6rem 1rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,244,239,0.98));
+    border-radius: 0.55rem;
+    box-shadow:
+      0 18px 30px rgba(56, 41, 31, 0.12),
+      0 5px 10px rgba(56, 41, 31, 0.08);
+    border: 1px solid rgba(84, 67, 55, 0.08);
+    transform: rotate(-4.5deg);
+  }
+  .memory-photo.corner {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.35rem;
+    width: min(122px, 24%);
+    z-index: 3;
+    transform: rotate(6deg);
+    transform-origin: top right;
+    animation: cornerPhotoSway 6.4s ease-in-out infinite;
+  }
+  .memory-photo::before {
+    content: "";
+    position: absolute;
+    top: -0.35rem;
+    left: 50%;
+    width: 1.15rem;
+    height: 1.15rem;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 35%, #fff4e7 0%, #dfd0bf 48%, #af9e8b 100%);
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.08),
+      inset 0 1px 1px rgba(255,255,255,0.75);
+  }
+  .memory-photo.corner::before {
+    top: -0.22rem;
+    left: auto;
+    right: 0.85rem;
+    transform: none;
+  }
+  @keyframes cornerPhotoSway {
+    0%, 100% {
+      transform: rotate(6deg) translate3d(0, 0, 0);
+    }
+    25% {
+      transform: rotate(4.8deg) translate3d(-1px, 1px, 0);
+    }
+    55% {
+      transform: rotate(6.9deg) translate3d(1px, -1px, 0);
+    }
+    78% {
+      transform: rotate(5.4deg) translate3d(0, 1px, 0);
+    }
+  }
+  .memory-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 0.2rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.4);
   }
   .page-tag {
     padding: 0.42rem 0.72rem;
@@ -235,6 +389,281 @@
     color: rgba(26, 28, 28, 0.4);
     letter-spacing: 0.24em;
     text-transform: uppercase;
+  }
+  .page-signoff {
+    text-align: right;
+    font-family: "Noto Serif", serif;
+    font-style: italic;
+    color: #17120d;
+    flex: 0 0 auto;
+  }
+  .page-signoff-line {
+    margin: 0;
+    line-height: 1.35;
+  }
+  .page-signoff-line.meta {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    color: rgba(23, 18, 13, 0.72);
+  }
+  .page-signoff-line.brand {
+    margin-top: 0.18rem;
+    font-size: clamp(1.35rem, 1.4vw, 1.8rem);
+  }
+  .pinned-card {
+    position: absolute;
+    right: 2.1rem;
+    bottom: 8rem;
+    width: 170px;
+    padding: 10px 10px 12px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #1b1716 0%, #0d0c0c 100%);
+    box-shadow:
+      0 12px 28px rgba(0,0,0,0.16),
+      0 2px 6px rgba(0,0,0,0.12);
+    border: 1px solid rgba(255,255,255,0.08);
+    transform-origin: 50% 8px;
+    animation: pinnedSway 5.8s ease-in-out infinite;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .pinned-card::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 35%, #ffd464, #f3a800 68%, #d28b00 100%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .pinned-card::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+    pointer-events: none;
+  }
+  .pinned-card-frame {
+    overflow: hidden;
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, #201917 0%, #120f0f 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .pinned-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    color: rgba(255,255,255,0.88);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .pinned-card-brand {
+    font-weight: 700;
+  }
+  .pinned-card-button {
+    padding: 3px 7px;
+    border-radius: 9999px;
+    background: #f6b31a;
+    color: #14110f;
+    font-size: 0.5rem;
+    font-weight: 700;
+  }
+  .pinned-card-body {
+    padding: 10px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.02));
+  }
+  .pinned-card-title {
+    color: #f3ece6;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .pinned-card-filters {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .pinned-pill {
+    padding: 3px 7px;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.78);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.5rem;
+  }
+  .pinned-card-list {
+    margin-top: 10px;
+    display: grid;
+    gap: 7px;
+  }
+  .pinned-card-item {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    gap: 7px;
+    align-items: center;
+  }
+  .pinned-thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background:
+      radial-gradient(circle at 50% 60%, rgba(255,179,0,0.85), rgba(255,179,0,0.02) 52%),
+      linear-gradient(145deg, #231714, #090909);
+    position: relative;
+    overflow: hidden;
+  }
+  .pinned-thumb::after {
+    content: "";
+    position: absolute;
+    inset: 5px 3px;
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(255,179,0,0.85) 50%, transparent 100%);
+    opacity: 0.85;
+  }
+  .pinned-item-copy {
+    min-width: 0;
+  }
+  .pinned-item-name {
+    color: rgba(255,255,255,0.92);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.53rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pinned-item-meta {
+    margin-top: 1px;
+    color: rgba(255,255,255,0.48);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.46rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pinned-price {
+    padding: 4px 6px;
+    border-radius: 8px;
+    background: #f6b31a;
+    color: #16110e;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+  }
+  @keyframes pinnedSway {
+    0%, 100% { transform: rotate(-3deg) translateY(0px); }
+    25% { transform: rotate(-1.2deg) translateY(-1px); }
+    50% { transform: rotate(1deg) translateY(1px); }
+    75% { transform: rotate(-0.6deg) translateY(-1px); }
+  }
+  @keyframes linkPulse {
+    0%, 100% { opacity: 0.72; text-shadow: 0 0 0 rgba(200, 20, 47, 0); }
+    50% { opacity: 1; text-shadow: 0 0 12px rgba(200, 20, 47, 0.26); }
+  }
+  .astra-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(16, 12, 12, 0.42);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+  .astra-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .astra-dialog {
+    width: auto;
+    max-width: min(760px, calc(100vw - 4rem));
+    max-height: calc(100vh - 4rem);
+    transform: scale(0.84);
+    opacity: 0;
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.28s ease;
+  }
+  .astra-overlay.open .astra-dialog {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .astra-frame {
+    display: inline-block;
+    padding: 14px 14px 54px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #fbf8f2 0%, #f2ede4 100%);
+    box-shadow:
+      0 22px 60px rgba(0,0,0,0.24),
+      0 3px 10px rgba(0,0,0,0.12);
+    position: relative;
+    transform: rotate(0deg);
+  }
+  .astra-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.18), transparent 16%),
+      linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.03) 100%);
+    pointer-events: none;
+  }
+  .astra-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 16px;
+    text-align: center;
+    font-family: "Noto Serif", serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(60, 45, 33, 0.72);
+    letter-spacing: 0.02em;
+  }
+  .astra-image {
+    display: block;
+    width: min(680px, calc(100vw - 7rem));
+    max-height: calc(100vh - 10rem);
+    object-fit: contain;
+    border-radius: 2px;
+  }
+  .astra-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    backdrop-filter: blur(10px);
+  }
+  .pagination-measure {
+    position: fixed;
+    left: -200vw;
+    top: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: -1;
   }
   .book-spine {
     position: relative;
@@ -402,25 +831,25 @@
   }
   @media (max-width: 1279px) {
     .book-stage {
-      width: min(980px, calc(100vw - 3rem));
+      width: min(1060px, calc(100vw - 2.5rem));
     }
   }
   @media (max-width: 1023px) {
     .book-stage {
-      width: min(860px, calc(100vw - 2rem));
+      width: min(900px, calc(100vw - 1.5rem));
     }
     .book-shell {
-      padding: 18px;
+      padding: 14px;
     }
     .book-spread {
       grid-template-columns: 1fr;
-      min-height: auto;
+      height: auto;
     }
     .book-spine {
       display: none;
     }
     .book-page {
-      min-height: 0;
+      height: auto;
       border-radius: 18px;
       border: 1px solid rgba(0,0,0,0.06);
     }
@@ -436,10 +865,10 @@
   }
   @media (max-width: 767px) {
     .book-stage {
-      width: calc(100vw - 1.25rem);
+      width: calc(100vw - 0.75rem);
     }
     .book-shell {
-      padding: 14px;
+      padding: 10px;
     }
     .book-page {
       padding: 1.6rem 1.2rem 1.4rem;
@@ -450,6 +879,22 @@
     .page-body {
       font-size: 0.96rem;
       line-height: 1.75;
+    }
+    .page-footer {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .page-signoff {
+      text-align: left;
+    }
+    .pinned-card {
+      display: none;
+    }
+    .page-copy.with-pinned-card {
+      max-width: 100%;
+    }
+    .page-footer.with-pinned-card {
+      padding-right: 0;
     }
     .book-arrow {
       width: 48px;
@@ -537,107 +982,7 @@
         <div class="book-shadow"></div>
         <div class="book-shell">
           <div class="book-window">
-            <div class="book-track" id="book-track">
-              <section class="book-spread" data-spread="0">
-                <article class="book-page left-page page-focus" data-page-index="0">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2023.07 - 2023.08 / Guotai Junan</div>
-                    <h2 class="page-title" data-field="title">企业客户部实习 // 国泰君安</h2>
-                    <p class="page-body" data-field="body">
-                      在企业客户部协助新能源汽车行业研究，为项目推进准备基础材料。重点整理政策、行业新闻与公司动态，并结合 Wind 汇总头部企业关键财务数据。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">工作内容</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>协助领导调研新能源汽车行业，系统梳理近期政策、行业新闻和市场资讯，沉淀项目基础研究材料。</div>
-                        <div>使用 Wind 收集龙头公司的 ROA、R&amp;D、Liability 等财务指标，支持后续企业分析与项目判断。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">行业研究</span>
-                      <span class="page-tag">Wind</span>
-                      <span class="page-tag">财务分析</span>
-                    </div>
-                    <div class="page-number">Page 01</div>
-                  </div>
-                </article>
-
-                <div class="book-spine" aria-hidden="true"></div>
-
-                <article class="book-page right-page" data-page-index="1">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2025.02 - 2025.05 / Koala Kankan</div>
-                    <h2 class="page-title" data-field="title">财经编辑 // 考拉看看</h2>
-                    <p class="page-body" data-field="body">
-                      作为项目组骨干参与经济学书籍写作，从前期访谈、资料整理到大纲搭建与深度稿件撰写都深度参与，围绕复杂议题完成数万字内容生产。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">项目产出</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>与客户深入访谈，提炼信息重点，构建书稿章节大纲，并使用思维导图搭建资料库。</div>
-                        <div>执笔完成华为鸿蒙、SWIFT 等板块深度稿件，兼顾事实准确性、结构完整度与可读性。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">深度写作</span>
-                      <span class="page-tag">访谈整理</span>
-                      <span class="page-tag">资料搭建</span>
-                    </div>
-                    <div class="page-number">Page 02</div>
-                  </div>
-                </article>
-              </section>
-
-              <section class="book-spread" data-spread="1">
-                <article class="book-page left-page" data-page-index="2">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2025.05 - Present / Self Media</div>
-                    <h2 class="page-title" data-field="title">科技编辑 // 自媒体</h2>
-                    <p class="page-body" data-field="body">
-                      持续运营公众号与微博，围绕经济史、科技评论和选题洞察展开内容创作，把深度长文与短内容分发结合起来，逐步形成自己的写作与选题体系。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">内容方向</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>公众号侧重深度长文，已围绕日本经济泡沫、人形机器人等主题输出兼具历史纵深和现实判断的内容。</div>
-                        <div>微博账户“唐榆景”用于记录个人洞察、沉淀素材，并测试大众向科技短文的传播潜力与选题反馈。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">长文写作</span>
-                      <span class="page-tag">选题策划</span>
-                      <span class="page-tag">内容增长</span>
-                    </div>
-                    <div class="page-number">Page 03</div>
-                  </div>
-                </article>
-
-                <div class="book-spine" aria-hidden="true"></div>
-
-                <article class="book-page right-page" data-page-index="3">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2018.12 - 2021.07 / Hosting & Research</div>
-                    <h2 class="page-title" data-field="title">主持人与调研实践 // 播音主持</h2>
-                    <p class="page-body" data-field="body">
-                      在主持训练和真实活动场景中积累表达与控场能力，同时参与基层调研项目，把现场沟通、采访组织和内容整理连接起来，形成较强的叙事表达基础。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">实践重点</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>在重庆市广播电视台主持人指导下获第二十届全国电视主持新星活动青年组二等奖，并主持多场政府与企业活动。</div>
-                        <div>协调团队在南山放牛村开展一周实地调研，深度访谈多方角色，最终完成一篇万字研究报告。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">主持表达</span>
-                      <span class="page-tag">深度访谈</span>
-                      <span class="page-tag">田野调研</span>
-                    </div>
-                    <div class="page-number">Page 04</div>
-                  </div>
-                </article>
-              </section>
-            </div>
+            <div class="book-track" id="book-track"></div>
           </div>
         </div>
         <button class="book-arrow left" id="arrow-left" aria-label="Previous spread">
@@ -653,8 +998,265 @@
     </div>
   </section>
 </main>
+<div class="astra-overlay" id="astra-overlay" aria-hidden="true">
+  <button class="astra-close" id="astra-close" type="button" aria-label="Close preview">×</button>
+  <div class="astra-dialog">
+    <div class="astra-frame">
+      <img class="astra-image" src="/data/Astra.png" alt="Astra preview">
+      <div class="astra-caption">Best wishes, enjoy!</div>
+    </div>
+  </div>
+</div>
 
 <script>
+  let track = document.getElementById('book-track');
+  let spreads = [];
+  let pageCards = [];
+  const arrowLeft = document.getElementById('arrow-left');
+  const arrowRight = document.getElementById('arrow-right');
+  const dotsContainer = document.getElementById('book-dots');
+  const spreadLabel = document.getElementById('spread-label');
+  const astraOverlay = document.getElementById('astra-overlay');
+  const astraClose = document.getElementById('astra-close');
+  let experienceItems = [];
+  let resizeTimer = null;
+  let totalSpreads = 0;
+  let currentSpread = 0;
+  let focusedPage = 0;
+  let isAnimating = false;
+
+  function normalizeParagraphs(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value
+        .map((item) => {
+          if (item && typeof item === 'object') {
+            const text = String(item.text || item['文本'] || '').trim();
+            if (!text) return null;
+            return {
+              text,
+              strong: Boolean(item.strong ?? item['加粗']),
+              divider: Boolean(item.divider ?? item['分割线']),
+            };
+          }
+
+          const text = String(item).trim();
+          if (!text) return null;
+          if (['（分割线）', '(分割线)', '(divider)', '（divider）', '---'].includes(text)) {
+            return { text: '', strong: false, divider: true, markerOnly: true };
+          }
+
+          return { text, strong: false, divider: false, markerOnly: false };
+        })
+        .filter(Boolean);
+    }
+
+    return String(value)
+      .split(/\n+/)
+      .flatMap((line) => line.split(/(?<=[。！？])/u))
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .map((text) => ({ text, strong: false, divider: false, markerOnly: false }));
+  }
+
+  function getExperienceBlocks(item) {
+    const introBlocks = normalizeParagraphs(item['正文']).map((entry) => ({
+      kind: 'body',
+      text: entry.text,
+      strong: entry.strong,
+      divider: entry.divider,
+      markerOnly: entry.markerOnly,
+    }));
+    const detailBlocks = normalizeParagraphs(item['条目']).map((entry) => ({
+      kind: 'detail',
+      text: entry.text,
+      strong: entry.strong,
+      divider: entry.divider,
+      markerOnly: entry.markerOnly,
+    }));
+    return [...introBlocks, ...detailBlocks].filter((entry) => !entry.markerOnly);
+  }
+
+  function renderInlineMarkup(text = '') {
+    return escapeHtml(text)
+      .replace(/\[([^\]]+)\]\((astra-preview)\)/g, '<a href="#" data-astra-trigger="true">$1</a>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+  }
+
+  function renderContentBlocks(blocks) {
+    return blocks.map((block, index) => {
+      const className = [
+        'page-copy-line',
+        block.kind === 'detail' ? 'detail' : '',
+        block.strong ? 'strong' : '',
+      ].filter(Boolean).join(' ');
+      const previousText = blocks[index - 1]?.text?.trim();
+      const fallbackDivider =
+        previousText === '希望我做得还不错。' &&
+        block.text.trim().startsWith('乔布斯说，好的产品经理');
+      const needsDivider = block.divider || fallbackDivider;
+
+      return `
+        <div class="page-copy-row">
+          ${needsDivider ? '<div class="page-copy-divider" aria-hidden="true"></div>' : ''}
+          <p class="${className}">${renderInlineMarkup(block.text)}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderTags(tags = []) {
+    return tags.map((tag) => `<span class="page-tag">${escapeHtml(tag)}</span>`).join('');
+  }
+
+  function buildSignoff(timeAndUnit = '') {
+    if (timeAndUnit && typeof timeAndUnit === 'object') {
+      const meta = String(timeAndUnit.meta || timeAndUnit.time || '').trim();
+      const brand = String(timeAndUnit.brand || timeAndUnit.unit || '').trim();
+      return `
+        <div class="page-signoff">
+          ${meta ? `<p class="page-signoff-line meta">${escapeHtml(meta)}</p>` : ''}
+          ${brand ? `<p class="page-signoff-line brand">${escapeHtml(brand)}</p>` : ''}
+        </div>
+      `;
+    }
+
+    const [timePartRaw = '', unitPartRaw = ''] = String(timeAndUnit).split('/').map((part) => part.trim());
+    const timePart = timePartRaw || '2025.09 - 至今';
+    const unitPart = unitPartRaw || 'QbitAI';
+    return `
+      <div class="page-signoff">
+        <p class="page-signoff-line meta">${escapeHtml(timePart)}</p>
+        <p class="page-signoff-line brand">${escapeHtml(`We are ${unitPart}`)}</p>
+      </div>
+    `;
+  }
+
+  function buildRightPagePhoto(photo) {
+    if (!photo) return '';
+    const source = typeof photo === 'string' ? photo : String(photo.src || photo.image || '').trim();
+    if (!source) return '';
+    const alt = typeof photo === 'object' ? String(photo.alt || photo.caption || '').trim() : '';
+    return `
+      <figure class="memory-photo corner" aria-label="${escapeHtml(alt || 'memory photo')}">
+        <img src="${escapeHtml(source)}" alt="${escapeHtml(alt || 'memory photo')}" loading="lazy" />
+      </figure>
+    `;
+  }
+
+  function overflows(container) {
+    return container.scrollHeight - container.clientHeight > 1;
+  }
+
+  function buildMeasurementSpread(item) {
+    const measure = document.createElement('div');
+    measure.className = 'pagination-measure';
+    measure.style.width = `${Math.max(track.parentElement?.clientWidth || track.clientWidth || 960, 320)}px`;
+    measure.innerHTML = `
+      <section class="book-spread">
+        <article class="book-page left-page">
+          <div class="page-inner">
+            <h2 class="page-title">${escapeHtml(item['标题'] || '')}</h2>
+            <div class="page-copy page-body" data-measure-copy="left"></div>
+            <div class="page-number">Page 01</div>
+          </div>
+        </article>
+        <div class="book-spine" aria-hidden="true"></div>
+        <article class="book-page right-page">
+          <div class="page-inner">
+            ${buildRightPagePhoto(item.rightPagePhoto || item['右页照片'] || '')}
+            <div class="page-top-tags${(item.rightPagePhoto || item['右页照片']) ? ' with-corner-photo' : ''}">${renderTags(item['标签'] || [])}</div>
+            <div class="page-copy page-body tight-top" data-measure-copy="right"></div>
+            <div class="page-bottom">
+              <div class="page-footer">
+                ${buildSignoff(item.signoff || item['落款'] || item['时间与单位'] || '')}
+              </div>
+            </div>
+            <div class="page-number">Page 02</div>
+          </div>
+        </article>
+      </section>
+    `;
+    document.body.appendChild(measure);
+    return measure;
+  }
+
+  function splitExperienceContent(item) {
+    const allBlocks = getExperienceBlocks(item);
+    if (window.innerWidth <= 1023 || allBlocks.length <= 1) {
+      return { leftBlocks: allBlocks, rightBlocks: [] };
+    }
+
+    const measure = buildMeasurementSpread(item);
+    const leftCopy = measure.querySelector('[data-measure-copy="left"]');
+    const rightCopy = measure.querySelector('[data-measure-copy="right"]');
+
+    const leftBlocks = [];
+    let splitIndex = allBlocks.length;
+
+    for (let index = 0; index < allBlocks.length; index += 1) {
+      leftBlocks.push(allBlocks[index]);
+      leftCopy.innerHTML = renderContentBlocks(leftBlocks);
+
+      if (overflows(leftCopy) && leftBlocks.length > 1) {
+        leftBlocks.pop();
+        leftCopy.innerHTML = renderContentBlocks(leftBlocks);
+        splitIndex = index;
+        break;
+      }
+    }
+
+    const rightBlocks = allBlocks.slice(splitIndex);
+    rightCopy.innerHTML = renderContentBlocks(rightBlocks);
+
+    measure.remove();
+    return { leftBlocks, rightBlocks };
+  }
+
+  function renderExperienceSpreads(items = []) {
+    track.innerHTML = items.map((item, index) => {
+      const { leftBlocks, rightBlocks } = splitExperienceContent(item);
+      const pageBase = index * 2;
+
+      return `
+        <section class="book-spread" data-spread="${index}">
+          <article class="book-page left-page${index === 0 ? ' page-focus' : ''}" data-page-index="${pageBase}">
+            <div class="page-inner">
+              <h2 class="page-title">${escapeHtml(item['标题'] || '')}</h2>
+              <div class="page-copy page-body">${renderContentBlocks(leftBlocks)}</div>
+              <div class="page-number">Page ${(pageBase + 1).toString().padStart(2, '0')}</div>
+            </div>
+          </article>
+          <div class="book-spine" aria-hidden="true"></div>
+          <article class="book-page right-page" data-page-index="${pageBase + 1}">
+            <div class="page-inner">
+              <div class="page-kicker">${escapeHtml(item['时间与单位'] || '')}</div>
+              ${buildRightPagePhoto(item.rightPagePhoto || item['右页照片'] || '')}
+              <div class="page-top-tags${(item.rightPagePhoto || item['右页照片']) ? ' with-corner-photo' : ''}">${renderTags(item['标签'] || [])}</div>
+              <div class="page-copy page-body tight-top">${renderContentBlocks(rightBlocks)}</div>
+              <div class="page-bottom">
+                <div class="page-footer">
+                  ${buildSignoff(item.signoff || item['落款'] || item['时间与单位'] || '')}
+                </div>
+              </div>
+              <div class="page-number">Page ${(pageBase + 2).toString().padStart(2, '0')}</div>
+            </div>
+          </article>
+        </section>
+      `;
+    }).join('');
+
+    refreshBookRefs();
+  }
+
+  function refreshBookRefs() {
+    spreads = Array.from(document.querySelectorAll('.book-spread'));
+    pageCards = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
+    totalSpreads = spreads.length;
+  }
+
   async function hydrateExperienceContent() {
     try {
       const response = await fetch('/api/experience/content');
@@ -664,30 +1266,14 @@
 
       if (content['页面标题']) document.getElementById('experience-page-title').textContent = content['页面标题'];
       if (content['右侧标题']) document.getElementById('experience-side-label').textContent = content['右侧标题'];
-      if (content['右侧当前章节']) document.getElementById('spread-label').textContent = content['右侧当前章节'];
-
-      const sections = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
-      (content['章节列表'] || []).forEach((item, index) => {
-        const section = sections[index];
-        if (!section) return;
-        const timeNode = section.querySelector('[data-field="time"]');
-        const titleNode = section.querySelector('[data-field="title"]');
-        const bodyNode = section.querySelector('[data-field="body"]');
-        const detailTitleNode = section.querySelector('[data-field="detail-title"]');
-        const detailListNode = section.querySelector('[data-field="detail-list"]');
-        const tagsNode = section.querySelector('[data-field="tags"]');
-
-        if (timeNode && item['时间与单位']) timeNode.textContent = item['时间与单位'];
-        if (titleNode && item['标题']) titleNode.textContent = item['标题'];
-        if (bodyNode && item['正文']) bodyNode.textContent = item['正文'];
-        if (detailTitleNode && item['区块标题']) detailTitleNode.textContent = item['区块标题'];
-        if (detailListNode && Array.isArray(item['条目'])) {
-          detailListNode.innerHTML = item['条目'].map((line) => `<div>${escapeHtml(line)}</div>`).join('');
-        }
-        if (tagsNode && Array.isArray(item['标签'])) {
-          tagsNode.innerHTML = item['标签'].map((tag) => `<span class="page-tag">${escapeHtml(tag)}</span>`).join('');
-        }
-      });
+      experienceItems = content['章节列表'] || [];
+      renderExperienceSpreads(experienceItems);
+      currentSpread = 0;
+      focusedPage = 0;
+      buildDots();
+      updateControls();
+      updateChapterState();
+      updateSpreadLabel();
     } catch (error) {
       console.error('Failed to hydrate experience content:', error);
     }
@@ -704,33 +1290,66 @@
 
   hydrateExperienceContent();
 
-  const track = document.getElementById('book-track');
-  const spreads = Array.from(document.querySelectorAll('.book-spread'));
-  const pageCards = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
-  const arrowLeft = document.getElementById('arrow-left');
-  const arrowRight = document.getElementById('arrow-right');
-  const dotsContainer = document.getElementById('book-dots');
-  const spreadLabel = document.getElementById('spread-label');
-  const totalSpreads = spreads.length;
-  let currentSpread = 0;
-  let focusedPage = 0;
-  let isAnimating = false;
+  function openAstraOverlay() {
+    astraOverlay.classList.add('open');
+    astraOverlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeAstraOverlay() {
+    astraOverlay.classList.remove('open');
+    astraOverlay.setAttribute('aria-hidden', 'true');
+  }
+
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-astra-trigger="true"]');
+    if (trigger) {
+      event.preventDefault();
+      openAstraOverlay();
+      return;
+    }
+
+    if (event.target === astraOverlay || event.target === astraClose) {
+      closeAstraOverlay();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && astraOverlay.classList.contains('open')) {
+      closeAstraOverlay();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (!experienceItems.length) return;
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      const previousSpread = currentSpread;
+      const previousPage = focusedPage;
+      renderExperienceSpreads(experienceItems);
+      currentSpread = Math.min(previousSpread, Math.max(0, totalSpreads - 1));
+      focusedPage = Math.min(previousPage, Math.max(0, pageCards.length - 1));
+      track.style.transform = `translateX(-${currentSpread * 100}%)`;
+      buildDots();
+      updateControls();
+      updateChapterState();
+      updateSpreadLabel();
+    }, 120);
+  });
 
   function buildDots() {
+    dotsContainer.innerHTML = '';
     for (let i = 0; i < totalSpreads; i++) {
       const dot = document.createElement('button');
       dot.className = 'book-dot' + (i === 0 ? ' active' : '');
       dot.type = 'button';
-      dot.setAttribute('aria-label', `Go to spread ${i + 1}`);
+      dot.setAttribute('aria-label', `Go to chapter ${i + 1}`);
       dot.addEventListener('click', () => goToSpread(i, i * 2));
       dotsContainer.appendChild(dot);
     }
   }
 
   function updateSpreadLabel() {
-    const leftPage = currentSpread * 2 + 1;
-    const rightPage = Math.min(leftPage + 1, pageCards.length);
-    spreadLabel.textContent = `Chapter ${leftPage.toString().padStart(2, '0')} / ${rightPage.toString().padStart(2, '0')}`;
+    spreadLabel.textContent = `Chapter ${(currentSpread + 1).toString().padStart(2, '0')} / ${String(totalSpreads).padStart(2, '0')}`;
   }
 
   function updateControls() {
@@ -791,10 +1410,6 @@
     }, 280);
   }
 
-  buildDots();
-  updateControls();
-  updateChapterState();
-  updateSpreadLabel();
   arrowLeft.addEventListener('click', () => goToSpread(currentSpread - 1, Math.max(0, currentSpread * 2 - 1)));
   arrowRight.addEventListener('click', () => goToSpread(currentSpread + 1, Math.min(pageCards.length - 1, currentSpread * 2 + 2)));
 
@@ -865,14 +1480,32 @@
     const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～翻页传送启动！"];
     let chatLines = [...defaultChatLines];
     let castLines = [...defaultCastLines];
+    const sequenceLineDelay = 4000;
+    const sequenceReturnDelay = 2300;
 
     let lineIndex = 0;
+    function collectPointSequence(startIndex, target) {
+      const sequence = [];
+      let cursor = startIndex;
+
+      while (cursor < chatLines.length) {
+        const current = chatLines[cursor];
+        if (current.action !== 'point' || current.target !== target) break;
+        sequence.push(current);
+        cursor += 1;
+      }
+
+      return sequence;
+    }
+
     function nextChat() {
       if (isCasting || lineIndex >= chatLines.length) return;
       const line = chatLines[lineIndex];
       lineIndex += 1;
 
       if (line.action === 'point' && line.target) {
+        const sequence = collectPointSequence(lineIndex - 1, line.target);
+        lineIndex = lineIndex - 1 + sequence.length;
         const pos = getLinkCenter(line.target);
         const currentLeft = parseFloat(wizard.style.left) || 0;
         face(pos > currentLeft ? 1 : -1);
@@ -881,7 +1514,11 @@
           idle();
           poke();
           pointDir(pos > currentLeft ? 1 : -1);
-          say(line.text);
+          sequence.forEach((item, index) => {
+            schedule(() => {
+              say(item.text);
+            }, index * sequenceLineDelay);
+          });
           schedule(() => {
             clearPoint();
             const homePos = getLinkCenter('a[href="experience.html"]');
@@ -891,9 +1528,9 @@
               idle();
               face(1);
             }, 1000);
-          }, 2300);
+          }, Math.max(sequenceReturnDelay, ((sequence.length - 1) * sequenceLineDelay) + sequenceReturnDelay));
         }, 1000);
-        chatTimer = schedule(nextChat, 6200);
+        chatTimer = schedule(nextChat, 1000 + Math.max(sequenceReturnDelay, ((sequence.length - 1) * sequenceLineDelay) + sequenceReturnDelay) + 1800);
       } else {
         say(line.text);
         chatTimer = schedule(nextChat, 4200);

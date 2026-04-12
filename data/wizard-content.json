@@ -26,11 +26,6 @@
           "action": "idle"
         },
         {
-          "text": "对了，我的经历也很精彩的…👉",
-          "action": "point",
-          "target": "a[href=\"experience.html\"]"
-        },
-        {
           "text": "试试把鼠标放在卡片上看看？",
           "action": "idle"
         },
@@ -39,16 +34,17 @@
           "action": "idle"
         },
         {
-          "text": "喂喂，经历也看看呗？确定不看？",
+          "text": "对了，我的经历也很精彩的！👉",
           "action": "point",
           "target": "a[href=\"experience.html\"]"
         },
         {
-          "text": "偷窥狂…光看作品不看人的？",
-          "action": "idle"
+          "text": "喂喂，看看呗？确定不看？",
+          "action": "point",
+          "target": "a[href=\"experience.html\"]"
         },
         {
-          "text": "好了好了，去看看我的经历吧～",
+          "text": "偷窥狂…光看作品不看人的",
           "action": "point",
           "target": "a[href=\"experience.html\"]"
         },
@@ -65,10 +61,6 @@
     "about": {
       "自动对话": [
         {
-          "text": "欢迎来了解我！",
-          "action": "idle"
-        },
-        {
           "text": "这就是本人啦，请多指教~",
           "action": "idle"
         },
@@ -77,7 +69,7 @@
           "action": "idle"
         },
         {
-          "text": "央美出品，品质保证哈哈",
+          "text": "西财出品，品质保证哈哈",
           "action": "idle"
         },
         {
@@ -116,30 +108,43 @@
     "experience": {
       "自动对话": [
         {
-          "text": "这次是一本能左右翻的经历书。",
+          "text": "这就是我的人生回忆录噢~",
           "action": "idle"
         },
         {
-          "text": "一摊开就是两页，慢慢翻会更有感觉。",
+          "text": "有点流水账，你就当日记看吧👀",
           "action": "idle"
         },
         {
-          "text": "键盘左右键也能翻页，试试看。",
+          "text": "我是真跟你掏心窝子了，别笑话我🥲",
           "action": "idle"
         },
         {
-          "text": "左边目录点一下，会直接翻到对应章节。",
+          "text": "求求你别大声读出来，我很社恐的…",
           "action": "idle"
         },
         {
-          "text": "想看作品的话，我也可以带你过去 👉",
-          "action": "point",
-          "target": "a[href=\"works.html\"]"
+          "text": "左右箭头可翻页，键盘也有快捷键",
+          "action": "idle"
         },
         {
-          "text": "看完这本，再去 About 页收个尾吧。",
+          "text": "看完了吗，来加我微信聊聊？ 👉",
           "action": "point",
           "target": "a[href=\"about.html\"]"
+        },
+        {
+          "text": "什么？？不加？！",
+          "action": "point",
+          "target": "a[href=\"about.html\"]"
+        },
+        {
+          "text": "有点意思，我喜欢你",
+          "action": "point",
+          "target": "a[href=\"about.html\"]"
+        },
+        {
+          "text": "听说这些文字，能带人穿梭时空哦",
+          "action": "idle"
         }
       ],
       "施法文案": [
