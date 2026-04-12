@@ -64,7 +64,7 @@
   }
   .book-stage {
     position: relative;
-    width: min(1160px, calc(100vw - 6rem));
+    width: min(1240px, calc(100vw - 4rem));
     margin: 0 auto;
     z-index: 2;
   }
@@ -82,7 +82,7 @@
   .book-shell {
     position: relative;
     overflow: hidden;
-    padding: 28px 32px 34px;
+    padding: 18px 20px 22px;
     border: 1px solid rgba(0,0,0,0.08);
     background:
       linear-gradient(180deg, rgba(255,255,255,0.95), rgba(244,243,242,0.98)),
@@ -91,13 +91,6 @@
       inset 0 1px 0 rgba(255,255,255,0.75),
       inset 0 -1px 0 rgba(0,0,0,0.04),
       0 30px 60px rgba(26, 28, 28, 0.08);
-  }
-  .book-shell::before {
-    content: "";
-    position: absolute;
-    inset: 12px;
-    border: 1px solid rgba(0,0,0,0.04);
-    pointer-events: none;
   }
   .book-window {
     overflow: hidden;
@@ -114,7 +107,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr);
     gap: 0;
-    min-height: 620px;
+    height: 620px;
     transition: opacity 0.45s ease, transform 0.55s ease;
   }
   .book-spread.turn-forward {
@@ -137,7 +130,7 @@
   }
   .book-page {
     position: relative;
-    min-height: 620px;
+    height: 100%;
     padding: 2.4rem 2.5rem 2rem;
     background:
       linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,249,248,0.96)),
@@ -172,15 +165,21 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
   }
   .page-kicker {
-    color: rgba(26, 28, 28, 0.5);
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    display: none;
+  }
+  .page-top-tags {
+    min-height: calc(clamp(2rem, 2.2vw, 3.25rem) * 1.07);
+    display: flex;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
   .page-title {
-    margin-top: 1.4rem;
+    margin-top: 0;
     font-family: "Noto Serif", serif;
     font-size: clamp(2rem, 2.2vw, 3.25rem);
     line-height: 1.07;
@@ -188,11 +187,50 @@
     color: #111111;
   }
   .page-body {
-    margin-top: 1.8rem;
-    font-size: 1.02rem;
-    line-height: 1.85;
+    margin-top: 1.3rem;
+    font-size: 0.98rem;
+    line-height: 1.72;
     color: #474747;
     max-width: 30rem;
+  }
+  .page-copy {
+    margin-top: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .page-copy.tight-top {
+    margin-top: 1.35rem;
+  }
+  .page-copy-row + .page-copy-row {
+    margin-top: 0.7rem;
+  }
+  .page-body-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .page-body-line {
+    margin: 0;
+  }
+  .page-copy-line {
+    margin: 0;
+  }
+  .page-copy-line.strong {
+    font-weight: 700;
+    color: #1f1f1f;
+  }
+  .page-copy-line.detail {
+    font-size: 0.95rem;
+    line-height: 1.68;
+    color: #1a1c1c;
+  }
+  .page-copy-divider {
+    margin-top: 1.1rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(0,0,0,0.08);
   }
   .detail-block {
     margin-top: 2rem;
@@ -214,10 +252,17 @@
   }
   .tag-row {
     margin-top: auto;
-    padding-top: 2.2rem;
+    padding-top: 1.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+  .page-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
   }
   .page-tag {
     padding: 0.42rem 0.72rem;
@@ -235,6 +280,26 @@
     color: rgba(26, 28, 28, 0.4);
     letter-spacing: 0.24em;
     text-transform: uppercase;
+  }
+  .page-signoff {
+    text-align: right;
+    font-family: "Noto Serif", serif;
+    font-style: italic;
+    color: #17120d;
+    flex: 0 0 auto;
+  }
+  .page-signoff-line {
+    margin: 0;
+    line-height: 1.35;
+  }
+  .page-signoff-line.meta {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    color: rgba(23, 18, 13, 0.72);
+  }
+  .page-signoff-line.brand {
+    margin-top: 0.18rem;
+    font-size: clamp(1.35rem, 1.4vw, 1.8rem);
   }
   .book-spine {
     position: relative;
@@ -402,25 +467,25 @@
   }
   @media (max-width: 1279px) {
     .book-stage {
-      width: min(980px, calc(100vw - 3rem));
+      width: min(1060px, calc(100vw - 2.5rem));
     }
   }
   @media (max-width: 1023px) {
     .book-stage {
-      width: min(860px, calc(100vw - 2rem));
+      width: min(900px, calc(100vw - 1.5rem));
     }
     .book-shell {
-      padding: 18px;
+      padding: 14px;
     }
     .book-spread {
       grid-template-columns: 1fr;
-      min-height: auto;
+      height: auto;
     }
     .book-spine {
       display: none;
     }
     .book-page {
-      min-height: 0;
+      height: auto;
       border-radius: 18px;
       border: 1px solid rgba(0,0,0,0.06);
     }
@@ -436,10 +501,10 @@
   }
   @media (max-width: 767px) {
     .book-stage {
-      width: calc(100vw - 1.25rem);
+      width: calc(100vw - 0.75rem);
     }
     .book-shell {
-      padding: 14px;
+      padding: 10px;
     }
     .book-page {
       padding: 1.6rem 1.2rem 1.4rem;
@@ -450,6 +515,13 @@
     .page-body {
       font-size: 0.96rem;
       line-height: 1.75;
+    }
+    .page-footer {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .page-signoff {
+      text-align: left;
     }
     .book-arrow {
       width: 48px;
@@ -537,107 +609,7 @@
         <div class="book-shadow"></div>
         <div class="book-shell">
           <div class="book-window">
-            <div class="book-track" id="book-track">
-              <section class="book-spread" data-spread="0">
-                <article class="book-page left-page page-focus" data-page-index="0">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2023.07 - 2023.08 / Guotai Junan</div>
-                    <h2 class="page-title" data-field="title">企业客户部实习 // 国泰君安</h2>
-                    <p class="page-body" data-field="body">
-                      在企业客户部协助新能源汽车行业研究，为项目推进准备基础材料。重点整理政策、行业新闻与公司动态，并结合 Wind 汇总头部企业关键财务数据。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">工作内容</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>协助领导调研新能源汽车行业，系统梳理近期政策、行业新闻和市场资讯，沉淀项目基础研究材料。</div>
-                        <div>使用 Wind 收集龙头公司的 ROA、R&amp;D、Liability 等财务指标，支持后续企业分析与项目判断。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">行业研究</span>
-                      <span class="page-tag">Wind</span>
-                      <span class="page-tag">财务分析</span>
-                    </div>
-                    <div class="page-number">Page 01</div>
-                  </div>
-                </article>
-
-                <div class="book-spine" aria-hidden="true"></div>
-
-                <article class="book-page right-page" data-page-index="1">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2025.02 - 2025.05 / Koala Kankan</div>
-                    <h2 class="page-title" data-field="title">财经编辑 // 考拉看看</h2>
-                    <p class="page-body" data-field="body">
-                      作为项目组骨干参与经济学书籍写作，从前期访谈、资料整理到大纲搭建与深度稿件撰写都深度参与，围绕复杂议题完成数万字内容生产。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">项目产出</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>与客户深入访谈，提炼信息重点，构建书稿章节大纲，并使用思维导图搭建资料库。</div>
-                        <div>执笔完成华为鸿蒙、SWIFT 等板块深度稿件，兼顾事实准确性、结构完整度与可读性。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">深度写作</span>
-                      <span class="page-tag">访谈整理</span>
-                      <span class="page-tag">资料搭建</span>
-                    </div>
-                    <div class="page-number">Page 02</div>
-                  </div>
-                </article>
-              </section>
-
-              <section class="book-spread" data-spread="1">
-                <article class="book-page left-page" data-page-index="2">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2025.05 - Present / Self Media</div>
-                    <h2 class="page-title" data-field="title">科技编辑 // 自媒体</h2>
-                    <p class="page-body" data-field="body">
-                      持续运营公众号与微博，围绕经济史、科技评论和选题洞察展开内容创作，把深度长文与短内容分发结合起来，逐步形成自己的写作与选题体系。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">内容方向</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>公众号侧重深度长文，已围绕日本经济泡沫、人形机器人等主题输出兼具历史纵深和现实判断的内容。</div>
-                        <div>微博账户“唐榆景”用于记录个人洞察、沉淀素材，并测试大众向科技短文的传播潜力与选题反馈。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">长文写作</span>
-                      <span class="page-tag">选题策划</span>
-                      <span class="page-tag">内容增长</span>
-                    </div>
-                    <div class="page-number">Page 03</div>
-                  </div>
-                </article>
-
-                <div class="book-spine" aria-hidden="true"></div>
-
-                <article class="book-page right-page" data-page-index="3">
-                  <div class="page-inner">
-                    <div class="page-kicker" data-field="time">2018.12 - 2021.07 / Hosting & Research</div>
-                    <h2 class="page-title" data-field="title">主持人与调研实践 // 播音主持</h2>
-                    <p class="page-body" data-field="body">
-                      在主持训练和真实活动场景中积累表达与控场能力，同时参与基层调研项目，把现场沟通、采访组织和内容整理连接起来，形成较强的叙事表达基础。
-                    </p>
-                    <div class="detail-block">
-                      <div class="detail-label" data-field="detail-title">实践重点</div>
-                      <div class="detail-list" data-field="detail-list">
-                        <div>在重庆市广播电视台主持人指导下获第二十届全国电视主持新星活动青年组二等奖，并主持多场政府与企业活动。</div>
-                        <div>协调团队在南山放牛村开展一周实地调研，深度访谈多方角色，最终完成一篇万字研究报告。</div>
-                      </div>
-                    </div>
-                    <div class="tag-row" data-field="tags">
-                      <span class="page-tag">主持表达</span>
-                      <span class="page-tag">深度访谈</span>
-                      <span class="page-tag">田野调研</span>
-                    </div>
-                    <div class="page-number">Page 04</div>
-                  </div>
-                </article>
-              </section>
-            </div>
+            <div class="book-track" id="book-track"></div>
           </div>
         </div>
         <button class="book-arrow left" id="arrow-left" aria-label="Previous spread">
@@ -655,6 +627,183 @@
 </main>
 
 <script>
+  let track = document.getElementById('book-track');
+  let spreads = [];
+  let pageCards = [];
+  const arrowLeft = document.getElementById('arrow-left');
+  const arrowRight = document.getElementById('arrow-right');
+  const dotsContainer = document.getElementById('book-dots');
+  const spreadLabel = document.getElementById('spread-label');
+  let experienceItems = [];
+  let resizeTimer = null;
+  let totalSpreads = 0;
+  let currentSpread = 0;
+  let focusedPage = 0;
+  let isAnimating = false;
+
+  function normalizeParagraphs(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value
+        .map((item) => {
+          if (item && typeof item === 'object') {
+            const text = String(item.text || item['文本'] || '').trim();
+            if (!text) return null;
+            return {
+              text,
+              strong: Boolean(item.strong ?? item['加粗']),
+              divider: Boolean(item.divider ?? item['分割线']),
+            };
+          }
+
+          const text = String(item).trim();
+          return text ? { text, strong: false, divider: false } : null;
+        })
+        .filter(Boolean);
+    }
+
+    return String(value)
+      .split(/\n+/)
+      .flatMap((line) => line.split(/(?<=[。！？])/u))
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .map((text) => ({ text, strong: false, divider: false }));
+  }
+
+  function getExperienceBlocks(item) {
+    const introBlocks = normalizeParagraphs(item['正文']).map((entry) => ({
+      kind: 'body',
+      text: entry.text,
+      strong: entry.strong,
+      divider: entry.divider,
+    }));
+    const detailBlocks = normalizeParagraphs(item['条目']).map((entry) => ({
+      kind: 'detail',
+      text: entry.text,
+      strong: entry.strong,
+      divider: entry.divider,
+    }));
+    return [...introBlocks, ...detailBlocks];
+  }
+
+  function renderContentBlocks(blocks) {
+    return blocks.map((block, index) => {
+      const className = [
+        'page-copy-line',
+        block.kind === 'detail' ? 'detail' : '',
+        block.strong ? 'strong' : '',
+      ].filter(Boolean).join(' ');
+      const previousText = blocks[index - 1]?.text?.trim();
+      const fallbackDivider =
+        previousText === '希望我做得还不错。' &&
+        block.text.trim().startsWith('乔布斯说，好的产品经理');
+      const needsDivider = block.divider || fallbackDivider;
+
+      return `
+        <div class="page-copy-row">
+          ${needsDivider ? '<div class="page-copy-divider" aria-hidden="true"></div>' : ''}
+          <p class="${className}">${escapeHtml(block.text)}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderTags(tags = []) {
+    return tags.map((tag) => `<span class="page-tag">${escapeHtml(tag)}</span>`).join('');
+  }
+
+  function buildSignoff(timeAndUnit = '') {
+    const [timePartRaw = '', unitPartRaw = ''] = String(timeAndUnit).split('/').map((part) => part.trim());
+    const timePart = timePartRaw || '2025.09 - 至今';
+    const unitPart = unitPartRaw || 'QbitAI';
+    return `
+      <div class="page-signoff">
+        <p class="page-signoff-line meta">${escapeHtml(timePart)}</p>
+        <p class="page-signoff-line brand">${escapeHtml(`We are ${unitPart}`)}</p>
+      </div>
+    `;
+  }
+
+  function splitExperienceContent(item) {
+    const allBlocks = getExperienceBlocks(item);
+    if (window.innerWidth <= 1023 || allBlocks.length <= 1) {
+      return { leftBlocks: allBlocks, rightBlocks: [] };
+    }
+
+    const weights = allBlocks.map((block) => block.text.length + (block.kind === 'detail' ? 26 : 0));
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    const targetWeight = totalWeight * 0.64;
+    const minLeftBlocks = Math.min(6, Math.max(1, allBlocks.length - 1));
+    const minRightBlocks = Math.min(3, Math.max(1, allBlocks.length - 1));
+
+    let runningWeight = 0;
+    let splitIndex = minLeftBlocks;
+
+    for (let index = 0; index < allBlocks.length; index += 1) {
+      runningWeight += weights[index];
+      const leftCount = index + 1;
+      const rightCount = allBlocks.length - leftCount;
+      const currentText = allBlocks[index]?.text?.trim() || '';
+      const nextText = allBlocks[index + 1]?.text?.trim() || '';
+      const cutsDividerPair =
+        currentText === '希望我做得还不错。' &&
+        nextText.startsWith('乔布斯说，好的产品经理');
+
+      if (leftCount >= minLeftBlocks && rightCount >= minRightBlocks && runningWeight >= targetWeight) {
+        if (!cutsDividerPair) {
+          splitIndex = leftCount;
+          break;
+        }
+      }
+    }
+
+    splitIndex = Math.max(minLeftBlocks, Math.min(splitIndex, allBlocks.length - 1));
+
+    return {
+      leftBlocks: allBlocks.slice(0, splitIndex),
+      rightBlocks: allBlocks.slice(splitIndex),
+    };
+  }
+
+  function renderExperienceSpreads(items = []) {
+    track.innerHTML = items.map((item, index) => {
+      const { leftBlocks, rightBlocks } = splitExperienceContent(item);
+      const pageBase = index * 2;
+
+      return `
+        <section class="book-spread" data-spread="${index}">
+          <article class="book-page left-page${index === 0 ? ' page-focus' : ''}" data-page-index="${pageBase}">
+            <div class="page-inner">
+              <h2 class="page-title">${escapeHtml(item['标题'] || '')}</h2>
+              <div class="page-copy page-body">${renderContentBlocks(leftBlocks)}</div>
+              <div class="page-number">Page ${(pageBase + 1).toString().padStart(2, '0')}</div>
+            </div>
+          </article>
+          <div class="book-spine" aria-hidden="true"></div>
+          <article class="book-page right-page" data-page-index="${pageBase + 1}">
+            <div class="page-inner">
+              <div class="page-kicker">${escapeHtml(item['时间与单位'] || '')}</div>
+              <div class="page-top-tags">${renderTags(item['标签'] || [])}</div>
+              <div class="page-copy page-body tight-top">${renderContentBlocks(rightBlocks)}</div>
+              <div class="page-footer">
+                ${buildSignoff(item['时间与单位'] || '')}
+              </div>
+              <div class="page-number">Page ${(pageBase + 2).toString().padStart(2, '0')}</div>
+            </div>
+          </article>
+        </section>
+      `;
+    }).join('');
+
+    refreshBookRefs();
+  }
+
+  function refreshBookRefs() {
+    spreads = Array.from(document.querySelectorAll('.book-spread'));
+    pageCards = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
+    totalSpreads = spreads.length;
+  }
+
   async function hydrateExperienceContent() {
     try {
       const response = await fetch('/api/experience/content');
@@ -664,30 +813,14 @@
 
       if (content['页面标题']) document.getElementById('experience-page-title').textContent = content['页面标题'];
       if (content['右侧标题']) document.getElementById('experience-side-label').textContent = content['右侧标题'];
-      if (content['右侧当前章节']) document.getElementById('spread-label').textContent = content['右侧当前章节'];
-
-      const sections = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
-      (content['章节列表'] || []).forEach((item, index) => {
-        const section = sections[index];
-        if (!section) return;
-        const timeNode = section.querySelector('[data-field="time"]');
-        const titleNode = section.querySelector('[data-field="title"]');
-        const bodyNode = section.querySelector('[data-field="body"]');
-        const detailTitleNode = section.querySelector('[data-field="detail-title"]');
-        const detailListNode = section.querySelector('[data-field="detail-list"]');
-        const tagsNode = section.querySelector('[data-field="tags"]');
-
-        if (timeNode && item['时间与单位']) timeNode.textContent = item['时间与单位'];
-        if (titleNode && item['标题']) titleNode.textContent = item['标题'];
-        if (bodyNode && item['正文']) bodyNode.textContent = item['正文'];
-        if (detailTitleNode && item['区块标题']) detailTitleNode.textContent = item['区块标题'];
-        if (detailListNode && Array.isArray(item['条目'])) {
-          detailListNode.innerHTML = item['条目'].map((line) => `<div>${escapeHtml(line)}</div>`).join('');
-        }
-        if (tagsNode && Array.isArray(item['标签'])) {
-          tagsNode.innerHTML = item['标签'].map((tag) => `<span class="page-tag">${escapeHtml(tag)}</span>`).join('');
-        }
-      });
+      experienceItems = content['章节列表'] || [];
+      renderExperienceSpreads(experienceItems);
+      currentSpread = 0;
+      focusedPage = 0;
+      buildDots();
+      updateControls();
+      updateChapterState();
+      updateSpreadLabel();
     } catch (error) {
       console.error('Failed to hydrate experience content:', error);
     }
@@ -704,33 +837,37 @@
 
   hydrateExperienceContent();
 
-  const track = document.getElementById('book-track');
-  const spreads = Array.from(document.querySelectorAll('.book-spread'));
-  const pageCards = Array.from(document.querySelectorAll('.book-page[data-page-index]'));
-  const arrowLeft = document.getElementById('arrow-left');
-  const arrowRight = document.getElementById('arrow-right');
-  const dotsContainer = document.getElementById('book-dots');
-  const spreadLabel = document.getElementById('spread-label');
-  const totalSpreads = spreads.length;
-  let currentSpread = 0;
-  let focusedPage = 0;
-  let isAnimating = false;
+  window.addEventListener('resize', () => {
+    if (!experienceItems.length) return;
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      const previousSpread = currentSpread;
+      const previousPage = focusedPage;
+      renderExperienceSpreads(experienceItems);
+      currentSpread = Math.min(previousSpread, Math.max(0, totalSpreads - 1));
+      focusedPage = Math.min(previousPage, Math.max(0, pageCards.length - 1));
+      track.style.transform = `translateX(-${currentSpread * 100}%)`;
+      buildDots();
+      updateControls();
+      updateChapterState();
+      updateSpreadLabel();
+    }, 120);
+  });
 
   function buildDots() {
+    dotsContainer.innerHTML = '';
     for (let i = 0; i < totalSpreads; i++) {
       const dot = document.createElement('button');
       dot.className = 'book-dot' + (i === 0 ? ' active' : '');
       dot.type = 'button';
-      dot.setAttribute('aria-label', `Go to spread ${i + 1}`);
+      dot.setAttribute('aria-label', `Go to chapter ${i + 1}`);
       dot.addEventListener('click', () => goToSpread(i, i * 2));
       dotsContainer.appendChild(dot);
     }
   }
 
   function updateSpreadLabel() {
-    const leftPage = currentSpread * 2 + 1;
-    const rightPage = Math.min(leftPage + 1, pageCards.length);
-    spreadLabel.textContent = `Chapter ${leftPage.toString().padStart(2, '0')} / ${rightPage.toString().padStart(2, '0')}`;
+    spreadLabel.textContent = `Chapter ${(currentSpread + 1).toString().padStart(2, '0')} / ${String(totalSpreads).padStart(2, '0')}`;
   }
 
   function updateControls() {
@@ -791,10 +928,6 @@
     }, 280);
   }
 
-  buildDots();
-  updateControls();
-  updateChapterState();
-  updateSpreadLabel();
   arrowLeft.addEventListener('click', () => goToSpread(currentSpread - 1, Math.max(0, currentSpread * 2 - 1)));
   arrowRight.addEventListener('click', () => goToSpread(currentSpread + 1, Math.min(pageCards.length - 1, currentSpread * 2 + 2)));
 
@@ -865,14 +998,32 @@
     const defaultCastLines = ["阿布拉卡达布拉…✨", "嗖～翻页传送启动！"];
     let chatLines = [...defaultChatLines];
     let castLines = [...defaultCastLines];
+    const sequenceLineDelay = 4000;
+    const sequenceReturnDelay = 2300;
 
     let lineIndex = 0;
+    function collectPointSequence(startIndex, target) {
+      const sequence = [];
+      let cursor = startIndex;
+
+      while (cursor < chatLines.length) {
+        const current = chatLines[cursor];
+        if (current.action !== 'point' || current.target !== target) break;
+        sequence.push(current);
+        cursor += 1;
+      }
+
+      return sequence;
+    }
+
     function nextChat() {
       if (isCasting || lineIndex >= chatLines.length) return;
       const line = chatLines[lineIndex];
       lineIndex += 1;
 
       if (line.action === 'point' && line.target) {
+        const sequence = collectPointSequence(lineIndex - 1, line.target);
+        lineIndex = lineIndex - 1 + sequence.length;
         const pos = getLinkCenter(line.target);
         const currentLeft = parseFloat(wizard.style.left) || 0;
         face(pos > currentLeft ? 1 : -1);
@@ -881,7 +1032,11 @@
           idle();
           poke();
           pointDir(pos > currentLeft ? 1 : -1);
-          say(line.text);
+          sequence.forEach((item, index) => {
+            schedule(() => {
+              say(item.text);
+            }, index * sequenceLineDelay);
+          });
           schedule(() => {
             clearPoint();
             const homePos = getLinkCenter('a[href="experience.html"]');
@@ -891,9 +1046,9 @@
               idle();
               face(1);
             }, 1000);
-          }, 2300);
+          }, Math.max(sequenceReturnDelay, ((sequence.length - 1) * sequenceLineDelay) + sequenceReturnDelay));
         }, 1000);
-        chatTimer = schedule(nextChat, 6200);
+        chatTimer = schedule(nextChat, 1000 + Math.max(sequenceReturnDelay, ((sequence.length - 1) * sequenceLineDelay) + sequenceReturnDelay) + 1800);
       } else {
         say(line.text);
         chatTimer = schedule(nextChat, 4200);
