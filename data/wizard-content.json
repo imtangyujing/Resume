@@ -112,19 +112,23 @@
           "action": "idle"
         },
         {
+          "text": "有点流水账，你就当日记看吧👀",
+          "action": "idle"
+        },
+        {
+          "text": "我是真跟你掏心窝子了，别笑话我🥲",
+          "action": "idle"
+        },
+        {
+          "text": "求求你别大声读出来，我很社恐的…",
+          "action": "idle"
+        },
+        {
           "text": "左右箭头可翻页，键盘也有快捷键",
           "action": "idle"
         },
         {
-          "text": "有眼光，这页可是高光时刻呢！",
-          "action": "idle"
-        },
-        {
-          "text": "那段时光可真美好啊",
-          "action": "idle"
-        },
-        {
-          "text": "来加我微信聊聊？ 👉",
+          "text": "看完了吗，来加我微信聊聊？ 👉",
           "action": "point",
           "target": "a[href=\"about.html\"]"
         },

@@ -176,11 +176,14 @@
           <p id="about-school" class="font-notoSerif italic text-lg text-neutral-600">Central Academy of Fine Arts (中央美术学院)</p>
           <p id="about-major" class="font-spaceGrotesk uppercase tracking-widest text-xs text-neutral-400">Visual Communication Design (视觉传达设计)</p>
         </div>
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-4">
           <div class="w-12 h-[1px] bg-black/10"></div>
-          <p>
-            <span id="about-preamble-label" class="text-primary font-bold">/// PREAMBLE:</span> <span id="about-preamble-body">I operate at the intersection of structural logic and expressive spontaneity. My work is a continuous exploration of "The Weighted Void"—how negative space can hold more significance than the objects it surrounds.</span>
-          </p>
+          <div class="flex flex-col gap-3 leading-relaxed">
+            <span id="about-preamble-label" class="text-primary font-bold">/// PREAMBLE:</span>
+            <div id="about-preamble-body" class="flex flex-col gap-4">
+              <p>I operate at the intersection of structural logic and expressive spontaneity. My work is a continuous exploration of "The Weighted Void"—how negative space can hold more significance than the objects it surrounds.</p>
+            </div>
+          </div>
         </div>
         <div class="border-l border-outline-variant/30 pl-6 flex flex-col gap-4 italic text-lg font-notoSerif">
           <p id="about-quote">"Code is a manuscript that never ends; design is the punctuation that makes it readable."</p>
@@ -217,7 +220,14 @@ async function hydrateAboutContent() {
     if (content['学校']) document.getElementById('about-school').textContent = content['学校'];
     if (content['专业']) document.getElementById('about-major').textContent = content['专业'];
     if (content['简介标题']) document.getElementById('about-preamble-label').textContent = content['简介标题'];
-    if (content['简介正文']) document.getElementById('about-preamble-body').textContent = content['简介正文'];
+    if (content['简介正文']) {
+      const preambleBody = document.getElementById('about-preamble-body');
+      const paragraphs = String(content['简介正文'])
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean);
+      preambleBody.innerHTML = paragraphs.map((line) => `<p>${escapeHtml(line)}</p>`).join('');
+    }
     if (content['引言']) document.getElementById('about-quote').textContent = `"${content['引言']}"`;
 
     const contacts = document.getElementById('about-contact-list');
