@@ -196,6 +196,15 @@
       transition: all 0.4s ease; cursor: pointer;
     }
     .page-dot.active { background: rgba(0,0,0,0.8); width: 40px; }
+    [data-hydration-state="pending"] {
+      opacity: 0;
+      visibility: hidden;
+    }
+    [data-hydration-state="ready"] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.18s ease;
+    }
     .portfolio-cover-frame {
       width: 100%;
       margin-top: auto;
@@ -324,17 +333,17 @@
   <div class="relative mt-6 md:mt-7" id="gallery-wrapper">
     <!-- Left Arrow -->
     <section class="perspective-container relative h-[600px] pb-4 px-12 overflow-hidden" id="scroll-strip">
-    <button class="gallery-arrow left" id="arrow-left" disabled>
+    <button class="gallery-arrow left" id="arrow-left" data-hydration-state="pending" disabled>
       <span class="material-symbols-outlined text-[30px]">chevron_left</span>
     </button>
     <!-- Right Arrow -->
-    <button class="gallery-arrow right" id="arrow-right">
+    <button class="gallery-arrow right" id="arrow-right" data-hydration-state="pending">
       <span class="material-symbols-outlined text-[30px]">chevron_right</span>
     </button>
-    <div class="gallery-track items-stretch h-full" id="gallery-track"></div>
+    <div class="gallery-track items-stretch h-full" id="gallery-track" data-hydration-state="pending"></div>
     </section>
     <!-- Page Dots -->
-    <div class="page-dots" id="page-dots"></div>
+    <div class="page-dots" id="page-dots" data-hydration-state="pending"></div>
   </div>
 </main>
 
@@ -390,58 +399,7 @@
       return fallbackPayload.cards || [];
     }
 
-    let portfolioCards = [
-      {
-        id: 'fallback-1',
-        category: 'article',
-        kicker: 'Issue 01 // 2024',
-        title: 'The Anatomy of a Design System',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9oaymuGgq741LSstJKbbi5V_Otl56h1dwG1ghZEN3TJD0XJpYh_tIT2mvMuUc52PBdOh_q_rTAYYy6vGV49xEK6mFuMEaRIjmgA1N0gIbjaD3qyCzs-bMZNksmz7iY8p5mT0i0G2hSzconVYPexMThqXDALSdTsFTloVZI1tl6hrPXILwqlF4eYisXCrAs-oMIgjtE4EWH80zodXpAr8IyJKuT092_WIE5CDUOsYyf10zGZimpHXrwFxcfRttNdYXJtGG4FNe1Ho',
-        linkUrl: '#',
-        primaryMetric: { icon: 'campaign', value: '1.2k' },
-        secondaryMetric: 'JAN 12'
-      },
-      {
-        id: 'fallback-2',
-        category: 'article',
-        kicker: 'Issue 04 // 2023',
-        title: 'Minimalism as a Constraint',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBA02cY109I6idzumBi_nK_h04WFzbo9FqIoCDQoUn0sfu1aDujA7E-22f1H8PfloJ4iQl79_-JNKLcXJipb3GzX0Tpe9-UrpQoq_jNELBWAiN-1JUBZ5koFhKpo_2QA88jcQkZF2VneU410eW4M_EB-5jtNHR0MXTkQjutcogxOiHfu9pVlYrB2hFtwusNlbFfvp2H3K51Ewga2geYws77Mg3wZHvVR65R7r0wSkNb3Lh09pmAoSLfmAULsQFJCm1k7-E3jjU334o',
-        linkUrl: '#',
-        primaryMetric: { icon: 'campaign', value: '890' },
-        secondaryMetric: 'DEC 04'
-      },
-      {
-        id: 'fallback-3',
-        category: 'article',
-        kicker: 'Issue 08 // 2023',
-        title: 'The Death of the Pixel',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPpWQJWgpbReqyM2PlxUNGDSKm7GbeqF5HddX9DOYnex9p74p_-_w5HoAKURoQDf0udBMRJ4xCP0SDCVDyr_QB9BwtUMd6oCBNK-D27X1MsMuY0GWq4lcoJLfTkg-XWrI05my-lOV0MUQOHYH1dk7ZWsAFoUcPdNMwGZ3ATNNGtNi6bavypi56Y7EqtqpPn52QaznLfenjah_t2M8kGD4ImkwZFSV4VmTSJonNJ8M095rybbK9jCAnHAJ5-kvmulJgV7sUc8NOuOE',
-        linkUrl: '#',
-        primaryMetric: { icon: 'campaign', value: '2.4k' },
-        secondaryMetric: 'OCT 28'
-      },
-      {
-        id: 'fallback-4',
-        category: 'article',
-        kicker: 'Issue 12 // 2023',
-        title: 'Digital Craftsmanship',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY',
-        linkUrl: '#',
-        primaryMetric: { icon: 'campaign', value: '560' },
-        secondaryMetric: 'AUG 15'
-      },
-      {
-        id: 'fallback-5',
-        category: 'article',
-        kicker: 'Issue 15 // 2023',
-        title: 'Kinetic Typography',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqXQiMRdpyvaF4doAvrSsjtiDKRTLCmHxAPcMbmMD6p9V-PlfcvO6K9S5SaGDnbWlJk-5HjjEH635lqWIqGTgjfIcs5DSI-0_gc4Kp0oX0Qi2UeCs5Jt3bgCtkFqvPciVj-hm4AKSEzUEoNLZkuoJOt1nqF25WQS_Q-xebdkRxBvluYMIekwxxAQVJausQRcCLVoEW6DZN8lGj9pMfWFzQ3ha89soS2I7bZ0gVY5hSVEnTxmBqDMuHPkQyPTJQ4ULU61FThtoYg',
-        linkUrl: '#',
-        primaryMetric: { icon: 'campaign', value: '3.1k' },
-        secondaryMetric: 'JUL 02'
-      },
-    ];
+    let portfolioCards = [];
     let totalPages = 1;
 
     function getVisibleCards() {
@@ -557,12 +515,20 @@
     });
 
     async function loadPortfolioCards() {
+      const revealPortfolio = () => {
+        [track, arrowLeft, arrowRight, dotsContainer].forEach((node) => {
+          if (node) node.dataset.hydrationState = 'ready';
+        });
+      };
+
       try {
         portfolioCards = (await fetchPortfolioCards()).filter((card) => card.category === 'article');
         renderCards();
       } catch (error) {
         console.error(error);
         renderCards();
+      } finally {
+        revealPortfolio();
       }
     }
 
@@ -665,7 +631,6 @@
         .replaceAll("'", '&#39;');
     }
 
-    renderCards();
     loadPortfolioCards();
 
     // === Topbar Wizard ===

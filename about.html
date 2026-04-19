@@ -120,6 +120,15 @@
       content: ''; position: absolute; top: -3px; left: 50%;
       transform: translateX(-50%) rotate(45deg); width: 6px; height: 6px; background: #000;
     }
+    [data-hydration-state="pending"] {
+      opacity: 0;
+      visibility: hidden;
+    }
+    [data-hydration-state="ready"] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.18s ease;
+    }
 </style>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
@@ -173,7 +182,7 @@
 </nav>
 
 <!-- Main Content -->
-<main class="min-h-screen pt-28 md:pt-24 lg:pt-28 px-12 md:px-24 lg:px-32 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 md:items-start pb-24 md:pb-20">
+<main class="min-h-screen pt-28 md:pt-24 lg:pt-28 px-12 md:px-24 lg:px-32 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 md:items-start pb-24 md:pb-20" data-hydration-state="pending" id="about-main">
   <!-- Left: Portrait -->
   <div class="md:col-span-5 relative group md:pt-10 lg:pt-12">
     <div class="aspect-[3/4] bg-surface-container-low overflow-hidden sketch-parallax relative p-4 bg-white shadow-xl rotate-[-2deg] hover:rotate-0 transition-transform duration-500 animate-sway">
@@ -246,6 +255,7 @@ async function fetchContentFromSource(apiPath, staticPath, rootKey) {
 }
 
 async function hydrateAboutContent() {
+  const aboutMain = document.getElementById('about-main');
   try {
     const content = await fetchContentFromSource('api/about/content', 'data/about-content.json', '关于页内容');
 
@@ -279,6 +289,8 @@ async function hydrateAboutContent() {
 
   } catch (error) {
     console.error('Failed to hydrate about content:', error);
+  } finally {
+    if (aboutMain) aboutMain.dataset.hydrationState = 'ready';
   }
 }
 
