@@ -228,6 +228,7 @@
     }
     .mobile-experience-track {
       touch-action: pan-y;
+      overscroll-behavior-x: contain;
       transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .mobile-experience-copy a {
@@ -594,7 +595,7 @@
       </div>
     </div>
     <p id="mobile-experience-label" class="mt-3 font-body text-sm tracking-[0.12em] text-black/48 uppercase">Chapter 01 / 01</p>
-    <div class="mt-8 overflow-hidden border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,244,240,0.96))] shadow-[0_24px_48px_rgba(0,0,0,0.08)]">
+    <div id="mobile-experience-viewport" class="mt-8 overflow-hidden border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,244,240,0.96))] shadow-[0_24px_48px_rgba(0,0,0,0.08)]">
       <div id="mobile-experience-track" class="mobile-experience-track flex"></div>
     </div>
     <div id="mobile-experience-dots" class="mt-5 flex items-center justify-center gap-2"></div>
@@ -922,7 +923,8 @@
       const label = document.getElementById('mobile-experience-label');
       const prev = document.getElementById('mobile-experience-prev');
       const next = document.getElementById('mobile-experience-next');
-      if (!track || !dots || !label || !prev || !next) return;
+      const viewport = document.getElementById('mobile-experience-viewport');
+      if (!track || !dots || !label || !prev || !next || !viewport) return;
 
       let items = [];
       try {
@@ -994,25 +996,59 @@
 
       let startX = 0;
       let startY = 0;
+      let lastX = 0;
+      let lastY = 0;
       let dragging = false;
+      let gestureLocked = null;
 
-      track.addEventListener('touchstart', (event) => {
+      viewport.addEventListener('touchstart', (event) => {
         const touch = event.touches[0];
         startX = touch.clientX;
         startY = touch.clientY;
+        lastX = touch.clientX;
+        lastY = touch.clientY;
         dragging = true;
       }, { passive: true });
 
-      track.addEventListener('touchend', (event) => {
+      viewport.addEventListener('touchmove', (event) => {
+        if (!dragging) return;
+        const touch = event.touches[0];
+        lastX = touch.clientX;
+        lastY = touch.clientY;
+
+        if (!gestureLocked) {
+          const deltaX = touch.clientX - startX;
+          const deltaY = touch.clientY - startY;
+          if (Math.abs(deltaX) >= 12 || Math.abs(deltaY) >= 12) {
+            gestureLocked = Math.abs(deltaX) > Math.abs(deltaY) * 1.1 ? 'x' : 'y';
+          }
+        }
+
+        if (gestureLocked === 'x') {
+          event.preventDefault();
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchend', (event) => {
         if (!dragging) return;
         const touch = event.changedTouches[0];
-        const deltaX = touch.clientX - startX;
-        const deltaY = touch.clientY - startY;
+        const endX = touch?.clientX ?? lastX;
+        const endY = touch?.clientY ?? lastY;
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
         dragging = false;
+        const lockedDirection = gestureLocked;
+        gestureLocked = null;
 
-        if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.15) return;
+        if (lockedDirection !== 'x') return;
+        if (Math.abs(deltaX) < 36 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.05) return;
         if (deltaX < 0) goToSlide(currentSlide + 1);
         if (deltaX > 0) goToSlide(currentSlide - 1);
+      }, { passive: true });
+
+      viewport.addEventListener('touchcancel', () => {
+        dragging = false;
+        gestureLocked = null;
       }, { passive: true });
 
       updateUi();
