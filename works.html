@@ -519,6 +519,7 @@
         [track, arrowLeft, arrowRight, dotsContainer].forEach((node) => {
           if (node) node.dataset.hydrationState = 'ready';
         });
+        scheduleTitleClamp();
       };
 
       try {
@@ -537,11 +538,13 @@
       totalPages = Math.max(1, Math.ceil(cards.length / CARDS_PER_PAGE));
       currentPage = Math.min(currentPage, totalPages - 1);
       track.innerHTML = cards.map((card, index) => renderCard(card, index)).join('');
-      applyTitleClamp();
       track.style.transform = `translateX(-${currentPage * CARDS_PER_PAGE * (CARD_WIDTH + CARD_GAP)}px)`;
       rebuildDots();
       arrowLeft.disabled = currentPage === 0;
       arrowRight.disabled = totalPages <= 1 || currentPage === totalPages - 1;
+      if (track.dataset.hydrationState === 'ready') {
+        scheduleTitleClamp();
+      }
     }
 
     function renderCard(card, index) {
@@ -611,6 +614,24 @@
 
         titleEl.innerHTML = buildTruncatedTitleMarkup(best || fullTitle.slice(0, 1));
       });
+    }
+
+    function scheduleTitleClamp() {
+      const runClamp = () => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            applyTitleClamp();
+          });
+        });
+      };
+
+      runClamp();
+
+      if (document.fonts?.ready) {
+        document.fonts.ready.then(() => {
+          runClamp();
+        });
+      }
     }
 
     function buildTruncatedTitleMarkup(value) {
