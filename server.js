@@ -118,6 +118,8 @@ async function resolveCard(card) {
     kicker,
     title,
     imageUrl: normalized.imageUrl,
+    coverPosition: normalized.coverPosition,
+    coverScale: normalized.coverScale,
     linkUrl: normalized.linkUrl,
     primaryMetric,
     secondaryMetric,
@@ -137,6 +139,8 @@ function normalizeCard(card) {
     kicker: card["上方小字"] || card.kicker,
     title: card["标题"] || card.title,
     imageUrl: card["封面图"] || card.imageUrl,
+    coverPosition: card["封面位置"] || card.coverPosition || "center center",
+    coverScale: card["封面缩放"] || card.coverScale || 1.16,
     linkUrl: card["跳转链接"] || card.linkUrl,
     fallback: {
       primaryMetric: normalizeMetric(fallback["底部左侧指标"] || fallback.primaryMetric),

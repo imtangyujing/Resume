@@ -3,6 +3,19 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Experience | Tang Yujing</title>
+<script>
+  (() => {
+    const MOBILE_MODE_BREAKPOINT = 1024;
+    const target = 'index.html#mobile-experience';
+    const redirectIfCompact = () => {
+      if (window.innerWidth < MOBILE_MODE_BREAKPOINT && window.location.pathname.endsWith('/experience.html')) {
+        window.location.replace(target);
+      }
+    };
+    redirectIfCompact();
+    window.addEventListener('resize', redirectIfCompact);
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -928,7 +941,11 @@
   </div>
   <div class="flex items-center gap-4">
     <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="inline-flex items-center justify-center text-black/75 hover:text-black transition-colors duration-300">
-      <span class="material-symbols-outlined text-black">download</span>
+      <svg aria-hidden="true" class="h-6 w-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v11"></path>
+        <path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path>
+        <path d="M4 19h16"></path>
+      </svg>
     </a>
   </div>
   <div id="nav-wizard" class="idle" style="top: 50%; transform: translateY(-50%); left: 0;">
@@ -1002,7 +1019,7 @@
   <button class="astra-close" id="astra-close" type="button" aria-label="Close preview">×</button>
   <div class="astra-dialog">
     <div class="astra-frame">
-      <img class="astra-image" src="/data/Astra.png" alt="Astra preview">
+      <img class="astra-image" src="data/Astra.png" alt="Astra preview">
       <div class="astra-caption">Best wishes, enjoy!</div>
     </div>
   </div>
@@ -1024,6 +1041,26 @@
   let currentSpread = 0;
   let focusedPage = 0;
   let isAnimating = false;
+
+  async function fetchContentFromSource(apiPath, staticPath, rootKey) {
+    try {
+      const response = await fetch(apiPath);
+      if (response.ok) {
+        const payload = await response.json();
+        return payload.content || payload;
+      }
+    } catch (error) {
+      console.warn(`Falling back from ${apiPath}:`, error);
+    }
+
+    const fallbackResponse = await fetch(staticPath);
+    if (!fallbackResponse.ok) {
+      throw new Error(`Failed to load fallback content from ${staticPath}`);
+    }
+
+    const fallbackPayload = await fallbackResponse.json();
+    return fallbackPayload[rootKey] || fallbackPayload.content || fallbackPayload;
+  }
 
   function normalizeParagraphs(value) {
     if (!value) return [];
@@ -1259,10 +1296,7 @@
 
   async function hydrateExperienceContent() {
     try {
-      const response = await fetch('/api/experience/content');
-      if (!response.ok) return;
-      const payload = await response.json();
-      const content = payload.content || {};
+      const content = await fetchContentFromSource('api/experience/content', 'data/experience-content.json', '经历页内容');
 
       if (content['页面标题']) document.getElementById('experience-page-title').textContent = content['页面标题'];
       if (content['右侧标题']) document.getElementById('experience-side-label').textContent = content['右侧标题'];
@@ -1551,10 +1585,7 @@
 
     async function loadWizardContent() {
       try {
-        const response = await fetch('/api/wizard/content');
-        if (!response.ok) return;
-        const payload = await response.json();
-        const wizardContent = payload.content || {};
+        const wizardContent = await fetchContentFromSource('api/wizard/content', 'data/wizard-content.json', '魔法小人台词');
         const experienceContent = wizardContent.experience || {};
         if (Array.isArray(experienceContent['自动对话']) && experienceContent['自动对话'].length) {
           chatLines = experienceContent['自动对话'];

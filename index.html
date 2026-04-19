@@ -9,10 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       background-color: #faf9f8;
       cursor: default;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
     body::after {
       content: "";
@@ -176,6 +180,194 @@
     }
     .bg-surface-container-low { background-color: #faf9f8 !important; }
     .bg-surface-container { background-color: #faf9f8 !important; }
+    .mobile-nav-link {
+      position: relative;
+      padding-bottom: 0.2rem;
+      color: rgba(0, 0, 0, 0.42);
+      transition: color 0.25s ease;
+    }
+    .mobile-nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.15rem;
+      width: 100%;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.85);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.25s ease;
+    }
+    .mobile-nav-link.active {
+      color: rgba(0, 0, 0, 0.92);
+    }
+    .mobile-nav-link.active::after {
+      transform: scaleX(1);
+    }
+    .mobile-scroll-row {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .mobile-scroll-row::-webkit-scrollbar {
+      display: none;
+    }
+    .mobile-portfolio-card {
+      scroll-snap-align: start;
+      flex: 0 0 min(82vw, 320px);
+    }
+    .mobile-portfolio-cover-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--cover-position, center center);
+      transform: scale(var(--cover-scale, 1.16));
+      transform-origin: center center;
+    }
+    .mobile-experience-slide {
+      min-width: 100%;
+    }
+    .mobile-experience-track {
+      touch-action: pan-y;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mobile-experience-copy a {
+      color: #c8142f;
+      text-decoration: none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0) 0 28%, rgba(255,110,130,0.2) 28% 76%, rgba(255,255,255,0) 76% 100%);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+    .mobile-experience-copy strong {
+      font-weight: 700;
+      color: #111111;
+    }
+    .mobile-experience-copy em {
+      font-style: normal;
+      color: rgba(17, 17, 17, 0.56);
+    }
+    .mobile-experience-copy p + p {
+      margin-top: 0.85rem;
+    }
+    .mobile-about-contact a {
+      text-decoration: none;
+    }
+    .astra-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(16, 12, 12, 0.42);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .astra-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .astra-dialog {
+      width: auto;
+      max-width: min(760px, calc(100vw - 3rem));
+      max-height: calc(100vh - 3rem);
+      transform: scale(0.84);
+      opacity: 0;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.28s ease;
+    }
+    .astra-overlay.open .astra-dialog {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .astra-frame {
+      display: inline-block;
+      padding: 14px 14px 54px;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #fbf8f2 0%, #f2ede4 100%);
+      box-shadow:
+        0 22px 60px rgba(0,0,0,0.24),
+        0 3px 10px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    .astra-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.18), transparent 16%),
+        linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.03) 100%);
+      pointer-events: none;
+    }
+    .astra-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 16px;
+      text-align: center;
+      font-family: "Noto Serif", serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: rgba(60, 45, 33, 0.72);
+      letter-spacing: 0.02em;
+    }
+    .astra-image {
+      display: block;
+      width: min(680px, calc(100vw - 6rem));
+      max-height: calc(100vh - 9rem);
+      object-fit: contain;
+      border-radius: 2px;
+    }
+    .astra-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1.5rem;
+      line-height: 1;
+      backdrop-filter: blur(10px);
+    }
+    .mobile-tree-shell {
+      animation: treeSway 7.2s ease-in-out infinite;
+      transform-origin: 50% 92%;
+    }
+    .mobile-leaf {
+      position: absolute;
+      width: 8px;
+      height: 5px;
+      border-radius: 40% 60% 60% 40%;
+      background-color: #000;
+      opacity: 0.78;
+      pointer-events: none;
+      transform-origin: 30% 50%;
+    }
+    @media (min-width: 1024px) {
+      body {
+        overflow: hidden;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      .mobile-experience-track,
+      .mobile-nav-link,
+      .mobile-nav-link::after,
+      .astra-overlay,
+      .astra-dialog {
+        transition: none !important;
+      }
+    }
 </style>
 <script>
     tailwind.config = {
@@ -205,7 +397,7 @@
     }
 </script>
 </head>
-<body class="font-body text-primary selection:bg-primary selection:text-white h-screen flex flex-col">
+<body class="font-body text-primary selection:bg-primary selection:text-white min-h-screen lg:h-screen flex flex-col">
 
 <!-- SVG Wind Displacement Filter -->
 <svg style="position:absolute;width:0;height:0" xmlns="http://www.w3.org/2000/svg">
@@ -216,21 +408,45 @@
 </svg>
 
 <!-- TopNavBar -->
-<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-12 py-6 bg-[#faf9f8]/80 backdrop-blur-xl">
-  <a href="index.html" class="text-xl font-notoSerif font-bold text-black">Tang Yujing</a>
-  <div class="hidden md:flex gap-12">
-    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="works.html">Portfolio</a>
-    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="experience.html">Experience</a>
-    <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="about.html">About</a>
+<nav class="fixed top-0 left-0 w-full z-50 bg-[#faf9f8]/80 backdrop-blur-xl">
+  <div class="hidden lg:flex justify-between items-center px-12 py-6">
+    <a href="index.html" class="text-xl font-notoSerif font-bold text-black">Tang Yujing</a>
+    <div class="flex gap-12">
+      <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="works.html">Portfolio</a>
+      <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="experience.html">Experience</a>
+      <a class="text-black/60 font-spaceGrotesk hover:text-black transition-colors duration-300" href="about.html">About</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="inline-flex items-center justify-center text-black/75 hover:text-black transition-colors duration-300">
+        <svg aria-hidden="true" class="h-6 w-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v11"></path>
+          <path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path>
+          <path d="M4 19h16"></path>
+        </svg>
+      </a>
+    </div>
   </div>
-  <div class="flex items-center gap-4">
-    <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="inline-flex items-center justify-center text-black/75 hover:text-black transition-colors duration-300">
-      <span class="material-symbols-outlined text-black">download</span>
-    </a>
+
+  <div class="lg:hidden px-5 pt-4 pb-3">
+    <div class="flex items-start justify-between gap-4">
+      <a href="#top" id="mobile-home-link" class="font-notoSerif text-[1.95rem] font-bold leading-none tracking-tight text-black whitespace-nowrap">Tang Yujing</a>
+      <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="mt-1 inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-black/8 bg-white/80 text-black/75 shadow-[0_8px_18px_rgba(0,0,0,0.06)] transition-colors duration-300">
+        <svg aria-hidden="true" class="h-5 w-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v11"></path>
+          <path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path>
+          <path d="M4 19h16"></path>
+        </svg>
+      </a>
+    </div>
+    <div class="mt-4 grid grid-cols-3 items-center gap-4 text-center text-[11px] uppercase tracking-[0.24em]">
+      <a class="mobile-nav-link active whitespace-nowrap" data-mobile-nav="portfolio" href="#mobile-portfolio">Portfolio</a>
+      <a class="mobile-nav-link whitespace-nowrap" data-mobile-nav="experience" href="#mobile-experience">Experience</a>
+      <a class="mobile-nav-link whitespace-nowrap" data-mobile-nav="about" href="#mobile-about">About</a>
+    </div>
   </div>
 </nav>
 
-<main class="relative flex-grow w-full flex flex-col md:flex-row items-center px-8 md:px-20 pt-32 pb-20 overflow-hidden">
+<main class="hidden lg:flex relative flex-grow w-full flex-col lg:flex-row items-center px-8 lg:px-20 pt-32 pb-20 overflow-hidden">
   <!-- Left Content -->
   <div class="w-full md:w-1/2 flex flex-col z-10">
     <div class="mb-12">
@@ -322,26 +538,167 @@
     </div>
   </div>
 </main>
+<main class="lg:hidden relative pt-28 pb-16">
+  <section class="px-6 pt-6 pb-10">
+    <div class="flex flex-col gap-8">
+      <div>
+        <p class="font-label text-[11px] uppercase tracking-[0.28em] text-black/40">Digital Manuscript</p>
+        <div id="mobile-hero-text-block" class="mt-4">
+          <h1 id="mobile-hero-title" class="font-headline text-5xl leading-[0.95] tracking-tight text-black">Hi, I'm Jay</h1>
+          <p id="mobile-hero-sub" class="mt-4 max-w-xs font-body text-base leading-7 text-black/68">Let's Flip Through It.</p>
+        </div>
+      </div>
+      <div id="mobile-tree-container" class="relative overflow-hidden border border-black/8 bg-white/70 p-4 shadow-[0_20px_40px_rgba(0,0,0,0.06)]">
+        <div id="mobile-tree-parallax" class="relative">
+          <div class="mobile-tree-shell relative">
+            <img id="mobile-tree-img" alt="Minimalist black ink sketch of a gnarled winter tree" class="w-full h-auto object-contain grayscale contrast-150 mix-blend-multiply" src="Image/精致的黑白树木插图.png"/>
+            <div id="mobile-leaves-overlay" class="pointer-events-none absolute inset-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mobile-portfolio" data-mobile-section="portfolio" class="px-6 py-10 scroll-mt-28">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="font-label text-[11px] uppercase tracking-[0.28em] text-black/35">Section 01</p>
+        <h2 class="mt-2 font-headline text-4xl italic text-black">Portfolio</h2>
+      </div>
+      <div class="flex gap-2">
+        <button id="mobile-portfolio-prev" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-black/70">
+          <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        </button>
+        <button id="mobile-portfolio-next" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-black/70">
+          <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        </button>
+      </div>
+    </div>
+    <p class="mt-3 max-w-sm font-body text-sm leading-6 text-black/58">上下滑继续浏览页面，左右滑查看作品卡片。顶部导航仍然可以直接跳到这里。</p>
+    <div id="mobile-portfolio-track" class="mobile-scroll-row mt-8 flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory"></div>
+  </section>
+
+  <section id="mobile-experience" data-mobile-section="experience" class="px-6 py-10 scroll-mt-28">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="font-label text-[11px] uppercase tracking-[0.28em] text-black/35">Section 02</p>
+        <h2 class="mt-2 font-headline text-4xl italic text-black">Experience</h2>
+      </div>
+      <div class="flex gap-2">
+        <button id="mobile-experience-prev" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-black/70">
+          <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        </button>
+        <button id="mobile-experience-next" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-black/70">
+          <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        </button>
+      </div>
+    </div>
+    <p id="mobile-experience-label" class="mt-3 font-body text-sm tracking-[0.12em] text-black/48 uppercase">Chapter 01 / 01</p>
+    <div class="mt-8 overflow-hidden border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,244,240,0.96))] shadow-[0_24px_48px_rgba(0,0,0,0.08)]">
+      <div id="mobile-experience-track" class="mobile-experience-track flex"></div>
+    </div>
+    <div id="mobile-experience-dots" class="mt-5 flex items-center justify-center gap-2"></div>
+  </section>
+
+  <section id="mobile-about" data-mobile-section="about" class="px-6 py-10 scroll-mt-28">
+    <div>
+      <p class="font-label text-[11px] uppercase tracking-[0.28em] text-black/35">Section 03</p>
+      <h2 class="mt-2 font-headline text-4xl italic text-black">About</h2>
+    </div>
+    <div class="mt-8 flex flex-col gap-6">
+      <div class="overflow-hidden border border-black/8 bg-white/75 p-4 shadow-[0_20px_40px_rgba(0,0,0,0.06)]">
+        <img id="mobile-about-portrait" alt="Artistic portrait" class="aspect-[4/5] w-full object-cover" src="Image/冷漠的少年插画.transparent.png" />
+      </div>
+      <div class="border border-black/8 bg-white/82 p-6 shadow-[0_16px_36px_rgba(0,0,0,0.05)]">
+        <div class="flex flex-col gap-1">
+          <h3 id="mobile-about-name" class="font-headline text-3xl leading-tight text-black">唐榆景</h3>
+          <p id="mobile-about-school" class="font-headline text-base italic text-black/60">西南财经大学｜本科</p>
+          <p id="mobile-about-major" class="font-label text-[11px] uppercase tracking-[0.24em] text-black/40">金融学｜经管国际化创新实验班（全英语）</p>
+        </div>
+        <div class="mt-6">
+          <p id="mobile-about-label" class="font-label text-xs font-bold text-black">/// PROFILE:</p>
+          <div id="mobile-about-body" class="mt-4 font-body text-[15px] leading-7 text-black/74"></div>
+        </div>
+        <blockquote id="mobile-about-quote" class="mt-6 border-l border-black/12 pl-4 font-headline text-xl italic leading-8 text-black/84">“解决智能，然后，用智能解决一切。”</blockquote>
+        <div id="mobile-about-contact-list" class="mobile-about-contact mt-8 flex flex-col gap-3 border-t border-black/6 pt-6 font-body text-sm text-black/74"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="astra-overlay" id="astra-overlay" aria-hidden="true">
+  <button class="astra-close" id="astra-close" type="button" aria-label="Close preview">×</button>
+  <div class="astra-dialog">
+    <div class="astra-frame">
+      <img class="astra-image" src="data/Astra.png" alt="Astra preview">
+      <div class="astra-caption">Best wishes, enjoy!</div>
+    </div>
+  </div>
+</div>
 <script>
+    const MOBILE_MODE_BREAKPOINT = 1024;
+
+    async function fetchContentFromSource(apiPath, staticPath, rootKey) {
+      try {
+        const response = await fetch(apiPath);
+        if (response.ok) {
+          const payload = await response.json();
+          return payload.content || payload;
+        }
+      } catch (error) {
+        console.warn(`Falling back from ${apiPath}:`, error);
+      }
+
+      const fallbackResponse = await fetch(staticPath);
+      if (!fallbackResponse.ok) {
+        throw new Error(`Failed to load fallback content from ${staticPath}`);
+      }
+
+      const fallbackPayload = await fallbackResponse.json();
+      return fallbackPayload[rootKey] || fallbackPayload.content || fallbackPayload;
+    }
+
+    async function fetchPortfolioCards() {
+      try {
+        const response = await fetch('api/portfolio/cards');
+        if (response.ok) {
+          const payload = await response.json();
+          return payload.cards || [];
+        }
+      } catch (error) {
+        console.warn('Falling back from api/portfolio/cards:', error);
+      }
+
+      const fallbackResponse = await fetch('data/portfolio-cards.json');
+      if (!fallbackResponse.ok) {
+        throw new Error('Failed to load fallback portfolio cards');
+      }
+
+      const fallbackPayload = await fallbackResponse.json();
+      return fallbackPayload.cards || [];
+    }
+
     async function hydrateIndexContent() {
       try {
-        const response = await fetch('/api/index/content');
-        if (!response.ok) return;
-        const payload = await response.json();
-        const content = payload.content || {};
+        const content = await fetchContentFromSource('api/index/content', 'data/index-content.json', '首页内容');
 
         const heroTitle = document.getElementById('hero-title');
         const heroSub = document.getElementById('hero-sub');
+        const mobileHeroTitle = document.getElementById('mobile-hero-title');
+        const mobileHeroSub = document.getElementById('mobile-hero-sub');
         if (content['页面标题']) {
           heroTitle.dataset.text = content['页面标题'];
           if (!heroTitle.children.length) heroTitle.textContent = content['页面标题'];
+          if (mobileHeroTitle) mobileHeroTitle.textContent = content['页面标题'];
         }
         if (content['页面副标题']) {
           heroSub.dataset.text = content['页面副标题'];
           if (!heroSub.children.length) heroSub.textContent = content['页面副标题'];
+          if (mobileHeroSub) mobileHeroSub.textContent = content['页面副标题'];
         }
         if (content['树木插图']) {
           document.getElementById('tree-img').src = content['树木插图'];
+          const mobileTree = document.getElementById('mobile-tree-img');
+          if (mobileTree) mobileTree.src = content['树木插图'];
         }
 
         (content['时间轴导航'] || []).forEach((item, index) => {
@@ -352,9 +709,397 @@
           if (label && item['名称']) label.textContent = item['名称'];
         });
 
+        const mobileNavMap = ['portfolio', 'experience', 'about'];
+        mobileNavMap.forEach((key, index) => {
+          const link = document.querySelector(`[data-mobile-nav="${key}"]`);
+          const item = (content['时间轴导航'] || [])[index];
+          if (link && item?.['名称']) link.textContent = item['名称'];
+        });
+
       } catch (error) {
         console.error('Failed to hydrate index content:', error);
       }
+    }
+
+    function renderInlineMarkup(text = '') {
+      return escapeHtml(text)
+        .replace(/\[([^\]]+)\]\((astra-preview)\)/g, '<a href="#" data-astra-trigger="true">$1</a>')
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+    }
+
+    function normalizeParagraphs(value) {
+      if (!value) return [];
+      if (Array.isArray(value)) {
+        return value
+          .map((item) => {
+            if (item && typeof item === 'object') {
+              const text = String(item.text || item['文本'] || '').trim();
+              if (!text) return null;
+              return {
+                text,
+                strong: Boolean(item.strong ?? item['加粗']),
+                divider: Boolean(item.divider ?? item['分割线']),
+              };
+            }
+
+            const text = String(item).trim();
+            if (!text) return null;
+            if (['（分割线）', '(分割线)', '(divider)', '（divider）', '---'].includes(text)) {
+              return { text: '', strong: false, divider: true, markerOnly: true };
+            }
+
+            return { text, strong: false, divider: false, markerOnly: false };
+          })
+          .filter(Boolean);
+      }
+
+      return String(value)
+        .split(/\n+/)
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .map((text) => ({ text, strong: false, divider: false, markerOnly: false }));
+    }
+
+    function getExperienceBlocks(item) {
+      const introBlocks = normalizeParagraphs(item['正文']).map((entry) => ({
+        kind: 'body',
+        text: entry.text,
+        strong: entry.strong,
+        divider: entry.divider,
+        markerOnly: entry.markerOnly,
+      }));
+      const detailBlocks = normalizeParagraphs(item['条目']).map((entry) => ({
+        kind: 'detail',
+        text: entry.text,
+        strong: entry.strong,
+        divider: entry.divider,
+        markerOnly: entry.markerOnly,
+      }));
+      return [...introBlocks, ...detailBlocks].filter((entry) => !entry.markerOnly);
+    }
+
+    function renderMobileExperienceBlocks(item) {
+      return getExperienceBlocks(item).map((block) => {
+        const divider = block.divider ? '<div class="mt-5 border-t border-black/8 pt-5"></div>' : '';
+        const classNames = [
+          'text-[15px] leading-7 text-black/74',
+          block.strong ? 'font-semibold text-black' : '',
+          block.kind === 'detail' ? 'text-black/82' : '',
+        ].filter(Boolean).join(' ');
+        return `${divider}<p class="${classNames}">${renderInlineMarkup(block.text)}</p>`;
+      }).join('');
+    }
+
+    function formatStatusTime(value) {
+      if (!value) return 'LIVE';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).toUpperCase();
+      return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }).toUpperCase();
+    }
+
+    async function hydrateMobileHomeContent() {
+      if (window.innerWidth >= MOBILE_MODE_BREAKPOINT) return;
+
+      await Promise.all([
+        hydrateMobilePortfolio(),
+        hydrateMobileExperience(),
+        hydrateMobileAbout(),
+      ]);
+
+      initMobileTreeMotion();
+      initMobileSectionNav();
+    }
+
+    function initMobileTreeMotion() {
+      const container = document.getElementById('mobile-tree-container');
+      const overlay = document.getElementById('mobile-leaves-overlay');
+      const shell = container?.querySelector('.mobile-tree-shell');
+      const parallax = document.getElementById('mobile-tree-parallax');
+      if (!container || !overlay || !shell || !parallax || container.dataset.motionReady === 'true') return;
+      container.dataset.motionReady = 'true';
+
+      function spawnLeaves(clientX, clientY) {
+        const rect = container.getBoundingClientRect();
+        const count = 4 + Math.floor(Math.random() * 3);
+
+        for (let index = 0; index < count; index += 1) {
+          const leaf = document.createElement('div');
+          leaf.className = 'mobile-leaf';
+          leaf.style.left = `${clientX - rect.left + (Math.random() - 0.5) * 34}px`;
+          leaf.style.top = `${clientY - rect.top + (Math.random() - 0.5) * 20}px`;
+          leaf.style.setProperty('--drift1', `${(Math.random() - 0.5) * 22}px`);
+          leaf.style.setProperty('--drop1', '34px');
+          leaf.style.setProperty('--spin1', `${Math.random() * 90 - 45}deg`);
+          leaf.style.setProperty('--drift2', `${(Math.random() - 0.5) * 56}px`);
+          leaf.style.setProperty('--drop2', '110px');
+          leaf.style.setProperty('--spin2', `${Math.random() * 180 - 90}deg`);
+          leaf.style.setProperty('--drift3', `${(Math.random() - 0.5) * 72}px`);
+          leaf.style.setProperty('--drop3', '190px');
+          leaf.style.setProperty('--spin3', `${Math.random() * 260 - 130}deg`);
+          leaf.style.setProperty('--drift4', `${(Math.random() - 0.5) * 86}px`);
+          leaf.style.setProperty('--drop4', '290px');
+          leaf.style.setProperty('--spin4', `${Math.random() * 360}deg`);
+          leaf.style.animation = `clickFall ${1.7 + Math.random() * 0.9}s cubic-bezier(0.25, 0, 0.6, 1) forwards`;
+          leaf.style.animationDelay = `${index * 0.06}s`;
+          overlay.appendChild(leaf);
+          window.setTimeout(() => leaf.remove(), 2600);
+        }
+      }
+
+      container.addEventListener('click', (event) => {
+        spawnLeaves(event.clientX, event.clientY);
+      });
+
+      const syncScrollParallax = () => {
+        const rect = container.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || 1;
+        const progress = ((rect.top + rect.height * 0.5) - viewportHeight * 0.5) / viewportHeight;
+        parallax.style.transform = `translateY(${Math.max(-8, Math.min(8, progress * -10))}px)`;
+      };
+
+      syncScrollParallax();
+      window.addEventListener('scroll', syncScrollParallax, { passive: true });
+    }
+
+    async function hydrateMobilePortfolio() {
+      const track = document.getElementById('mobile-portfolio-track');
+      const prev = document.getElementById('mobile-portfolio-prev');
+      const next = document.getElementById('mobile-portfolio-next');
+      if (!track || !prev || !next) return;
+
+      let cards = [];
+      try {
+        cards = (await fetchPortfolioCards()).filter((card) => card.category === 'article');
+      } catch (error) {
+        console.error('Failed to hydrate mobile portfolio:', error);
+      }
+
+      track.innerHTML = cards.map((card) => {
+        const href = card.linkUrl && card.linkUrl !== '#' ? card.linkUrl : 'javascript:void(0)';
+        const linkAttrs = card.linkUrl && card.linkUrl !== '#'
+          ? 'target="_blank" rel="noreferrer"'
+          : 'aria-disabled="true"';
+        const coverPosition = card.coverPosition || 'center center';
+        const coverScale = Number(card.coverScale || 1.16);
+
+        return `
+          <article class="mobile-portfolio-card overflow-hidden border border-black/8 bg-[linear-gradient(180deg,#ffffff,#f7f4f0)] shadow-[0_18px_36px_rgba(0,0,0,0.06)]">
+            <a class="flex h-full flex-col gap-6 p-5 text-inherit no-underline" href="${escapeHtml(href)}" ${linkAttrs}>
+              <div>
+                <div class="font-body text-[10px] uppercase tracking-[0.24em] text-black/35">${escapeHtml(card.kicker || '')}</div>
+                <h3 class="mt-3 font-headline text-[28px] italic leading-[1.08] text-[#17120d]">${escapeHtml(card.title || '')}</h3>
+              </div>
+              <div class="aspect-[3/4] overflow-hidden bg-black/3">
+                <img alt="${escapeHtml(card.title || 'Portfolio cover')}" class="mobile-portfolio-cover-image" src="${escapeHtml(card.imageUrl || '')}" style="--cover-position:${escapeHtml(coverPosition)};--cover-scale:${escapeHtml(coverScale)};" />
+              </div>
+              <div class="mt-auto flex items-center justify-between font-body text-[11px] uppercase tracking-[0.2em] text-black/45">
+                <span class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[14px]">${escapeHtml(card.primaryMetric?.icon || 'favorite')}</span>
+                  ${escapeHtml(card.primaryMetric?.value || '')}
+                </span>
+                <span>${escapeHtml(card.secondaryMetric || formatStatusTime(card.refreshedAt))}</span>
+              </div>
+            </a>
+          </article>
+        `;
+      }).join('');
+
+      const scrollCards = (direction) => {
+        const firstCard = track.querySelector('.mobile-portfolio-card');
+        const step = (firstCard?.getBoundingClientRect().width || 260) + 16;
+        track.scrollBy({ left: direction * step, behavior: 'smooth' });
+      };
+
+      prev.addEventListener('click', () => scrollCards(-1));
+      next.addEventListener('click', () => scrollCards(1));
+    }
+
+    async function hydrateMobileExperience() {
+      const track = document.getElementById('mobile-experience-track');
+      const dots = document.getElementById('mobile-experience-dots');
+      const label = document.getElementById('mobile-experience-label');
+      const prev = document.getElementById('mobile-experience-prev');
+      const next = document.getElementById('mobile-experience-next');
+      if (!track || !dots || !label || !prev || !next) return;
+
+      let items = [];
+      try {
+        const content = await fetchContentFromSource('api/experience/content', 'data/experience-content.json', '经历页内容');
+        items = content['章节列表'] || [];
+      } catch (error) {
+        console.error('Failed to hydrate mobile experience:', error);
+      }
+
+      let currentSlide = 0;
+      const totalSlides = items.length;
+
+      track.innerHTML = items.map((item) => {
+        const signoff = item.signoff || {};
+        const photo = item.rightPagePhoto || item['右页照片'] || {};
+        const tags = Array.isArray(item['标签']) ? item['标签'] : [];
+
+        return `
+          <article class="mobile-experience-slide">
+            <div class="flex h-full flex-col gap-5 p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="font-body text-[10px] uppercase tracking-[0.24em] text-black/35">${escapeHtml(item['时间与单位'] || '')}</div>
+                  <h3 class="mt-3 font-headline text-[30px] italic leading-[1.06] text-[#17120d]">${escapeHtml(item['标题'] || '')}</h3>
+                </div>
+                ${photo.src ? `<div class="h-20 w-16 flex-shrink-0 overflow-hidden border border-black/6 bg-black/4"><img class="h-full w-full object-cover" src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || item['标题'] || 'Experience photo')}" /></div>` : ''}
+              </div>
+              <div class="flex flex-wrap gap-2">
+                ${tags.map((tag) => `<span class="rounded-full border border-black/8 bg-white/75 px-3 py-1 font-body text-[11px] uppercase tracking-[0.16em] text-black/58">${escapeHtml(tag)}</span>`).join('')}
+              </div>
+              <div class="mobile-experience-copy max-h-[52vh] overflow-y-auto pr-1 pb-1">
+                ${renderMobileExperienceBlocks(item)}
+              </div>
+              <div class="mt-auto border-t border-black/8 pt-4">
+                <p class="font-body text-[11px] uppercase tracking-[0.24em] text-black/38">${escapeHtml(signoff.meta || '')}</p>
+                <p class="mt-1 font-headline text-lg italic text-[#17120d]">${escapeHtml(signoff.brand || '')}</p>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      const renderDots = () => {
+        dots.innerHTML = items.map((_, index) => (
+          `<button type="button" data-exp-dot="${index}" class="${index === currentSlide ? 'w-10 bg-black/80' : 'w-6 bg-black/18'} h-[3px] rounded-full transition-all duration-300"></button>`
+        )).join('');
+
+        dots.querySelectorAll('[data-exp-dot]').forEach((button) => {
+          button.addEventListener('click', () => goToSlide(Number(button.dataset.expDot)));
+        });
+      };
+
+      const updateUi = () => {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        label.textContent = `Chapter ${String(currentSlide + 1).padStart(2, '0')} / ${String(Math.max(totalSlides, 1)).padStart(2, '0')}`;
+        prev.disabled = currentSlide === 0;
+        next.disabled = currentSlide >= totalSlides - 1;
+        renderDots();
+      };
+
+      function goToSlide(nextIndex) {
+        if (nextIndex < 0 || nextIndex >= totalSlides) return;
+        currentSlide = nextIndex;
+        updateUi();
+      }
+
+      prev.addEventListener('click', () => goToSlide(currentSlide - 1));
+      next.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+      let startX = 0;
+      let startY = 0;
+      let dragging = false;
+
+      track.addEventListener('touchstart', (event) => {
+        const touch = event.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        dragging = true;
+      }, { passive: true });
+
+      track.addEventListener('touchend', (event) => {
+        if (!dragging) return;
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - startX;
+        const deltaY = touch.clientY - startY;
+        dragging = false;
+
+        if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.15) return;
+        if (deltaX < 0) goToSlide(currentSlide + 1);
+        if (deltaX > 0) goToSlide(currentSlide - 1);
+      }, { passive: true });
+
+      updateUi();
+    }
+
+    async function hydrateMobileAbout() {
+      const body = document.getElementById('mobile-about-body');
+      const contacts = document.getElementById('mobile-about-contact-list');
+      if (!body || !contacts) return;
+
+      try {
+        const content = await fetchContentFromSource('api/about/content', 'data/about-content.json', '关于页内容');
+
+        if (content['肖像图片']) document.getElementById('mobile-about-portrait').src = content['肖像图片'];
+        if (content['姓名']) document.getElementById('mobile-about-name').textContent = content['姓名'];
+        if (content['学校']) document.getElementById('mobile-about-school').textContent = content['学校'];
+        if (content['专业']) document.getElementById('mobile-about-major').textContent = content['专业'];
+        if (content['简介标题']) document.getElementById('mobile-about-label').textContent = content['简介标题'];
+        if (content['简介正文']) {
+          const paragraphs = String(content['简介正文'])
+            .split('\n')
+            .map((line) => line.trim())
+            .filter(Boolean);
+          body.innerHTML = paragraphs.map((line) => `<p>${escapeHtml(line)}</p>`).join('');
+        }
+        if (content['引言']) {
+          document.getElementById('mobile-about-quote').textContent = `“${content['引言']}”`;
+        }
+
+        contacts.innerHTML = (content['联系方式'] || []).map((item) => {
+          const value = escapeHtml(item['值'] || '');
+          const labelText = escapeHtml(item['标签'] || '');
+          const link = item['链接'] || '';
+          const valueHtml = link
+            ? `<a class="text-black hover:underline underline-offset-4" href="${escapeHtml(link)}">${value}</a>`
+            : `<span class="text-black">${value}</span>`;
+          return `<div class="flex items-start justify-between gap-5 border-b border-black/5 pb-3"><span class="font-label text-[11px] uppercase tracking-[0.2em] text-black/36">${labelText}</span>${valueHtml}</div>`;
+        }).join('');
+      } catch (error) {
+        console.error('Failed to hydrate mobile about:', error);
+      }
+    }
+
+    function initMobileSectionNav() {
+      const homeLink = document.getElementById('mobile-home-link');
+      const navLinks = Array.from(document.querySelectorAll('[data-mobile-nav]'));
+      const sections = Array.from(document.querySelectorAll('[data-mobile-section]'));
+      if (!navLinks.length || !sections.length) return;
+
+      if (homeLink) {
+        homeLink.addEventListener('click', (event) => {
+          event.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          navLinks.forEach((link) => {
+            link.classList.toggle('active', link.dataset.mobileNav === 'portfolio');
+          });
+        });
+      }
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const href = link.getAttribute('href');
+          const target = href ? document.querySelector(href) : null;
+          if (!target) return;
+          event.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      const setActive = (key) => {
+        navLinks.forEach((link) => {
+          link.classList.toggle('active', link.dataset.mobileNav === key);
+        });
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible) setActive(visible.target.dataset.mobileSection);
+      }, {
+        threshold: [0.35, 0.6],
+        rootMargin: '-15% 0px -45% 0px',
+      });
+
+      sections.forEach((section) => observer.observe(section));
     }
 
     function escapeHtml(value) {
@@ -367,6 +1112,41 @@
     }
 
     hydrateIndexContent();
+    hydrateMobileHomeContent();
+
+    const astraOverlay = document.getElementById('astra-overlay');
+    const astraClose = document.getElementById('astra-close');
+
+    function openAstraOverlay() {
+      if (!astraOverlay) return;
+      astraOverlay.classList.add('open');
+      astraOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeAstraOverlay() {
+      if (!astraOverlay) return;
+      astraOverlay.classList.remove('open');
+      astraOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    document.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-astra-trigger="true"]');
+      if (trigger) {
+        event.preventDefault();
+        openAstraOverlay();
+        return;
+      }
+
+      if (event.target === astraOverlay || event.target === astraClose) {
+        closeAstraOverlay();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && astraOverlay?.classList.contains('open')) {
+        closeAstraOverlay();
+      }
+    });
 
     // === Lamplighter walking animation ===
     (() => {
@@ -448,10 +1228,7 @@
 
       async function loadWizardContent() {
         try {
-          const response = await fetch('/api/wizard/content');
-          if (!response.ok) return;
-          const payload = await response.json();
-          const wizardContent = payload.content || {};
+          const wizardContent = await fetchContentFromSource('api/wizard/content', 'data/wizard-content.json', '魔法小人台词');
           const indexContent = wizardContent.index || {};
           const nodeLines = indexContent['节点台词'] || {};
           lines = {
@@ -523,7 +1300,9 @@
         const href = link.getAttribute('href');
         if (link.hasAttribute('download')) return;
         if (href === 'index.html') return;
+        if (!['works.html', 'experience.html', 'about.html'].includes(href)) return;
         link.addEventListener('click', function(e) {
+          if (window.innerWidth < MOBILE_MODE_BREAKPOINT) return;
           e.preventDefault();
           // Map topbar link to timeline node index
           let nodeIdx = 0;

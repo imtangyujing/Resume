@@ -1,0 +1,132 @@
+{
+  "cards": [
+    {
+      "id": "tao-ai-science",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "AI x Science // Interview",
+      "title": "量子位专访陶哲轩：我为什么现在创办一个AI x Science组织",
+      "imageUrl": "data/portfolio-covers/陶哲轩.PNG",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://mp.weixin.qq.com/s/W2k_5baVXAIHCuSthir2yg",
+      "primaryMetric": {
+        "icon": "campaign",
+        "value": "TERRY IS GOAT"
+      },
+      "secondaryMetric": "TALK"
+    },
+    {
+      "id": "hassabis-author-interview",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "Author Talk // DeepMind",
+      "title": "对话「哈萨比斯传」作者：“他不喜欢奥特曼”",
+      "imageUrl": "data/portfolio-covers/中年男子的自信肖像.PNG",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://mp.weixin.qq.com/s/pGBMmIbU2u7g-1sDB1jWVw",
+      "primaryMetric": {
+        "icon": "campaign",
+        "value": "Thank u, Sebastian"
+      },
+      "secondaryMetric": "TALK"
+    },
+    {
+      "id": "gpt4o-openai-departure",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "AI Brief // Commentary",
+      "title": "完球了，GPT-4o之母宣布离职OpenAI",
+      "imageUrl": "data/portfolio-covers/Joanne.PNG",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://mp.weixin.qq.com/s/QG99OoKOdFA3lpBhVcKUpA",
+      "primaryMetric": {
+        "icon": "visibility",
+        "value": "10W+"
+      },
+      "secondaryMetric": "INFO"
+    },
+    {
+      "id": "gpt6-exposed",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "Model Watch // Leak",
+      "title": "GPT-6，曝光了",
+      "imageUrl": "data/portfolio-covers/GPT-6.png",
+      "coverPosition": "center 28%",
+      "coverScale": 1.18,
+      "linkUrl": "https://mp.weixin.qq.com/s/BLwrThpQYBKVOlJpb4gwvg",
+      "primaryMetric": {
+        "icon": "visibility",
+        "value": "10W+"
+      },
+      "secondaryMetric": "INFO"
+    },
+    {
+      "id": "wechat-longform",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "Wechat Archive // Longform",
+      "title": "从火海中走向世界，日本政府做了什么？",
+      "imageUrl": "data/portfolio-covers/藤本树.png",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://mp.weixin.qq.com/s/tSweNrb5jHpaqRIEjTBLiA",
+      "primaryMetric": {
+        "icon": "campaign",
+        "value": "THIS MATTERS"
+      },
+      "secondaryMetric": "ARTICLE"
+    },
+    {
+      "id": "hassabis-biography-gossip",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "DeepMind Notes // Profile",
+      "title": "哈萨比斯传记里讲了好多八卦啊",
+      "imageUrl": "data/portfolio-covers/Hassabis.png",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://mp.weixin.qq.com/s/7emNZcVCnTaSOrKcnAprfA",
+      "primaryMetric": {
+        "icon": "campaign",
+        "value": "EVIL BALD GUY!"
+      },
+      "secondaryMetric": "COMMENTARY"
+    },
+    {
+      "id": "mirror-thirty-years",
+      "category": "article",
+      "platform": "WeChat",
+      "kicker": "Culture Note // Essay",
+      "title": "时隔30年，我们仍被困在那面镜子里",
+      "imageUrl": "data/portfolio-covers/攻壳机动队的崎玉素子.png",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://mp.weixin.qq.com/s/Vi-Ic-FHOIe5hULX3-d9AQ",
+      "primaryMetric": {
+        "icon": "campaign",
+        "value": "REBORN"
+      },
+      "secondaryMetric": "COMMENTARY"
+    },
+    {
+      "id": "music-archive",
+      "category": "music",
+      "platform": "Music",
+      "kicker": "Studio One // Practice",
+      "title": "音乐与声音练习",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDxNwSE4-5bP02bVDvCYQHNoMk7opIyZtefaOWL4XFUX8Cu1sMQqbkhSbOUi3YtTxGIhvceB9yij_teHJEECeZIrRzqo9DJy1_Nwr3YJnkp2kYc3ue2XyMBHV8SlzBedoRarwrBNPQMAWTvIsSpvVH8FYl_6fTvvI7KIJ-Hxjgl7zi7oGma7RmFz0zkImXuORPBrPbvG3E_SZah5LcDLRNKnAs0Rhc7Ckz3iVW6hRyvZbA0XVMC_EgewCT6e842JtX7Wza48hYcmIY",
+      "coverPosition": "center center",
+      "coverScale": 1.16,
+      "linkUrl": "https://music.163.com/",
+      "primaryMetric": {
+        "icon": "graphic_eq",
+        "value": "12"
+      },
+      "secondaryMetric": "DRAFTS"
+    }
+  ]
+}

@@ -3,6 +3,19 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>BORN 2003 — Portfolio</title>
+<script>
+  (() => {
+    const MOBILE_MODE_BREAKPOINT = 1024;
+    const target = 'index.html#mobile-portfolio';
+    const redirectIfCompact = () => {
+      if (window.innerWidth < MOBILE_MODE_BREAKPOINT && window.location.pathname.endsWith('/works.html')) {
+        window.location.replace(target);
+      }
+    };
+    redirectIfCompact();
+    window.addEventListener('resize', redirectIfCompact);
+  })();
+</script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
@@ -253,7 +266,11 @@
   </div>
   <div class="flex items-center gap-4">
     <a href="唐榆景-西南财经大学-金融学.pdf" download aria-label="Download CV" title="Download CV" class="inline-flex items-center justify-center text-black/75 hover:text-black transition-colors duration-300">
-      <span class="material-symbols-outlined text-black">download</span>
+      <svg aria-hidden="true" class="h-6 w-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v11"></path>
+        <path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path>
+        <path d="M4 19h16"></path>
+      </svg>
     </a>
   </div>
   <!-- Topbar Wizard -->
@@ -333,6 +350,46 @@
     let currentPage = 0;
     let isAnimating = false;
     let activeCategory = 'article';
+    async function fetchContentFromSource(apiPath, staticPath, rootKey) {
+      try {
+        const response = await fetch(apiPath);
+        if (response.ok) {
+          const payload = await response.json();
+          return payload.content || payload;
+        }
+      } catch (error) {
+        console.warn(`Falling back from ${apiPath}:`, error);
+      }
+
+      const fallbackResponse = await fetch(staticPath);
+      if (!fallbackResponse.ok) {
+        throw new Error(`Failed to load fallback content from ${staticPath}`);
+      }
+
+      const fallbackPayload = await fallbackResponse.json();
+      return fallbackPayload[rootKey] || fallbackPayload.content || fallbackPayload;
+    }
+
+    async function fetchPortfolioCards() {
+      try {
+        const response = await fetch('api/portfolio/cards');
+        if (response.ok) {
+          const payload = await response.json();
+          return payload.cards || [];
+        }
+      } catch (error) {
+        console.warn('Falling back from api/portfolio/cards:', error);
+      }
+
+      const fallbackResponse = await fetch('data/portfolio-cards.json');
+      if (!fallbackResponse.ok) {
+        throw new Error('Failed to load fallback portfolio cards');
+      }
+
+      const fallbackPayload = await fallbackResponse.json();
+      return fallbackPayload.cards || [];
+    }
+
     let portfolioCards = [
       {
         id: 'fallback-1',
@@ -501,12 +558,7 @@
 
     async function loadPortfolioCards() {
       try {
-        const response = await fetch('/api/portfolio/cards');
-        if (!response.ok) {
-          throw new Error(`Request failed with ${response.status}`);
-        }
-        const payload = await response.json();
-        portfolioCards = (payload.cards || []).filter((card) => card.category === 'article');
+        portfolioCards = (await fetchPortfolioCards()).filter((card) => card.category === 'article');
         renderCards();
       } catch (error) {
         console.error(error);
@@ -744,10 +796,7 @@
 
       async function loadWizardContent() {
         try {
-          const response = await fetch('/api/wizard/content');
-          if (!response.ok) return;
-          const payload = await response.json();
-          const wizardContent = payload.content || {};
+          const wizardContent = await fetchContentFromSource('api/wizard/content', 'data/wizard-content.json', '魔法小人台词');
           const worksContent = wizardContent.works || {};
           if (Array.isArray(worksContent["自动对话"]) && worksContent["自动对话"].length) {
             chatLines = worksContent["自动对话"];

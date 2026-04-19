@@ -83,6 +83,8 @@
       "上方小字": "Model Watch // Leak",
       "标题": "GPT-6，曝光了",
       "封面图": "data/portfolio-covers/GPT-6.png",
+      "封面位置": "center 28%",
+      "封面缩放": 1.18,
       "跳转链接": "https://mp.weixin.qq.com/s/BLwrThpQYBKVOlJpb4gwvg",
       "默认显示": {
         "底部左侧指标": {
