@@ -410,6 +410,8 @@
     .mobile-tree-shell {
       animation: treeSway 7.2s ease-in-out infinite;
       transform-origin: 50% 92%;
+      will-change: transform;
+      backface-visibility: hidden;
     }
     .mobile-leaf {
       position: absolute;
@@ -420,6 +422,14 @@
       opacity: 0.78;
       pointer-events: none;
       transform-origin: 30% 50%;
+    }
+    #mobile-hero-text-block {
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    #mobile-hero-text-block.swaying {
+      animation: textSway 7s ease-in-out infinite;
+      transform-origin: 0% 100%;
     }
     @media (min-width: 1024px) {
       body {
@@ -885,8 +895,31 @@
       const overlay = document.getElementById('mobile-leaves-overlay');
       const shell = container?.querySelector('.mobile-tree-shell');
       const parallax = document.getElementById('mobile-tree-parallax');
+      const textBlock = document.getElementById('mobile-hero-text-block');
       if (!container || !overlay || !shell || !parallax || container.dataset.motionReady === 'true') return;
       container.dataset.motionReady = 'true';
+      let windTime = 0;
+      let animationFrame = 0;
+
+      function createAmbientLeaf() {
+        const leaf = document.createElement('div');
+        leaf.className = 'mobile-leaf';
+        leaf.style.left = `${Math.random() * 78 + 11}%`;
+        leaf.style.top = `${Math.random() * 34 + 8}%`;
+        leaf.style.setProperty('--sway', `${(Math.random() - 0.5) * 140}px`);
+        leaf.style.setProperty('--rotation', `${Math.random() * 720 - 360}deg`);
+        const duration = Math.random() * 3.2 + 2.8;
+        leaf.style.animation = `fall ${duration}s linear forwards`;
+        overlay.appendChild(leaf);
+        window.setTimeout(() => leaf.remove(), duration * 1000);
+      }
+
+      function scheduleAmbientLeaves() {
+        window.setTimeout(() => {
+          createAmbientLeaf();
+          scheduleAmbientLeaves();
+        }, Math.random() * 1500 + 700);
+      }
 
       function spawnLeaves(clientX, clientY) {
         const rect = container.getBoundingClientRect();
@@ -924,11 +957,29 @@
         const rect = container.getBoundingClientRect();
         const viewportHeight = window.innerHeight || 1;
         const progress = ((rect.top + rect.height * 0.5) - viewportHeight * 0.5) / viewportHeight;
-        parallax.style.transform = `translateY(${Math.max(-8, Math.min(8, progress * -10))}px)`;
+        parallax.dataset.scrollTranslate = String(Math.max(-10, Math.min(10, progress * -12)));
       };
+
+      function animateMobileTree() {
+        windTime += 0.0023;
+        const scrollTranslate = Number(parallax.dataset.scrollTranslate || 0);
+        const windX = Math.sin(windTime * 1.3) * 1.6 + Math.sin(windTime * 2.2) * 0.7;
+        const windY = Math.cos(windTime * 1.15) * 1.3;
+        parallax.style.transform = `translate3d(${windX.toFixed(2)}px, ${(scrollTranslate + windY).toFixed(2)}px, 0)`;
+        shell.style.transform = `translate3d(${(windX * 0.65).toFixed(2)}px, 0, 0) rotate(${(Math.sin(windTime) * 0.38).toFixed(2)}deg) skewX(${(Math.cos(windTime * 1.35) * 0.22).toFixed(2)}deg)`;
+        animationFrame = window.requestAnimationFrame(animateMobileTree);
+      }
 
       syncScrollParallax();
       window.addEventListener('scroll', syncScrollParallax, { passive: true });
+      scheduleAmbientLeaves();
+      animationFrame = window.requestAnimationFrame(animateMobileTree);
+
+      if (textBlock) {
+        window.setTimeout(() => {
+          textBlock.classList.add('swaying');
+        }, 900);
+      }
     }
 
     async function hydrateMobilePortfolio() {
