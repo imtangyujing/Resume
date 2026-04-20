@@ -262,6 +262,44 @@
       overscroll-behavior-x: contain;
       transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .mobile-experience-arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+      display: inline-flex;
+      height: 46px;
+      width: 46px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.88);
+      color: rgba(17, 17, 17, 0.84);
+      box-shadow: 0 10px 24px rgba(26, 28, 28, 0.08);
+      transform: translateY(-50%);
+      transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .mobile-experience-arrow:hover,
+    .mobile-experience-arrow:active {
+      transform: translateY(-50%) scale(1.03);
+      background: rgba(17, 17, 17, 0.92);
+      color: white;
+    }
+    .mobile-experience-arrow:disabled {
+      opacity: 0.22;
+      pointer-events: none;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.72);
+      color: rgba(17, 17, 17, 0.78);
+    }
+    .mobile-experience-arrow.left {
+      left: 10px;
+    }
+    .mobile-experience-arrow.right {
+      right: 10px;
+    }
     .mobile-experience-copy a {
       color: #c8142f;
       text-decoration: none;
@@ -616,17 +654,15 @@
         <p class="font-label text-[11px] uppercase tracking-[0.28em] text-black/35">Section 02</p>
         <h2 class="mt-2 font-headline text-4xl italic text-black">Experience</h2>
       </div>
-      <div class="flex gap-2">
-        <button id="mobile-experience-prev" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-black/70">
-          <span class="material-symbols-outlined text-[20px]">chevron_left</span>
-        </button>
-        <button id="mobile-experience-next" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-black/70">
-          <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-        </button>
-      </div>
     </div>
     <p id="mobile-experience-label" class="mt-3 font-body text-sm tracking-[0.12em] text-black/48 uppercase">Chapter 01 / 01</p>
-    <div id="mobile-experience-viewport" class="mt-8 overflow-hidden border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,244,240,0.96))] shadow-[0_24px_48px_rgba(0,0,0,0.08)]">
+    <div id="mobile-experience-viewport" class="relative mt-8 overflow-hidden border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,244,240,0.96))] shadow-[0_24px_48px_rgba(0,0,0,0.08)]">
+      <button id="mobile-experience-prev" type="button" class="mobile-experience-arrow left" aria-label="Previous chapter">
+        <span class="material-symbols-outlined text-[24px]">chevron_left</span>
+      </button>
+      <button id="mobile-experience-next" type="button" class="mobile-experience-arrow right" aria-label="Next chapter">
+        <span class="material-symbols-outlined text-[24px]">chevron_right</span>
+      </button>
       <div id="mobile-experience-track" class="mobile-experience-track flex"></div>
     </div>
     <div id="mobile-experience-dots" class="mt-5 flex items-center justify-center gap-2"></div>
