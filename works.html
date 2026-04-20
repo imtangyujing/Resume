@@ -62,12 +62,12 @@
     .perspective-container { perspective: 2000px; scroll-behavior: smooth; }
     .gallery-track {
       display: flex; gap: 0;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 1.02s cubic-bezier(0.2, 0.88, 0.24, 1);
       transform-style: preserve-3d;
     }
     .paper-fold {
       transform-style: preserve-3d; flex-shrink: 0;
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, box-shadow 0.6s ease;
+      transition: transform 0.92s cubic-bezier(0.2, 0.82, 0.22, 1), opacity 0.78s ease, box-shadow 0.78s ease;
       transform-origin: left center;
     }
     .paper-fold:nth-child(odd) { transform: rotateY(6deg); }
@@ -356,6 +356,10 @@
     const CARDS_PER_PAGE = 4;
     const CARD_WIDTH = 320; // px per card
     const CARD_GAP = 0;
+    const FOLD_OUT_STAGGER = 0.085;
+    const FOLD_IN_STAGGER = 0.11;
+    const FOLD_PHASE_MS = 460;
+    const UNLOCK_MS = 860;
     let currentPage = 0;
     let isAnimating = false;
     let activeCategory = 'article';
@@ -433,8 +437,8 @@
       const oldEnd = Math.min(oldStart + CARDS_PER_PAGE, cards.length);
       for (let i = oldStart; i < oldEnd; i++) {
         const delay = direction === 'right'
-          ? (i - oldStart) * 0.06
-          : (oldEnd - 1 - i) * 0.06;
+          ? (i - oldStart) * FOLD_OUT_STAGGER
+          : (oldEnd - 1 - i) * FOLD_OUT_STAGGER;
         cards[i].style.transitionDelay = `${delay}s`;
         cards[i].classList.add(direction === 'right' ? 'folding-out' : 'folding-in');
       }
@@ -463,16 +467,16 @@
           requestAnimationFrame(() => {
             for (let i = newStart; i < newEnd; i++) {
               const delay = direction === 'right'
-                ? (i - newStart) * 0.08
-                : (newEnd - 1 - i) * 0.08;
+                ? (i - newStart) * FOLD_IN_STAGGER
+                : (newEnd - 1 - i) * FOLD_IN_STAGGER;
               cards[i].style.transitionDelay = `${delay}s`;
               cards[i].classList.remove('folding-out', 'folding-in');
             }
           });
         });
 
-        setTimeout(() => { isAnimating = false; }, 600);
-      }, 350);
+        setTimeout(() => { isAnimating = false; }, UNLOCK_MS);
+      }, FOLD_PHASE_MS);
 
       // Update UI
       arrowLeft.disabled = currentPage === 0;
